@@ -29,7 +29,7 @@ clean-build:
 
 # Install development dependencies
 install:
-	poetry install --with dev,test,docs,nb
+	poetry install --with dev,test,docs,nb,backend
 
 # Install and run bandit security analysis
 bandit:

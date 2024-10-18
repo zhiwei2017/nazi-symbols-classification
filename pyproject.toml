@@ -10,10 +10,11 @@ documentation = "https://github.com/zhiwei2017/nazi-symbols-classification"
 keywords = []
 classifiers = []
 packages = [
-  {include = "nazi_symbols_classification"}
+  {include = "nazi_symbols_classification"},
 ]
 
 include = []
+exclude = ["tests", "docs", "scripts"]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
@@ -23,13 +24,27 @@ opencv-python = "~4.10"
 bandit = "~1.7"
 mypy = "~1.6"
 
+[tool.poetry.group.backend]
+optional = true
+
+[tool.poetry.group.backend.dependencies]
+fastapi = "<1.0,>=0.103"
+toml = "^0.10.2"
+pydantic = "<2.7,>=2.6"
+pydantic-settings = ">=2.0,<3.0"
+click = "*"
+uvicorn = "^0.32.0"
+python-multipart = "==0.0.9"
+
 [tool.poetry.group.test]
 optional = true
 
 [tool.poetry.group.test.dependencies]
+httpx = "<0.28,>=0.27"
 pytest = "~7.4"
 pytest-cov = "~4.1"
 pytest-runner = "~6.0"
+pytest-asyncio = "<0.24,>=0.23"
 
 [tool.poetry.group.docs]
 optional = true
@@ -56,7 +71,18 @@ build-backend = "poetry.core.masonry.api"
 [tool.mypy]
 ignore_missing_imports = true
 
+[[tool.mypy.overrides]]
+module = [
+  "toml.*",
+  "click.*",
+  "fastapi.*",
+  "pydantic.*",
+  "pydantic_settings.*",
+  "starlette.*",
+]
+ignore_missing_imports = true
+
 [tool.pytest.ini_options]
 minversion = "6.0"
 testpaths = ["tests"]
-addopts = "--verbose --doctest-modules --cov-report term-missing --cov=./nazi_symbols_classification"
+addopts = "--verbose --doctest-modules --cov-report term-missing --cov=./nazi_symbols_classification --cov=./nazi_symbols_classification_backend"

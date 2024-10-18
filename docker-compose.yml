@@ -1,0 +1,33 @@
+version: '3.4'
+services:
+  test_nazi_symbolc_classification_backend:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        MODE: "DEFAULT"
+    entrypoint: >
+      sh -c "sleep 5 && poetry install --only test && pytest"
+    volumes:
+      - .:/home
+    environment:
+      PYTHONPATH: /home/nazi_symbolc_classification_backend
+  nazi_symbolc_classification_backend:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        MODE: "DEFAULT"
+    entrypoint: >
+      sh -c "sleep 5 && uvicorn --app-dir nazi_symbolc_classification_backend --port 8080 --host 0.0.0.0 main:app"
+    volumes:
+      - .:/home
+    environment:
+      PYTHONPATH: /home/nazi_symbolc_classification_backend
+    ports:
+      - "127.0.0.1:8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/v1/health"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
