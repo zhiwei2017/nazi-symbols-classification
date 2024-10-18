@@ -90,6 +90,11 @@ def flip_image(path: str, direction: FlipDirection) -> str:
     return output_path
 
 
+def randomly_flip_image(path, directions):
+    direction = random.choice(directions)
+    return flip_image(path, direction)
+
+
 def rotate_image(path: str, angle: float) -> str:
     """This function rotates a picture to given angle."""
     image_name, image_extension = get_image_name_extension(path)
@@ -209,7 +214,7 @@ def randomly_change_image_hue_saturation_brightness(path: str,
     sign = random.choice(NonZeroSign.values())
     hue_change = random.randint(0, hue_range)
     saturation_change = random.randint(0, int(255 * saturation_range))
-    brightness_change = random.randint(0, int(255 * saturation_range))
+    brightness_change = random.randint(0, int(255 * brightness_range))
     return change_image_hue_saturation_brightness(path,
                                                   sign,
                                                   hue_change,
@@ -221,7 +226,7 @@ def change_image_contrast_brightness(path: str,
                                      sign: ZeroSign = 1,
                                      contrast_control: float = 1,
                                      brightness_control: int = 0) -> str:
-    if brightness_control < 0 or brightness_control > 1:
+    if abs(brightness_control) < 0 or abs(brightness_control) > 127:
         raise ValueError
     elif contrast_control < 0:
         raise ValueError
@@ -236,7 +241,7 @@ def change_image_contrast_brightness(path: str,
     out = cv2.convertScaleAbs(img,
                               alpha=contrast_control,
                               beta=sign * brightness_control)
-    output_path = f"{image_name}_brightness_{sign * brightness_control}.{image_extension}"
+    output_path = f"{image_name}_exposure_{sign * brightness_control}.{image_extension}"
     cv2.imwrite(output_path, out)
     return output_path
 
@@ -276,6 +281,11 @@ def blur_image(path: str, ksize: Tuple[int, int] = (7, 7)) -> str:
 
     cv2.imwrite(output_path, blurred_image)
     return output_path
+
+
+def randomly_blur_image(path, ksize_range=7):
+    ksize = random.randrange(1, ksize_range + 1, 2)
+    return blur_image(path, ksize=(ksize, ksize))
 
 
 def salt_pepper_noise(path: str, prob: float) -> str:

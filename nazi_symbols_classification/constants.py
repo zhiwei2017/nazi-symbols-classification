@@ -6,12 +6,12 @@ class FlipDirection(Enum):
     HORIZONTALLY = 1
 
 
-class NonZeroSign(int, Enum):
-    POS = 1
-    NEG = -1
+class EnumExtend:
+    _member_names_ = []
+    _value2member_map_ = dict()
 
     @classmethod
-    def name(cls):
+    def names(cls):
         return cls._member_names_
 
     @classmethod
@@ -19,5 +19,12 @@ class NonZeroSign(int, Enum):
         return list(cls._value2member_map_.keys())
 
 
-class ZeroSign(NonZeroSign):
+class NonZeroSign(int, EnumExtend, Enum):
+    POS = 1
+    NEG = -1
+
+
+class ZeroSign(int, EnumExtend, Enum):
     ZERO = 0
+    POS = 1
+    NEG = -1
