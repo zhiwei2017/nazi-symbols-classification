@@ -21,15 +21,18 @@ RUN apt-get -y update && \
 FROM base as base-with-dependencies
 
 # install main dependencies
+RUN apt-get -y update && apt-get install ffmpeg libsm6 libxext6 curl -y
 COPY poetry.lock pyproject.toml ./
-RUN poetry install --no-root --no-directory --only main
+RUN poetry install --with dev,test,docs,nb,backend --no-root --no-directory
 
 FROM base-with-dependencies
 
-# install the project
+# install the project and download models from huggingface
 COPY . ./
-RUN poetry install --only main
+RUN poetry install && \
+    curl -L https://huggingface.co/zhiwei2017/yolo11s-cls-nazi-symbols/resolve/main/yolo11s-cls-multiple-nazi-symbols/weights/best.pt --output nazi_symbols_classification_backend/data/second-layer.pt &&  \
+    curl -L https://huggingface.co/zhiwei2017/yolo11s-cls-nazi-symbols/resolve/main/yolo11s-cls-nazi-symbol-detection/weights/best.pt --output nazi_symbols_classification_backend/data/first-layer.pt
 
 EXPOSE ${API_PORT}
 
-CMD uvicorn --app-dir nazi_symbolc_classification_backend --port ${API_PORT} --host 0.0.0.0 main:app
+CMD python -m uvicorn --app-dir nazi_symbols_classification_backend --port ${API_PORT} --host 0.0.0.0 main:app

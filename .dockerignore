@@ -4,8 +4,8 @@ notebooks
 docker
 docker-compose.yml
 Dockerfile
-README.rst
 CONTRIBUTING.rst
 .github
 .coverage
 .gitignore
+venv

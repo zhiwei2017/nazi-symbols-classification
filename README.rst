@@ -149,6 +149,10 @@ To use nazi-symbols-classification in a project::
 
     import nazi_symbols_classification
 
+To run the `nazi_symbols_classification_backend` locally with docker compose::
+
+    $  docker compose run --service-ports nazi_symbols_classification_backend
+
 Maintainers
 -----------
 

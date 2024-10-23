@@ -1,29 +1,27 @@
 version: '3.4'
+---
+x-backend-common:
+  &backend-common
+  build:
+    context: .
+    dockerfile: ./Dockerfile
+    args:
+      PYTHON_VERSION: ${PYTHON_VERSION:-3.10}
+      API_PORT: 8080
+      MODE: "DEFAULT"
+  image: nazi-symbols-classification-backend:${DOCKER_IMAGE_TAG:-latest}
+  volumes:
+    - .:/home
+  environment:
+    PYTHONPATH: /home/nazi_symbols_classification_backend
+
 services:
-  test_nazi_symbolc_classification_backend:
-    build:
-      context: .
-      dockerfile: ./Dockerfile
-      args:
-        MODE: "DEFAULT"
+  test_nazi_symbols_classification_backend:
+    <<: *backend-common
     entrypoint: >
-      sh -c "sleep 5 && poetry install --only test && pytest"
-    volumes:
-      - .:/home
-    environment:
-      PYTHONPATH: /home/nazi_symbolc_classification_backend
-  nazi_symbolc_classification_backend:
-    build:
-      context: .
-      dockerfile: ./Dockerfile
-      args:
-        MODE: "DEFAULT"
-    entrypoint: >
-      sh -c "sleep 5 && uvicorn --app-dir nazi_symbolc_classification_backend --port 8080 --host 0.0.0.0 main:app"
-    volumes:
-      - .:/home
-    environment:
-      PYTHONPATH: /home/nazi_symbolc_classification_backend
+      sh -c "poetry install --only test && poetry run pytest"
+  nazi_symbols_classification_backend:
+    <<: *backend-common
     ports:
       - "127.0.0.1:8080:8080"
     healthcheck:
