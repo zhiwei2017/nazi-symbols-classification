@@ -1,5 +1,6 @@
+import random
 from pydantic import BaseModel, Field
-from typing import Callable, Sequence, Any, Tuple, Union
+from typing import Callable, Sequence, Any, Tuple, Union, Dict
 
 
 class PipelineStep(BaseModel):
@@ -7,11 +8,11 @@ class PipelineStep(BaseModel):
                       description="",
                       examples=[])
     func: Callable = Field(..., description="", examples=[])
-    func_params: Union[Sequence[Any], None] = Field(..., description="", examples=[])
+    func_params: Union[Dict[str, Any], None] = Field(..., description="", examples=[])
 
 
 class Pipeline:
-    def __init__(self, steps: Sequence[Tuple[str, Callable, Sequence[Any]]]):
+    def __init__(self, steps: Sequence[Tuple[str, Callable, Union[Dict[str, Any], None]]]):
         self._steps = []
         self.validate_steps(steps)
 
@@ -25,10 +26,14 @@ class Pipeline:
     def steps(self):
         return self._steps
 
-    def run(self, paths):
+    def run(self, paths, skip_prob=0):
+        if not 0 <= skip_prob < 1:
+            raise ValueError("skip_prob should be in the interval [0, 1).")
         for path in paths:
             for step in self._steps:
-                if step.func_params:
-                    step.func(path, *step.func_params)
+                if skip_prob and random.uniform(0, 1) < skip_prob:
+                    continue
+                elif step.func_params:
+                    step.func(path, **step.func_params)
                 else:
                     step.func(path)
