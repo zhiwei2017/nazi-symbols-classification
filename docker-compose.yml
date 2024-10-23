@@ -10,8 +10,6 @@ x-backend-common:
       API_PORT: 8080
       MODE: "DEFAULT"
   image: nazi-symbols-classification-backend:${DOCKER_IMAGE_TAG:-latest}
-  volumes:
-    - .:/home
   environment:
     PYTHONPATH: /home/nazi_symbols_classification_backend
 
