@@ -1,29 +1,27 @@
 """Module containing FastAPI instance related functions and classes."""
 
 import logging.config
+import os
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware.base import BaseHTTPMiddleware
-from nazi_symbols_classification.image_processing import (
-    auto_resize, grayscale, auto_adjust_contrast
-)
-from nazi_symbols_classification.pipeline import Pipeline
+
 from .routes import router
 from .configs import get_settings
 from .middlewares.logging import log_time
 from .globals import state
+from .services.classification import init_state_for_classification
 from .version import __version__
+
+data_folder = os.path.join(os.path.dirname(os.path.dirname(__file__)),
+                           "data")
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # do something before app is ready
-    state["image_preprocessing_pipeline"] = Pipeline([
-        ("auto_resize", auto_resize, (640, 640)),
-        ("grayscale", grayscale, None),
-        ("auto_adjust_contrast", auto_adjust_contrast, None),
-    ])
+    init_state_for_classification()
     yield
     # do something before app is shutting down
     state.clear()

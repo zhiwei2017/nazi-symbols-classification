@@ -2,12 +2,17 @@ from pydantic import BaseModel, Field  # type: ignore
 from typing import List
 
 
-class ClassificationResultDetails(BaseModel):
-    predicted_class: str = Field(...)
-    predicted_prob: float = Field(...)
+class ImageClassificationResultDetails(BaseModel):
+    label: str = Field(...)
+    prob: float = Field(...)
+
+
+class ImageClassificationResult(BaseModel):
+    containing_nazi_symbols: bool = Field(...)
+    prob: float = Field(...)
+    nazi_symbols: List[str] = Field(...)
+    details: List[ImageClassificationResultDetails] = Field(...)
 
 
 class ClassifyResponse(BaseModel):
-    nazi_symbol: str = Field(...)
-    prob: float = Field(...)
-    details: List[ClassificationResultDetails] = Field(...)
+    results: List[ImageClassificationResult] = Field(...)

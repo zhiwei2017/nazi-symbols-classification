@@ -1,9 +1,10 @@
 import os
 import shutil
 from typing import Any, List
+
 from fastapi import APIRouter, UploadFile, HTTPException
 from ..schemas.classification import ClassifyResponse
-from ..globals import state
+from ..services.classification import get_classification_result
 
 classification_router = APIRouter()
 
@@ -30,6 +31,19 @@ async def classify(images: List[UploadFile]) -> Any:
         message = (f"There was an error uploading the image{(len(failed_images) > 1) * 's'} "
                    f"[{', '.join(failed_images)}].")  # type: ignore
         return HTTPException(status_code=501, detail=message)
-    print(image_paths)
-    state["image_preprocessing_pipeline"].run(image_paths)
-    return ClassifyResponse(nazi_symbol="swastika", prob=0.9, details=[])
+
+    classification_results = get_classification_result(image_paths, 0.1)
+    results = []
+    for classification_result in classification_results:
+        containing_nazi_symbols = classification_result['first_layer_result']['label'] == "nazi-symbol"
+        prob = classification_result['first_layer_result']['prob']
+        nazi_symbols, details = [], []
+        if containing_nazi_symbols:
+            nazi_symbols = [d['label'] for d in classification_result['second_layer_result']]
+            details = classification_result['second_layer_result']
+        result = dict(containing_nazi_symbols=containing_nazi_symbols,
+                      prob=prob,
+                      nazi_symbols=nazi_symbols,
+                      details=details)
+        results.append(result)
+    return ClassifyResponse(results=results)
