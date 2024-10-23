@@ -46,4 +46,4 @@ async def classify(images: List[UploadFile]) -> Any:
                       nazi_symbols=nazi_symbols,
                       details=details)
         results.append(result)
-    return ClassifyResponse(results=results)
+    return ClassifyResponse(results=results)  # type: ignore

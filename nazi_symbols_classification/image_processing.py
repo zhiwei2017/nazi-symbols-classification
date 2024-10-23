@@ -1,10 +1,12 @@
 import cv2
 import math
 import numpy as np
-import random
-from typing import Tuple
+from random import SystemRandom
+from typing import Tuple, Union, Any
 from .constants import FlipDirection, NonZeroSign, ZeroSign
 from .utils import get_image_name_extension
+
+crypto_gen = SystemRandom()
 
 
 def auto_resize(path: str, new_width: int, new_height: int) -> None:
@@ -52,24 +54,10 @@ def auto_adjust_contrast(path: str) -> None:
     y_channel, cr_channel, cb_channel = cv2.split(ycrcb_image)
 
     # Perform contrast stretching on the Y channel
-    y_channel_stretched = cv2.normalize(y_channel, None, 0, 255, cv2.NORM_MINMAX)
+    y_channel_stretched = cv2.normalize(y_channel, dst=None, alpha=0, beta=255,  # type: ignore
+                                        norm_type=cv2.NORM_MINMAX)
     clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
     y_channel_enhanced = clahe.apply(y_channel_stretched)
-
-    # match algorithm:
-    #     case "contrast_stretching":
-    #         # Perform contrast stretching on the Y channel
-    #         y_channel_enhanced = cv2.normalize(y_channel, None, 0, 255, cv2.NORM_MINMAX)
-    #         clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
-    #         y_channel_enhanced = clahe.apply(y_channel_enhanced)
-    #     case "histogram_equalization":
-    #         # Perform histogram equalization on the stretched Y channel
-    #         y_channel_enhanced = cv2.equalizeHist(y_channel)
-    #     case "adaptive_equalization":
-    #         clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
-    #         y_channel_enhanced = clahe.apply(y_channel)
-    #     case _:
-    #         raise ValueError("Unsupported Algorithm")
 
     # Merge the enhanced Y channel back with Cr and Cb channels
     enhanced_ycrcb_image = cv2.merge([y_channel_enhanced, cr_channel, cb_channel])
@@ -91,7 +79,7 @@ def flip_image(path: str, direction: FlipDirection) -> str:
 
 
 def randomly_flip_image(path, directions):
-    direction = random.choice(directions)
+    direction = crypto_gen.choice(directions)
     return flip_image(path, direction)
 
 
@@ -121,7 +109,7 @@ def rotate_image(path: str, angle: float) -> str:
 
 
 def randomly_rotate_image(path: str, angle_range: float) -> str:
-    angle = random.uniform(-1 * angle_range, angle_range)
+    angle = crypto_gen.uniform(-1 * angle_range, angle_range)
     return rotate_image(path, angle)
 
 
@@ -140,11 +128,11 @@ def shear_image(path: str,
     # get the image shape
     rows, cols, dim = img.shape
     # transformation matrix for Shearing
-    M = np.float32([[1, vertical_sign / math.tan(math.pi * (90 - vertical_angle) / 180), 0],
+    M = np.float32([[1, vertical_sign / math.tan(math.pi * (90 - vertical_angle) / 180), 0],  # type: ignore
                     [horizontal_sign / math.tan(math.pi * (90 - horizontal_angle) / 180), 1, 0],
                     [0, 0, 1]])
     # apply a perspective transformation to the image
-    sheared_img = cv2.warpPerspective(img, M, (int(cols), int(rows)))
+    sheared_img = cv2.warpPerspective(img, M, (int(cols), int(rows)))  # type: ignore
     output_path = f"{image_name}_shear_{vertical_sign * vertical_angle}_{horizontal_sign * horizontal_angle}.{image_extension}"
     cv2.imwrite(output_path, sheared_img)
     return output_path
@@ -157,15 +145,15 @@ def randomly_shear_image(path: str,
         raise ValueError
     elif horizontal_angle_range < 0 or horizontal_angle_range > 45:
         raise ValueError
-    vertical_sign = random.choice(NonZeroSign.values())
-    horizontal_sign = random.choice(NonZeroSign.values())
-    vertical_angle = random.randint(0, vertical_angle_range)
-    horizontal_angle = random.randint(0, horizontal_angle_range)
+    vertical_sign = crypto_gen.choice(NonZeroSign.values())
+    horizontal_sign = crypto_gen.choice(NonZeroSign.values())
+    vertical_angle = crypto_gen.randint(0, vertical_angle_range)
+    horizontal_angle = crypto_gen.randint(0, horizontal_angle_range)
     return shear_image(path, vertical_sign, vertical_angle, horizontal_sign, horizontal_angle)
 
 
 def change_image_hue_saturation_brightness(path: str,
-                                           sign: NonZeroSign = 1,
+                                           sign: NonZeroSign = NonZeroSign.POS,
                                            hue_change: int = 0,
                                            saturation_change: int = 0,
                                            brightness_change: int = 0) -> str:
@@ -181,13 +169,13 @@ def change_image_hue_saturation_brightness(path: str,
     # cv2 will clip automatically to avoid color wrap-around
     file_name_suffix = ""
     if hue_change:
-        h = cv2.add(h, sign * hue_change)
+        h = cv2.add(h, sign * hue_change)  # type: ignore
         file_name_suffix = f"hue_{sign * hue_change}"
     elif saturation_change:
-        s = cv2.add(s, sign * saturation_change)
+        s = cv2.add(s, sign * saturation_change)  # type: ignore
         file_name_suffix = f"saturation_{sign * saturation_change}"
     elif brightness_change:
-        v = cv2.add(v, sign * brightness_change)
+        v = cv2.add(v, sign * brightness_change)  # type: ignore
         file_name_suffix = f"brightness_{sign * brightness_change}"
     # combine new hue with s and v
     new_hsv = cv2.merge([h, s, v])
@@ -211,10 +199,10 @@ def randomly_change_image_hue_saturation_brightness(path: str,
         raise ValueError("Saturation has to be in the interval [0, 1]")
     elif brightness_range < 0 or brightness_range > 1:
         raise ValueError("Brightness has to be in the interval [0, 1]")
-    sign = random.choice(NonZeroSign.values())
-    hue_change = random.randint(0, hue_range)
-    saturation_change = random.randint(0, int(255 * saturation_range))
-    brightness_change = random.randint(0, int(255 * brightness_range))
+    sign = crypto_gen.choice(NonZeroSign.values())
+    hue_change = crypto_gen.randint(0, hue_range)
+    saturation_change = crypto_gen.randint(0, int(255 * saturation_range))
+    brightness_change = crypto_gen.randint(0, int(255 * brightness_range))
     return change_image_hue_saturation_brightness(path,
                                                   sign,
                                                   hue_change,
@@ -223,7 +211,7 @@ def randomly_change_image_hue_saturation_brightness(path: str,
 
 
 def change_image_contrast_brightness(path: str,
-                                     sign: ZeroSign = 1,
+                                     sign: ZeroSign = ZeroSign.POS,
                                      contrast_control: float = 1,
                                      brightness_control: int = 0) -> str:
     if abs(brightness_control) < 0 or abs(brightness_control) > 127:
@@ -247,20 +235,20 @@ def change_image_contrast_brightness(path: str,
 
 
 def randomly_change_image_contrast_brightness(path: str,
-                                              sign: ZeroSign = 0,
+                                              sign: ZeroSign = ZeroSign.ZERO,
                                               contrast_control: float = 1,
                                               brightness_range_percentage: float = 0) -> str:
     if brightness_range_percentage < 0 or brightness_range_percentage > 1:
         raise ValueError
     brightness_range = int(brightness_range_percentage * 127)
-    new_sign = sign or random.choice(ZeroSign.values())
+    new_sign = sign or crypto_gen.choice(ZeroSign.values())
     match sign:
         case ZeroSign.ZERO:
-            brightness_control = random.randint(-1 * brightness_range, brightness_range)
+            brightness_control = crypto_gen.randint(-1 * brightness_range, brightness_range)
         case ZeroSign.NEG:
-            brightness_control = random.randint(-1 * brightness_range, 0)
+            brightness_control = crypto_gen.randint(-1 * brightness_range, 0)
         case ZeroSign.POS:
-            brightness_control = random.randint(0, brightness_range)
+            brightness_control = crypto_gen.randint(0, brightness_range)
         case _:
             raise ValueError("Unsupported value.")
     return change_image_contrast_brightness(path,
@@ -284,7 +272,7 @@ def blur_image(path: str, ksize: Tuple[int, int] = (7, 7)) -> str:
 
 
 def randomly_blur_image(path, ksize_range=7):
-    ksize = random.randrange(1, ksize_range + 1, 2)
+    ksize = crypto_gen.randrange(1, ksize_range + 1, 2)
     return blur_image(path, ksize=(ksize, ksize))
 
 
@@ -297,8 +285,8 @@ def salt_pepper_noise(path: str, prob: float) -> str:
     image = cv2.imread(path)
     output = image.copy()
     if len(image.shape) == 2:
-        black = 0
-        white = 255
+        black: Union[int, np.ndarray[Any, np.dtype[Any]]] = 0
+        white: Union[int, np.ndarray[Any, np.dtype[Any]]] = 255
     else:
         colorspace = image.shape[2]
         if colorspace == 3:  # RGB
@@ -317,5 +305,5 @@ def salt_pepper_noise(path: str, prob: float) -> str:
 
 
 def randomly_add_noise(path: str, prob_range: float) -> str:
-    prob = random.uniform(0.0, prob_range)
+    prob = crypto_gen.uniform(0.0, prob_range)
     return salt_pepper_noise(path, prob)

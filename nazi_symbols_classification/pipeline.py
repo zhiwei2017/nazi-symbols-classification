@@ -1,6 +1,8 @@
-import random
 from pydantic import BaseModel, Field
-from typing import Callable, Sequence, Any, Tuple, Union, Dict
+from random import SystemRandom
+from typing import Callable, Sequence, Any, Tuple, Union, Dict, List
+
+crypto_gen = SystemRandom()
 
 
 class PipelineStep(BaseModel):
@@ -13,7 +15,7 @@ class PipelineStep(BaseModel):
 
 class Pipeline:
     def __init__(self, steps: Sequence[Tuple[str, Callable, Union[Dict[str, Any], None]]]):
-        self._steps = []
+        self._steps: List[PipelineStep] = []
         self.validate_steps(steps)
 
     def validate_steps(self, steps):
@@ -31,7 +33,7 @@ class Pipeline:
             raise ValueError("skip_prob should be in the interval [0, 1).")
         for path in paths:
             for step in self._steps:
-                if skip_prob and random.uniform(0, 1) < skip_prob:
+                if skip_prob and crypto_gen.uniform(0, 1) < skip_prob:
                     continue
                 elif step.func_params:
                     step.func(path, **step.func_params)

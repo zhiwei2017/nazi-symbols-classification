@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import List, Dict, Any
 
 
 class FlipDirection(Enum):
@@ -7,15 +8,15 @@ class FlipDirection(Enum):
 
 
 class EnumExtend:
-    _member_names_ = []
-    _value2member_map_ = dict()
+    _member_names_: List[str] = []
+    _value2member_map_: Dict[str, Any] = dict()
 
     @classmethod
-    def names(cls):
+    def names(cls) -> List[str]:
         return cls._member_names_
 
     @classmethod
-    def values(cls):
+    def values(cls) -> List[Any]:
         return list(cls._value2member_map_.keys())
 
 

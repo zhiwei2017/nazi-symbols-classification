@@ -1,4 +1,4 @@
-SOURCE_DIR = ./nazi_symbols_classification
+SOURCE_DIR = ./nazi_symbols_classification ./nazi_symbols_classification_backend
 
 .PHONY: clean help
 
