@@ -1,0 +1,89 @@
+[tool.poetry]
+name = 'nazi_symbols_classification'
+version = "0.1.0"
+description = "Nazi symbols classification source code."
+authors = ["Zhiwei Zhang <zhiwei2017@gmail.com>"]
+readme = "README.rst"
+license = "MIT"
+repository = "https://github.com/zhiwei2017/nazi-symbols-classification"
+documentation = "https://github.com/zhiwei2017/nazi-symbols-classification"
+keywords = []
+classifiers = []
+packages = [
+  {include = "nazi_symbols_classification"},
+]
+
+include = []
+exclude = ["tests", "docs", "scripts"]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.13"
+opencv-python = "~4.10"
+
+[tool.poetry.group.dev.dependencies]
+bandit = "~1.7"
+mypy = "~1.6"
+
+[tool.poetry.group.backend]
+optional = true
+
+[tool.poetry.group.backend.dependencies]
+fastapi = "<1.0,>=0.103"
+toml = "^0.10.2"
+pydantic = "<2.7,>=2.6"
+pydantic-settings = ">=2.0,<3.0"
+click = "*"
+uvicorn = "^0.32.0"
+python-multipart = "==0.0.9"
+
+[tool.poetry.group.test]
+optional = true
+
+[tool.poetry.group.test.dependencies]
+httpx = "<0.28,>=0.27"
+pytest = "~7.4"
+pytest-cov = "~4.1"
+pytest-runner = "~6.0"
+pytest-asyncio = "<0.24,>=0.23"
+
+[tool.poetry.group.docs]
+optional = true
+
+[tool.poetry.group.docs.dependencies]
+sphinx = "~7.1"
+sphinx_rtd_theme = "~1.3"
+
+[tool.poetry.group.nb]
+optional = true
+
+[tool.poetry.group.nb.dependencies]
+ydata-profiling = "~4.9"
+matplotlib = "~3.9"
+numpy = "~1.26"
+pandas = "~2.2"
+torch = "~2.2"
+pytorch-lightning = "~2.3"
+ultralytics = "~8.3"
+
+[build-system]
+requires = ["poetry"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.mypy]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = [
+  "toml.*",
+  "click.*",
+  "fastapi.*",
+  "pydantic.*",
+  "pydantic_settings.*",
+  "starlette.*",
+]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = ["tests"]
+addopts = "--verbose --doctest-modules --cov-report term-missing --cov=./nazi_symbols_classification --cov=./nazi_symbols_classification_backend"

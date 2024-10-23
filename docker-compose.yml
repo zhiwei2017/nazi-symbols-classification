@@ -1,0 +1,31 @@
+version: '3.4'
+---
+x-backend-common:
+  &backend-common
+  build:
+    context: .
+    dockerfile: ./Dockerfile
+    args:
+      PYTHON_VERSION: ${PYTHON_VERSION:-3.10}
+      API_PORT: 8080
+      MODE: "DEFAULT"
+  image: nazi-symbols-classification-backend:${DOCKER_IMAGE_TAG:-latest}
+  volumes:
+    - .:/home
+  environment:
+    PYTHONPATH: /home/nazi_symbols_classification_backend
+
+services:
+  test_nazi_symbols_classification_backend:
+    <<: *backend-common
+    entrypoint: >
+      sh -c "poetry install --only test && poetry run pytest"
+  nazi_symbols_classification_backend:
+    <<: *backend-common
+    ports:
+      - "127.0.0.1:8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/v1/health"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
