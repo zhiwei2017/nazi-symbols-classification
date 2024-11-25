@@ -14,7 +14,53 @@ data_folder = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__fil
 
 @classification_router.post("/classify", response_model=ClassifyResponse)
 async def classify(images: List[UploadFile]) -> Any:
-    print(data_folder)
+    """Handles the classification of uploaded images, identifying specific symbols using a multi-layer model.
+
+    This endpoint accepts multiple image files, saves them to a temporary directory, and processes
+    them through a classification pipeline to detect specific symbols (e.g., "nazi-symbol"). The classification
+    results include probabilities, detected symbols, and additional details.
+
+    Args:
+        images (List[UploadFile]): A list of uploaded image files to be classified.
+
+    Returns:
+        ClassifyResponse: A response model containing classification results for each image, including:
+            - `containing_nazi_symbols`: Whether the image contains specific symbols.
+            - `prob`: The confidence probability of the detected symbol.
+            - `nazi_symbols`: List of identified symbols (if applicable).
+            - `details`: Additional details about the detected symbols.
+
+    Raises:
+        HTTPException: If there is an error saving one or more uploaded images.
+
+    Process:
+        1. Images are saved to the `data_folder` directory.
+        2. The `get_classification_result` function processes the images using the classification pipeline.
+        3. Results are formatted and returned as a structured response.
+
+    Example:
+        >>> response = await classify([upload_file_1, upload_file_2])
+        >>> print(response.results)
+        [
+            {
+                "containing_nazi_symbols": True,
+                "prob": 0.85,
+                "nazi_symbols": ["swastika"],
+                "details": [{"label": "swastika", "prob": 0.85}]
+            },
+            {
+                "containing_nazi_symbols": False,
+                "prob": 0.1,
+                "nazi_symbols": [],
+                "details": []
+            }
+        ]
+
+    Notes:
+        - The function uses a threshold of `0.1` for the second-layer model.
+        - Images that fail to upload are reported in the response as an HTTPException.
+
+    """
     failed_images = []
     image_paths = []
     for image in images:
