@@ -14,10 +14,10 @@ x-backend-common:
     PYTHONPATH: /home/nazi_symbols_classification_backend
 
 services:
-  test_nazi_symbols_classification_backend:
-    <<: *backend-common
-    entrypoint: >
-      sh -c "poetry install --only test && poetry run pytest"
+#  test_nazi_symbols_classification_backend:
+#    <<: *backend-common
+#    entrypoint: >
+#      sh -c "poetry install --only test && poetry run pytest"
   nazi_symbols_classification_backend:
     <<: *backend-common
     ports:

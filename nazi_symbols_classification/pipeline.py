@@ -22,7 +22,7 @@ class PipelineStep(BaseModel):
     func: Callable = Field(
         ...,
         description="The function to execute during this step.",
-        examples=[lambda x: x + 1]
+        examples=[]
     )
     func_params: Union[Dict[str, Any], None] = Field(
         ...,
