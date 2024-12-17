@@ -81,7 +81,7 @@ def auto_adjust_contrast(path: str, output_folder: Optional[str] = None) -> str:
     image = cv2.imread(path, cv2.IMREAD_COLOR)
     ycrcb_image = cv2.cvtColor(image, cv2.COLOR_BGR2YCrCb)
     y_channel, cr_channel, cb_channel = cv2.split(ycrcb_image)
-    y_channel_stretched = cv2.normalize(y_channel, dst=None, alpha=0, beta=255,
+    y_channel_stretched = cv2.normalize(y_channel, dst=None, alpha=0, beta=255,  # type: ignore
                                         norm_type=cv2.NORM_MINMAX)
     clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
     y_channel_enhanced = clahe.apply(y_channel_stretched)
@@ -212,12 +212,12 @@ def shear_image(
     input_folder_path, image_name, image_extension = get_image_name_extension(path)
     img = cv2.imread(path)
     rows, cols, _ = img.shape
-    M = np.float32([
+    M = np.float32([  # type: ignore
         [1, vertical_sign / math.tan(math.pi * (90 - vertical_angle) / 180), 0],
         [horizontal_sign / math.tan(math.pi * (90 - horizontal_angle) / 180), 1, 0],
         [0, 0, 1],
     ])
-    sheared_img = cv2.warpPerspective(img, M, (int(cols), int(rows)))
+    sheared_img = cv2.warpPerspective(img, M, (int(cols), int(rows)))  # type: ignore
     output_folder_path = output_folder or input_folder_path
     image_name = os.path.join(output_folder_path, image_name)
     output_path = (f"{image_name}_shear_{vertical_sign * vertical_angle}_"
@@ -288,13 +288,13 @@ def change_image_hue_saturation_brightness(
     file_name_suffix = ""
 
     if hue_change:
-        h = cv2.add(h, sign * hue_change)  # Adjust hue
+        h = cv2.add(h, sign * hue_change)  # type: ignore
         file_name_suffix = f"hue_{sign * hue_change}"
     elif saturation_change:
-        s = cv2.add(s, sign * saturation_change)  # Adjust saturation
+        s = cv2.add(s, sign * saturation_change)  # type: ignore
         file_name_suffix = f"saturation_{sign * saturation_change}"
     elif brightness_change:
-        v = cv2.add(v, sign * brightness_change)  # Adjust brightness
+        v = cv2.add(v, sign * brightness_change)  # type: ignore
         file_name_suffix = f"brightness_{sign * brightness_change}"
 
     new_hsv = cv2.merge([h, s, v])

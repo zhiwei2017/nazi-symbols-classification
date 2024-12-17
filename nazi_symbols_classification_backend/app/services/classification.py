@@ -5,7 +5,7 @@ from nazi_symbols_classification.image_processing import (
 )
 from nazi_symbols_classification.pipeline import Pipeline
 from ultralytics import YOLO
-from typing import List
+from typing import List, Dict, Any
 from ..globals import state
 
 data_folder = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
@@ -51,7 +51,8 @@ def init_state_for_classification():
     state["second_layer_model"] = YOLO(os.path.join(data_folder, "second-layer.pt"))
 
 
-def get_classification_result(image_paths: List[str], second_layer_threshold: float = 0.3):
+def get_classification_result(image_paths: List[str],
+                              second_layer_threshold: float = 0.3) -> List[Dict[str, Any]]:
     """Processes a list of image paths to classify them using a two-layer classification model.
 
     The function first preprocesses the images using a preprocessing pipeline, performs predictions
@@ -105,19 +106,20 @@ def get_classification_result(image_paths: List[str], second_layer_threshold: fl
     # Identify images requiring second-layer classification
     images_for_second_layer = []
     for i, image in enumerate(images):
-        if results[i]["first_layer_result"]["label"] == "nazi-symbol":
+        if results[i]["first_layer_result"]["label"] == "nazi-symbol":  # type: ignore
             images_for_second_layer.append(image)
 
     if images_for_second_layer:
         second_layer_names = state["second_layer_model"].names
         original_results = state["second_layer_model"].predict(images_for_second_layer)
         for i in range(len(results)):
-            if results[i]["first_layer_result"]["label"] == "nazi-symbol":
+            if results[i]["first_layer_result"]["label"] == "nazi-symbol":  # type: ignore
                 original_result = original_results.pop(0)
                 probs_result = original_result.probs
                 top5_probs = probs_result.top5conf.numpy()
                 probs = [prob for prob in top5_probs if prob >= second_layer_threshold]
                 labels = [second_layer_names[label] for label in probs_result.top5[:len(probs)]]
-                results[i]["second_layer_result"] = [dict(label=label, prob=prob) for label, prob in zip(labels, probs)]
+                results[i]["second_layer_result"] = [dict(label=label, prob=prob)  # type: ignore
+                                                     for label, prob in zip(labels, probs)]
 
     return results
