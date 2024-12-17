@@ -4,7 +4,7 @@
 import ast
 import secrets
 from typing import List, Union, Dict
-from pydantic import BaseModel, Field, ValidationInfo, field_validator
+from pydantic import BaseModel, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from ..utils.logging import StandardFormatter, ColorFormatter
 

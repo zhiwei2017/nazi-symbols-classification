@@ -55,13 +55,66 @@ or
 How to Use
 ++++++++++
 
+nazi-symbols-classification
+---------------------------
+
 To use nazi-symbols-classification in a project::
 
     import nazi_symbols_classification
 
+nazi_symbols_classification_backend
+-----------------------------------
+
 To run the `nazi_symbols_classification_backend` locally with docker compose::
 
     $  docker compose run --service-ports nazi_symbols_classification_backend
+
+The docker image for `nazi_symbols_classification_backend` is published in DockerHub
+repository `nazi-symbols-classification-backend <https://hub.docker.com/repository/docker/chasingcars/nazi-symbols-classification-backend/general>`_.
+You can pull it with::
+
+    docker push chasingcars/nazi-symbols-classification-backend:latest
+
+Send Image to classify
+----------------------
+
+Assuming that the `nazi_symbols_classification_backend` is running at `http://localhost:8080` and the
+paths of images to be sent are `["dummy_folder/image_1.jpg", "dummy_folder/image_2.png"]`.
+
+To send images to the endpoint `http://localhost:8080/api/v1/classify`, you can do it with python::
+
+    import requests
+
+    extension_to_content_type = {
+        "jpg": "image/jpeg",
+        "jpeg": "image/jpeg",
+        "png": "image/png"
+    }
+
+    def classify_document(file_paths, api_endpoint):
+        files = []
+        for file_path in file_paths:
+            extension = file_path.split(".")[-1].lower()
+            content_type = extension_to_content_type[extension]
+            files.append(("images", (file_path, open(file_path, 'rb'), content_type)))
+        response = requests.post(api_endpoint,
+                                 files=files,
+                                 timeout=10)
+        response.raise_for_status()
+        result = response.json()
+        return result
+
+    classify_document(["dummy_folder/image_1.jpg", "dummy_folder/image_2.png"],
+                       "http://localhost:8080/api/v1/classify")
+
+or with curl::
+
+    curl -X 'POST' \
+      'http://localhost:8080/api/v1/classify' \
+      -H 'accept: application/json' \
+      -H 'Content-Type: multipart/form-data' \
+      -F 'images=@dummy_folder/image_1.jpg;type=image/jpeg'
+      -F 'images=@dummy_folder/image_2.png;type=image/png'
 
 Maintainers
 -----------

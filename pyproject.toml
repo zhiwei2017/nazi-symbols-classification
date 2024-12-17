@@ -35,6 +35,8 @@ pydantic-settings = ">=2.0,<3.0"
 click = "*"
 uvicorn = "^0.32.0"
 python-multipart = "==0.0.9"
+torch = "~2.2"
+ultralytics = "~8.3"
 
 [tool.poetry.group.test]
 optional = true
@@ -61,9 +63,8 @@ ydata-profiling = "~4.9"
 matplotlib = "~3.9"
 numpy = "~1.26"
 pandas = "~2.2"
-torch = "~2.2"
 pytorch-lightning = "~2.3"
-ultralytics = "~8.3"
+open-clip-torch = "~2.24"
 
 [build-system]
 requires = ["poetry"]

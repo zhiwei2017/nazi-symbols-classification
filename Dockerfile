@@ -23,7 +23,7 @@ FROM base as base-with-dependencies
 # install main dependencies
 RUN apt-get -y update && apt-get install ffmpeg libsm6 libxext6 curl -y
 COPY poetry.lock pyproject.toml ./
-RUN poetry install --with dev,test,docs,nb,backend --no-root --no-directory
+RUN poetry install --with backend --no-root --no-directory
 
 FROM base-with-dependencies
 

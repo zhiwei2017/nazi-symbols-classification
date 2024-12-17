@@ -20,6 +20,8 @@ async def classify(images: List[UploadFile]) -> Any:
     them through a classification pipeline to detect specific symbols (e.g., "nazi-symbol"). The classification
     results include probabilities, detected symbols, and additional details.
 
+    \f
+
     Args:
         images (List[UploadFile]): A list of uploaded image files to be classified.
 
