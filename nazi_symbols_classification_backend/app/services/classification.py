@@ -51,6 +51,35 @@ def init_state_for_classification():
     state["second_layer_model"] = YOLO(os.path.join(data_folder, "second-layer.pt"))
 
 
+def get_first_layer_result(images):
+    # get first layer prediction result
+    first_layer_names = state["first_layer_model"].names
+    original_results = state["first_layer_model"](source=images, stream=True)
+    results = []
+    for original_result in original_results:
+        probs_result = original_result.probs
+        label = first_layer_names[probs_result.top1]
+        prob = probs_result.top1conf.item()
+        results.append(dict(first_layer_result=dict(label=label, prob=prob),
+                            second_layer_result=list()))
+    return results
+
+
+def get_second_layer_result(images, results, second_layer_threshold: float = 0.3):
+    second_layer_names = state["second_layer_model"].names
+    original_results = state["second_layer_model"](source=images, stream=True)
+    for i in range(len(results)):
+        if results[i]["first_layer_result"]["label"] == "nazi-symbol":  # type: ignore
+            original_result = original_results.pop(0)
+            probs_result = original_result.probs
+            top5_probs = probs_result.top5conf.numpy()
+            probs = [prob for prob in top5_probs if prob >= second_layer_threshold]
+            labels = [second_layer_names[label] for label in probs_result.top5[:len(probs)]]
+            results[i]["second_layer_result"] = [dict(label=label, prob=prob)  # type: ignore
+                                                 for label, prob in zip(labels, probs)]
+    return results
+
+
 def get_classification_result(image_paths: List[str],
                               second_layer_threshold: float = 0.3) -> List[Dict[str, Any]]:
     """Processes a list of image paths to classify them using a two-layer classification model.
@@ -93,15 +122,7 @@ def get_classification_result(image_paths: List[str],
     images = [cv2.imread(image_path) for image_path in image_paths]
 
     # get first layer prediction result
-    first_layer_names = state["first_layer_model"].names
-    original_results = state["first_layer_model"].predict(images)
-    results = []
-    for original_result in original_results:
-        probs_result = original_result.probs
-        label = first_layer_names[probs_result.top1]
-        prob = probs_result.top1conf.item()
-        results.append(dict(first_layer_result=dict(label=label, prob=prob),
-                            second_layer_result=list()))
+    results = get_first_layer_result(images)
 
     # Identify images requiring second-layer classification
     images_for_second_layer = []
@@ -110,16 +131,6 @@ def get_classification_result(image_paths: List[str],
             images_for_second_layer.append(image)
 
     if images_for_second_layer:
-        second_layer_names = state["second_layer_model"].names
-        original_results = state["second_layer_model"].predict(images_for_second_layer)
-        for i in range(len(results)):
-            if results[i]["first_layer_result"]["label"] == "nazi-symbol":  # type: ignore
-                original_result = original_results.pop(0)
-                probs_result = original_result.probs
-                top5_probs = probs_result.top5conf.numpy()
-                probs = [prob for prob in top5_probs if prob >= second_layer_threshold]
-                labels = [second_layer_names[label] for label in probs_result.top5[:len(probs)]]
-                results[i]["second_layer_result"] = [dict(label=label, prob=prob)  # type: ignore
-                                                     for label, prob in zip(labels, probs)]
+        results = get_second_layer_result(images_for_second_layer, results, second_layer_threshold)
 
     return results

@@ -50,16 +50,27 @@ def remap_images(class_map,
                 shutil.rmtree(source_path)
 
 
+def get_paths_in_dir(dir_path):
+    paths = []
+    for name in os.listdir(dir_path):
+        sub_dir_path = os.path.join(dir_path, name)
+        if name.startswith("."):
+            continue
+        elif not os.path.isdir(sub_dir_path):
+            continue
+        paths += [os.path.join(sub_dir_path, file_name)
+                  for file_name in os.listdir(sub_dir_path)
+                  if not file_name.startswith(".")]
+    return paths
+
+
 def get_image_paths(path="./datasets/nazi-symbols-classification",
                     sub_folders=("train", "test", "val")):
     image_paths = []
-    for sub_folder_name in sub_folders:
-        sub_folder_path = os.path.join(path, sub_folder_name)
-        for dir_name in os.listdir(sub_folder_path):
-            if dir_name.startswith("."):
-                continue
-            dir_path = os.path.join(sub_folder_path, dir_name)
-            image_paths += [os.path.join(dir_path, file_name)
-                            for file_name in os.listdir(dir_path)
-                            if not file_name.startswith(".")]
+    if sub_folders:
+        for sub_folder_name in sub_folders:
+            sub_folder_path = os.path.join(path, sub_folder_name)
+            image_paths += get_paths_in_dir(sub_folder_path)
+    else:
+        image_paths += get_paths_in_dir(path)
     return image_paths
