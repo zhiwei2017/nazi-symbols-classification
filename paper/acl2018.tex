@@ -1,0 +1,191 @@
+%
+% File acl2018.tex
+%
+%% Based on the style files for ACL-2017, with some changes, which
+% were, in turn,
+%% Based on the style files for ACL-2015, with some improvements
+%%  taken from the NAACL-2016 style
+%% Based on the style files for ACL-2014, which were, in turn,
+%% based on ACL-2013, ACL-2012, ACL-2011, ACL-2010, ACL-IJCNLP-2009,
+%% EACL-2009, IJCNLP-2008...
+%% Based on the style files for EACL 2006 by
+%%e.agirre@ehu.es or Sergi.Balari@uab.es
+%% and that of ACL 08 by Joakim Nivre and Noah Smith
+
+\documentclass[11pt,a4paper,onecolumn]{article}
+\usepackage[hyperref]{acl2018}
+\usepackage{times}
+\usepackage{latexsym}
+
+\usepackage{url}
+
+%\aclfinalcopy % Uncomment this line for the final submission
+
+%\setlength\titlebox{5cm}
+% You can expand the titlebox if you need extra space
+% to show all the authors. Please do not make the titlebox
+% smaller than 5cm (the original size); we will check this
+% in the camera-ready version and ask you to change it back.
+
+\newcommand\BibTeX{B{\scib}\TeX}
+
+\title{Instructions for ACL 2018 Proceedings}
+
+\author{First Author \\
+  Affiliation / Address line 1 \\
+  Affiliation / Address line 2 \\
+  Affiliation / Address line 3 \\
+{\tt email@domain}}
+
+\date{}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+
+\end{abstract}
+
+\section{Introduction}
+
+\subsection{Background}
+Social media platforms host a vast amount of information, including
+images, text, and videos. These data sources have become valuable for
+various social science research fields, such as regional political
+studies and hate speech analysis. To facilitate such research, web
+crawlers are often employed to extract relevant content from social
+media. However, raw crawled data cannot be directly utilized; they
+require preprocessing, such as image, text, or video classification,
+before meaningful analysis can be conducted.
+
+\subsection{Problem Statement}
+For social science research focused on Nazi-related content, the
+ability to classify images containing Nazi symbols is crucial.
+However, existing commercial solutions for Nazi symbol detection and
+classification are expensive, making them impractical for analyzing
+large-scale datasets. Therefore, there is a pressing need for a
+cost-effective and accessible solution.
+
+An effective classification system must not only determine whether an
+image contains Nazi symbols but also identify the specific type of
+symbol present. Common Nazi-related symbols include the swastika, SS
+skull, and Siegrune, among others. Developing a robust classification
+system that accurately detects and categorizes these symbols is
+essential for researchers working in this domain.
+
+\subsection{Objectives}
+This study aims to develop an efficient image classification
+methodology for detecting and categorizing Nazi symbols. To achieve
+this, we compiled a dataset of approximately 10,000 images containing
+13 distinct Nazi-related symbols alongside non-Nazi imagery. While
+this dataset represents only a small subset of real-world Nazi
+symbols, our goal is to propose a generalizable and efficient
+approach that can be applied beyond the current dataset.
+
+\subsection{Scope and Limitations}
+
+This study focuses on two primary classification tasks:
+
+\begin{enumerate}
+  \item \textbf{Binary classification:} classify whether a given
+    image contains nazi symbols or not.
+  \item \textbf{Multi-class classification:} find out the which nazi
+    symbols presents.
+\end{enumerate}
+
+The classification system is designed to recognize the following 13
+Nazi-related symbols:
+
+\begin{itemize}
+  \item black sun
+  \item british union of fascist
+  \item broken sun cross
+  \item happy merchant
+  \item hilter
+  \item hilter salute
+  \item judenstern
+  \item neo nazi
+  \item siegrune
+  \item ss skull
+  \item sturmabteilung emblem
+  \item swastika
+  \item wolfsangel
+\end{itemize}
+
+The \textbf{Neo-Nazi} class includes symbols from various far-right
+extremist groups, such as National Rebirth of Poland, Combat 18,
+Atomwaffen Division, Kolovrat, Volksfront, Celtic Cross, Hammerskins,
+Identitäre Bewegung, Blood & Honor, and Golden Dawn. Since only a
+limited number of images were available for each group, they were
+consolidated under a single "Neo-Nazi" class for classification purposes.
+
+Beyond dataset constraints, the study also faces hardware limitations:
+
+\begin{itemize}
+  \item no GPU from the social science department to use due to configurations
+  \item only google colab with 4 GB GPU available.
+\end{itemize}
+
+Given these constraints, the classification system must be
+lightweight and computationally efficient to ensure effective model
+training and inference within the available resources.
+
+\subsection{Thesis Structure}
+
+This thesis is organized as follows:
+
+\begin{itemize}
+  \item \textbf{Chapter 2: Literature Review} – We examine existing
+    research and methodologies related to Nazi symbol detection and
+    classification, highlighting key findings and identifying gaps
+    that our work aims to address.
+  \item \textbf{Chapter 3: Methodology} – This chapter details our
+    approach, including data collection, dataset composition,
+    preprocessing techniques, and the machine learning algorithms
+    used for classification. We also discuss model training,
+    evaluation metrics, and the rationale behind our chosen methods.
+  \item \textbf{Chapter 4: Results} – We present the outcomes of our
+    experiments, providing quantitative and qualitative analyses of
+    the classification system’s performance.
+  \item \textbf{Chapter 5: Discussion and Analysis} – We interpret
+    the results, discuss their implications, and compare our findings
+    with previous research. We also explore the system's limitations
+    and potential improvements.
+  \item \textbf{Chapter 6: Conclusion and Future Work} – This final
+    chapter summarizes our contributions, outlines the key takeaways,
+    and suggests directions for future research in Nazi symbol classification.
+\end{itemize}
+
+\section{Literature Review}
+
+\section{Methodology}
+In this section, we will discuss our training data first, then we
+discuss about data preprocessing steps, at the end we talk about the
+algorithms we used.
+
+\subsection{Data}
+
+The data are collected mainly from platform Roboflow, kaggle etc.
+Nazi symbols are mainly from Roboflow with labels. Originally,
+there are 23 different nazi symbols. Due to the small amount of some
+neo nazi symbols, we group them into the new class
+neo-nazi.
+[figure data distribution of all data]
+
+For the nazi symbol detection task, we group all the nazi symbols
+into the class nazi. And for the nazi symbol classification
+task, we use the data except non-nazi class.
+[figure data distribution of nazi and non nazi class]
+
+\section{Results}
+
+\section{Discussion}
+
+\section{Ethical Considerations}
+
+\section{Conclusion}
+
+% include your own bib file like this:
+%\bibliographystyle{acl}
+%\bibliography{acl2018}
+
+\end{document}
