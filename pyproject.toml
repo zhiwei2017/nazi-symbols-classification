@@ -11,6 +11,7 @@ keywords = []
 classifiers = []
 packages = [
   {include = "nazi_symbols_classification"},
+  {include = "nazi_symbols_classification_backend"},
 ]
 
 include = []
@@ -65,6 +66,7 @@ numpy = "~1.26"
 pandas = "~2.2"
 pytorch-lightning = "~2.3"
 open-clip-torch = "~2.24"
+jupyter = "~1.1"
 
 [build-system]
 requires = ["poetry"]
