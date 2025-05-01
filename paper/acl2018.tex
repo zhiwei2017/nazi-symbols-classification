@@ -16,6 +16,11 @@
 \usepackage[hyperref]{acl2018}
 \usepackage{times}
 \usepackage{latexsym}
+\usepackage{subcaption}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{wrapfig,lipsum,booktabs}
+\graphicspath{ {./images/} }
 
 \usepackage{url}
 
@@ -83,46 +88,27 @@ approach that can be applied beyond the current dataset.
 
 \subsection{Scope and Limitations}
 
+In the reality there are enormous varieties of symbols or emblems of Nazi. It's impossible to
+collect all of them. The dataset we collected is only a small portion of the real world. In
+this study, we consider the following Nazi symbols: \textit{Sonnenrad}, \textit{Flash and circle},
+\textit{Broken Sun Cross}, \textit{The Happy Merchant}, \textit{Hitler}, \textit{Nazi salute},
+\textit{Atomwaffen Division emblem}, \textit{Blood \& Honor emblem}, \textit{Celtic Cross},
+\textit{Combat 18 emblem}, \textit{Golden Dawn}, \textit{Hammerskins emblem}, \textit{Identitarian movement emblem},
+\textit{Kolovrat}, \textit{National Rebirth of Poland emblem}, \textit{Popular front emblem},
+\textit{Yellow badge}, \textit{Siegrune}, \textit{SS Skull},
+\textit{Sturmabteilung emblem}, \textit{Swastika}, and \textit{Wolfsangel}.
+
 This study focuses on two primary classification tasks:
-
 \begin{enumerate}
-  \item \textbf{Binary classification:} classify whether a given
-    image contains nazi symbols or not.
-  \item \textbf{Multi-class classification:} find out the which nazi
-    symbols presents.
+  \item \textbf{Binary classification:} classify whether a given image contains any nazi symbols or not.
+  \item \textbf{Multi-class classification:} find out which kind of nazi
+    symbol presents.
 \end{enumerate}
-
-The classification system is designed to recognize the following 13
-Nazi-related symbols:
-
-\begin{itemize}
-  \item black sun
-  \item british union of fascist
-  \item broken sun cross
-  \item happy merchant
-  \item hilter
-  \item hilter salute
-  \item judenstern
-  \item neo nazi
-  \item siegrune
-  \item ss skull
-  \item sturmabteilung emblem
-  \item swastika
-  \item wolfsangel
-\end{itemize}
-
-The \textbf{Neo-Nazi} class includes symbols from various far-right
-extremist groups, such as National Rebirth of Poland, Combat 18,
-Atomwaffen Division, Kolovrat, Volksfront, Celtic Cross, Hammerskins,
-Identitäre Bewegung, Blood & Honor, and Golden Dawn. Since only a
-limited number of images were available for each group, they were
-consolidated under a single "Neo-Nazi" class for classification purposes.
 
 Beyond dataset constraints, the study also faces hardware limitations:
 
 \begin{itemize}
-  \item no GPU from the social science department to use due to configurations
-  \item only google colab with 4 GB GPU available.
+  \item only one GPU with 16 GB to use
 \end{itemize}
 
 Given these constraints, the classification system must be
@@ -164,19 +150,418 @@ algorithms we used.
 
 \subsection{Data}
 
-The data are collected mainly from platform Roboflow, kaggle etc.
-Nazi symbols are mainly from Roboflow with labels. Originally,
-there are 23 different nazi symbols. Due to the small amount of some
-neo nazi symbols, we group them into the new class
-neo-nazi.
-[figure data distribution of all data]
+The data are collected mainly from platform Roboflow, Kaggle etc. And the Nazi symbols
+are mainly from Roboflow with labels. The symbols are defined as follows:
+
+\begin{itemize}
+  \item \textbf{Sonnenrad}: The sonnenrad, or sunwheel, is an ancient symbol
+  from Norse and Celtic cultures that was appropriated by the Nazis to
+  promote an idealized "Aryan" heritage. Its many variations include forms
+  of the swastika and Celtic Cross, and it was used by the Nazi Party,
+  SA, and SS. Today, it is commonly used by neo-Nazis and white
+  supremacists, especially a version with two concentric circles and
+  crooked rays, sometimes featuring a swastika in the center.
+  \item \textbf{Flash and circle}: The Flash and Circle is a symbol featuring
+  a lightning bolt within a circle, originally used by the British Union
+  of Fascists in the 1930s. It was meant to represent action within unity
+  and has since been adopted by neo-fascist and white supremacist groups.
+  Though less common today, it remains a recognizable hate symbol associated
+  with fascist ideology.
+  \item \textbf{Broken Sun Cross}: Symbols featuring an equilateral cross enclosed
+  in a circle have appeared in various cultures since the Bronze Age. Since
+  the 1930s, a version with ‘broken’ arms resembling a swastika gained far-right
+  associations. It was used by the German Faith Movement and later as insignia
+  for two Waffen SS divisions.
+  \item \textbf{The Happy Merchant}: The Happy Merchant is an antisemitic meme
+  depicting a Jewish man with exaggerated, stereotypical features, often used
+  by white supremacists to promote hate. It originated from racist artwork
+  by cartoonist Nick Bougas, who used the pseudonym “A. Wyatt Mann.” His
+  offensive cartoons, widely circulated in the 1980s and 1990s, were often
+  published by white supremacist Tom Metzger.
+  \item \textbf{Hitler}: The images of Adolf Hilter.
+  \item \textbf{Nazi salute}: The Nazi salute, also known as the Hitler salute
+  or Sieg Heil salute, was a gesture used
+  in Nazi Germany to show loyalty to Adolf Hitler and the Nazi Party, typically
+  accompanied by phrases like "Heil Hitler" or "Sieg Heil". Inspired by the
+  Italian Fascist salute, it became an official Nazi greeting in 1926 and
+  was mandatory for civilians but optional for military personnel until
+  1944. Today, the salute is banned in several countries—including Germany,
+  Austria, and Slovakia—and is considered hate speech or a criminal act in
+  many others if used to promote Nazi ideology.
+%  \item \textbf{Neo-Nazi emblems}: Neo-Nazi emblems are symbols used by modern
+%    white supremacist and neo-Nazi groups to express their extremist beliefs
+%    and allegiance to Nazi ideology. These emblems often include modified or
+%    obscure versions of historical Nazi symbols, such as the swastika, sonnenrad,
+%    or runes, to avoid legal restrictions or public scrutiny. While some are
+%    direct revivals, others are new creations that serve the same purpose of
+%    spreading hate and promoting white nationalist ideas. In this study, it includes
+%    symbols from various far-right extremist groups, such as Atomwaffen Division emblem,
+%    Blood \& Honor emblem, Celtic Cross, Combat 18 emblem, Golden Dawn, Hammerskins emblem,
+%    Identitarian movement emblem, Kolovrat, National Rebirth of Poland emblem,
+%    Popular front emblem. Since only a limited number of images were available for
+%    each group, they were consolidated under a single "Neo-Nazi" class for classification purposes.
+  \item \textbf{Yellow badge}: The Yellow badge was a cloth patch, usually in
+  the shape of a Star of David, that Jews were forced to wear by the Nazis
+  to identify and segregate them. It symbolized persecution and was used to
+  mark Jews publicly, contributing to their dehumanization and eventual
+  deportation. Today, it stands as a powerful symbol of the Holocaust and
+  the oppression of Jewish people.
+  \item \textbf{Siegrune}: The Siegrune, or "S rune", is a lightning-bolt-shaped
+  symbol used by the Nazi SS to represent victory ("Sieg" in German). It was
+  adapted from ancient runic alphabets and became one of the most recognizable
+  symbols of the SS, often displayed as a double rune on uniforms and insignia.
+  Today, it is widely recognized as a hate symbol and is banned or restricted
+  in several countries due to its association with Nazi ideology.
+  \item \textbf{SS Skull}: The SS skull, also known as the "Totenkopf" ("death's head"),
+  was a symbol used by the Nazi SS to represent loyalty unto death and intimidation.
+  It was prominently featured on SS uniforms, especially those of the elite units
+  and concentration camp guards. Today, it is considered a hate symbol due to
+  its strong association with the crimes and ideology of the SS and the Nazi regime.
+  \item \textbf{Sturmabteilung emblem}: The Sturmabteilung (SA) emblem was the
+  symbol of the Nazi Party's paramilitary wing, known for its violent tactics
+  and support for Adolf Hitler's rise to power. The emblem typically featured
+  a stylized version of the SA initials, often accompanied by a swastika.
+  It represented the SA's role in enforcing Nazi ideology and intimidation,
+  and the emblem is now recognized as a symbol of hate and fascism.
+  \item \textbf{Swastika}: The Swastika is an ancient symbol, originally used in
+  various cultures to represent good luck, prosperity, and well-being. However,
+  it was appropriated by the Nazi Party in the 1920s, becoming a powerful
+  symbol of their ideology and representing white supremacy, hate, and
+  anti-Semitism. Today, it is widely recognized as a symbol of Nazi oppression
+  and is illegal in many countries due to its association with hate and violence.
+  \item \textbf{Wolfsangel}: The Wolfsangel is a symbol originally used in medieval
+  Europe, representing a wolf trap, and later adopted by Nazi and neo-Nazi
+  groups. It was used by Nazi units during World War II, including the Waffen-SS,
+  and has become associated with white supremacy and fascist ideologies. Today,
+  the Wolfsangel is a recognized hate symbol, often used by extremist groups
+  to promote Nazi beliefs.
+  \item \textbf{Atomwaffen Division emblem}:The Atomwaffen Division emblem is a symbol
+  used by a violent neo-Nazi terrorist group known for promoting accelerationism and
+  engaging in acts of domestic terrorism. The emblem typically features a stylized
+  radiation warning symbol, representing the group's fascination with chaos,
+  destruction, and nuclear war. It is widely recognized as a hate symbol and is
+  associated with extremist violence, white supremacy, and far-right terrorism.
+  \item \textbf{Blood \& Honor emblem}: The Blood \& Honour emblem represents an international
+  neo-Nazi network that promotes white supremacist music and ideology. The name comes
+  from the Hitler Youth motto "Blut und Ehre" (Blood and Honor), and the emblem often
+  includes those words along with fascist symbols like runes or laurel wreaths. It
+  is widely recognized as a hate symbol linked to racist propaganda, violence,
+  and far-right extremism.
+  \item \textbf{Celtic Cross}: The Celtic Cross is an ancient symbol with religious
+  and cultural origins in Celtic Christianity, featuring a cross with a circle
+  around the intersection. While it remains a legitimate cultural and religious
+  symbol, white supremacists have adopted a simplified version as a symbol of white
+  identity and nationalism. This version is now widely recognized as a hate symbol
+  in extremist contexts.
+  \item \textbf{Combat 18 emblem}: Combat 18 is a violent neo-Nazi organization, with the
+  number "18" representing the initials A and H (Adolf Hitler). Its emblem typically
+  includes the number or stylized letters alongside other far-right imagery. The group
+  is known for promoting white supremacy and terrorism, and its emblem is a symbol of
+  hate and violence.
+  \item \textbf{Golden Dawn}: Golden Dawn is a far-right political party from Greece known for its neo-Nazi ideology
+  and involvement in violent, xenophobic acts. Its emblem resembles a Greek meander pattern, often compared to a
+  swastika due to its stylized, angular design. Though once politically active, the group has been widely condemned
+  and legally prosecuted for its extremist activities.
+  \item \textbf{Hammerskins emblem}: The Hammerskins emblem features two crossed hammers, symbolizing the group's
+  slogan "Hammerskins Nation" and white power. This violent white supremacist group is rooted in the skinhead
+  movement and is heavily involved in hate music and racist activism. The emblem is a well-known hate symbol tied to
+  global neo-Nazi networks.
+  \item \textbf{Identitarian movement emblem}: The Identitarian Movement emblem typically features a yellow circle
+  with a black Greek lambda symbol, inspired by the Spartan shield. This far-right European movement promotes
+  anti-immigration and ethnonationalist ideologies under the guise of cultural preservation. Although presented with
+  modern, clean branding, the emblem is associated with white nationalist beliefs.
+  \item \textbf{Kolovrat}: The Kolovrat is an ancient Slavic symbol representing the sun and cosmic cycles, used
+  historically in pagan contexts. In recent years, it has been appropriated by Slavic neo-Nazis and white
+  supremacists as a symbol of ethnic purity and nationalist pride. While some use it in a cultural or historical
+  sense, its association with extremist ideology marks it as a hate symbol in certain contexts.
+  \item \textbf{National Rebirth of Poland emblem}: The National Rebirth of Poland (NOP) emblem represents a
+  far-right nationalist party in Poland known for its anti-Semitic and xenophobic views. The emblem often
+  incorporates stylized nationalist imagery, including swords or eagles, designed to evoke Polish strength and
+  purity. It is associated with extremist rhetoric and far-right political activism in Poland.
+  \item \textbf{Popular front emblem}: The Popular Front emblem is used by a range of nationalist or fascist groups,
+  often combining traditional nationalist symbols like eagles or stars with militaristic imagery. Though the term "
+  Popular Front" historically referred to leftist coalitions, in extremist contexts, it can represent
+  ultra-nationalist, anti-democratic movements. The emblem typically signals far-right or authoritarian ideologies.
+%  \item \textbf{Doppelsiegrune}: The Doppelsiegrune, or "double Siegrune," features two lightning-bolt-like runes
+%  and was the official insignia of the Nazi SS. It symbolized power, obedience, and loyalty to Adolf Hitler and
+%  became one of the most infamous emblems of the Nazi regime. Today, it is banned or heavily restricted in many
+%  countries and is recognized worldwide as a symbol of hate and terror.
+\end{itemize}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[scale=0.55]{nazi-symbol-examples}
+  \caption{Example images from 22 different nazi symbol classes.}
+\end{figure}
+
+Originally, there are 22 different nazi symbols. Due to the small amount of some neo nazi symbols, we group them
+into the new class \textit{Neo-Nazi}.
+
+\begin{table}[h]
+  \parbox{.45\linewidth}{
+    \centering
+    \begin{tabular}{|l|l|}
+      \hline
+      Class & Number of \\
+      & images\\
+      \hline\hline
+      Sonnenrad & 152 \\\hline
+      Flash and circle & 13 \\\hline
+      Broken Sun Cross & 21 \\\hline
+      The Happy Merchant & 39 \\\hline
+      Hitler & 228 \\\hline
+      Nazi salute & 6 \\\hline
+      Neo Nazi & 188 \\\hline
+      Yellow badge & 4 \\\hline
+      Siegrune & 311 \\\hline
+      SS Skull & 257 \\\hline
+      Sturmabteilung emblem & 11 \\\hline
+      Swastika & 1070 \\\hline
+      Wolfsangel & 38 \\\hline
+    \end{tabular}
+    \caption{Foo}
+  }
+  \hfill
+  \parbox{.45\linewidth}{
+    \centering
+    \begin{tabular}{|l|l|}
+      \hline
+      Class & Number of\\
+      & images\\
+      \hline\hline
+      Atomwaffen Division & 8 \\
+      emblem & \\\hline
+      Blood \& Honor emblem & 25 \\\hline
+      Celtic Cross & 51 \\\hline
+      Combat 18 emblem & 6 \\\hline
+      Golden Dawn & 19 \\\hline
+      Hammerskins emblem & 12 \\\hline
+      Identitarian movement & 11 \\
+      emblem & \\\hline
+      Kolovrat & 38 \\\hline
+      National Rebirth of  & 10 \\
+      Poland emblem & \\\hline
+      Popular front emblem & 8 \\\hline
+    \end{tabular}
+    \caption{Bar}
+  }
+  \label{tab:dataset}
+\end{table}
 
 For the nazi symbol detection task, we group all the nazi symbols
 into the class nazi. And for the nazi symbol classification
 task, we use the data except non-nazi class.
-[figure data distribution of nazi and non nazi class]
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.7\textwidth]{nazi-detection-distribution}
+  \caption{Data distribution for binary classification task}
+\end{figure}
+
+\begin{figure*}[h]
+  \centering
+  \begin{subfigure}[h]{0.5\textwidth}
+    \centering
+    \includegraphics[scale=0.37]{nazi-examples}
+    \caption{Images containing nazi symbols}
+  \end{subfigure}%
+    ~
+  \begin{subfigure}[h]{0.5\textwidth}
+    \centering
+    \includegraphics[scale=0.39]{non-nazi-examples}
+    \caption{Images not containing any nazi symbols}
+  \end{subfigure}
+
+  \caption{Dataset sample images}
+\end{figure*}
+
+\subsection{Algorithms}
+
+Considering the main task is image classification, we will use the following algorithms:
+
+\begin{itemize}
+  \item \textbf{YOLO}: YOLO is a state-of-the-art, real-time object
+    detection system that can detect multiple objects in a single
+    image. Now YOLO is able to be used as image classification system.
+    YOLO is known for its speed and accuracy, making it an
+    ideal choice for our classification tasks. We use YOLO11 for our task.
+  \item \textbf{ResNet}: ResNet is a deep residual neural network that
+    has been widely used for image classification tasks. ResNet
+    architecture is known for its ability to train very deep neural
+    networks effectively. We use ResNet50 for our task.
+  \item \textbf{EfficientNet}: EfficientNet is a convolutional neural
+    network that has demonstrated superior performance on image
+    classification tasks. EfficientNet models are known for their
+    efficiency and scalability, making them suitable for our
+    resource-constrained environment. We use EfficientNetB0 for our task.
+  \item \textbf{OpenClip}: OpenClip is a deep learning framework that
+    provides a simple and efficient way to train image classification
+    models. OpenClip is known for its ease of use and flexibility,
+    making it an ideal choice for our classification tasks. We use
+    OpenClip for our task.
+  \item \textbf{Moondream}: Moondream is a deep learning framework that
+    provides a simple and efficient way to train image classification
+    models. Moondream is known for its ease of use and flexibility,
+    making it an ideal choice for our classification tasks. We use
+    Moondream for our task.
+  \item \textbf{OpenClip as encoder and classic Machine Learning (ML) Algorithms as classifier}: We use the pretrained
+  OpenClip model to encode the image into a 1 x 512 vector, then feed it to ML algorithm as input for
+  classification. The following Machine Learning Algorithms are used as classifier:
+
+  \begin{itemize}
+    \item Logistic Regression
+    \item Support Vector Machine (SVM) with Stochastic Gradient Decent training
+    \item K-nearest Neighbors
+    \item Linear SVM
+    \item Decision Tree
+    \item Bagging Classifier with Decision Tree as base estimator
+    \item AdaBoost Classifier with Decision Tree as base estimator
+    \item Gradient Boosting Classifier
+    \item Random Forest
+    \item Voting Classifier
+  \end{itemize}
+  \item \textbf{Vision Transformer (ViT)}: Vision Transformer is a deep learning
+    model that has shown promising results in image classification
+    tasks. ViT uses self-attention mechanisms to capture long-range
+    dependencies in images, making it suitable for our classification
+    tasks.
+\end{itemize}
+
+The above mentioned algorithms are used for both binary classification and
+multi-class classification tasks.
+
+\subsection{Data Preprocessing}
+
+To prepare the data for training, we perform the following preprocessing steps:
+
+\begin{itemize}
+  \item \textbf{Data Augmentation}: We apply data augmentation
+    techniques to increase the diversity of the training data and
+    improve the model's generalization ability. Data augmentation
+    techniques include rotation, flipping, scaling, and cropping.
+  \item \textbf{Normalization}: We normalize the pixel values of the
+    images to ensure that they fall within the range [0, 1]. This
+    helps stabilize the training process and improve model performance.
+  \item \textbf{Resizing}: We resize the images to a fixed size to
+    ensure that they have consistent dimensions across the dataset.
+    This simplifies the training process and improves computational
+    efficiency.
+  \item \textbf{Data Splitting}: We split the dataset into training,
+    validation, and test sets to evaluate the model's performance and
+    prevent overfitting. We use an 60-20-10 split for training,
+    validation, and test sets, respectively.
+  \end{itemize}
+
+\begin{figure}[h]
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=.8\linewidth]{original-example}
+  \caption{Original image example.}
+  \label{fig:sfig1}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=.8\linewidth]{augmented-example}
+  \caption{Augmented image example.}
+  \label{fig:sfig2}
+\end{subfigure}
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=.53\linewidth]{resized-example}
+  \caption{Resized image example.}
+  \label{fig:sfig3}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=.8\linewidth]{normalized-example}
+  \caption{Normalized image example.}
+  \label{fig:sfig4}
+\end{subfigure}
+\caption{Example of data preprocessing steps.}
+\label{fig:fig}
+\end{figure}
+
+[figure data splitting]
+
+\subsection{Model Training}
+
+We train the models using the training data and evaluate their performance on
+the validation set. We use the following hyperparameters for training:
+
+\begin{itemize}
+  \item \textbf{Batch Size}: We use a batch size of 32 for training
+    the models. A larger batch size can improve training speed but may
+    require more memory.
+  \item \textbf{Learning Rate}: We use an initial learning rate of
+    0.001 for training the models. We apply learning rate scheduling
+    to adjust the learning rate during training.
+  \item \textbf{Optimizer}: We use the Adam optimizer for training the
+    models. Adam is known for its efficiency and robustness in
+    training deep neural networks.
+  \item \textbf{Loss Function}: We use the cross-entropy loss function
+    for training the models. Cross-entropy loss is commonly used for
+    multi-class classification tasks.
+  \item \textbf{Metrics}: We use accuracy, precision, recall, and F1
+    score as evaluation metrics to assess the models' performance.
+  \item \textbf{Early Stopping}: We use early stopping to prevent
+    overfitting and improve model generalization. Early stopping
+    monitors the validation loss and stops training when the loss
+    stops decreasing.
+  \item \textbf{Model Selection}: We select the best-performing model
+    based on the validation set's performance. The selected model is
+    then evaluated on the test set to assess its generalization ability.
+  \item \textbf{Fine-tuning}: We fine-tune the selected model on the
+    entire training set to improve its performance further. Fine-tuning
+    involves training the model on the full dataset with a reduced
+    learning rate to fine-tune the model's parameters.
+  \item \textbf{Inference}: We use the trained model to make
+    predictions on the test set and evaluate its performance using the
+    test set metrics. The model's predictions are then analyzed to
+    assess its accuracy and identify any misclassifications.
+  \end{itemize}
 
 \section{Results}
+
+\subsection{Evaluation Metrics}
+
+We use the following evaluation metrics to assess the performance of the classification models:
+\begin{itemize}
+  \item \textbf{Accuracy}: Accuracy measures the proportion of correct
+    predictions made by the model. It is calculated as the number of
+    correct predictions divided by the total number of predictions.
+  \item \textbf{Precision}: Precision measures the proportion of
+    positive predictions that are correct. It is calculated as the
+    number of true positive predictions divided by the sum of true
+    positive and false positive predictions.
+  \item \textbf{Recall}: Recall measures the proportion of actual
+    positive instances that are correctly predicted by the model. It
+    is calculated as the number of true positive predictions divided
+    by the sum of true positive and false negative predictions.
+  \item \textbf{F1 Score}: The F1 score is the harmonic mean of
+    precision and recall. It provides a balance between precision and
+    recall and is calculated as 2 * (precision * recall) / (precision + recall).
+\end{itemize}
+
+\subsection{Binary Classification}
+
+    \begin{tabular}{|c|c|c|c|c|c|}
+      \hline
+      Methods & Category & Precison & Recall & f1-score & Support \\\hline\hline
+
+      \multirow{2}{*}{ViT} & Nazi & 0.84 & 0.93 & 0.88 & 185\\\cline{2-6}
+      & Non-Nazi & 1.00 & 1.00 & 1.00 & 14833 \\\hline
+
+      \multirow{2}{*}{EfficientNet} & Nazi & 0.00 & 0.00 & 0.00 & 0\\\cline{2-6}
+      & Non-Nazi & 1.00 & 0.99 & 0.99 & 15018 \\\hline
+
+      \multirow{2}{*}{ResNet} & Nazi & 0.41 & 0.77 & 0.54 & 213\\\cline{2-6}
+      & Non-Nazi & 1.00 & 0.98 & 0.99 & 14805 \\\hline
+
+
+
+    \end{tabular}
+
+\subsection{Multi-class Classification}
 
 \section{Discussion}
 
