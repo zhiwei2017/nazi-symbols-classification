@@ -377,58 +377,79 @@ task, we use the data except non-nazi class.
 
 \subsection{Algorithms}
 
-Considering the main task is image classification, we will use the following algorithms:
+For our binary and multi-class classification tasks, we will choose multiple algorithms to compare the performance.
 
-\begin{itemize}
-  \item \textbf{YOLO}: YOLO is a state-of-the-art, real-time object
-    detection system that can detect multiple objects in a single
-    image. Now YOLO is able to be used as image classification system.
-    YOLO is known for its speed and accuracy, making it an
-    ideal choice for our classification tasks. We use YOLO11 for our task.
-  \item \textbf{ResNet}: ResNet is a deep residual neural network that
-    has been widely used for image classification tasks. ResNet
-    architecture is known for its ability to train very deep neural
-    networks effectively. We use ResNet50 for our task.
-  \item \textbf{EfficientNet}: EfficientNet is a convolutional neural
-    network that has demonstrated superior performance on image
-    classification tasks. EfficientNet models are known for their
-    efficiency and scalability, making them suitable for our
-    resource-constrained environment. We use EfficientNetB0 for our task.
-  \item \textbf{OpenClip}: OpenClip is a deep learning framework that
-    provides a simple and efficient way to train image classification
-    models. OpenClip is known for its ease of use and flexibility,
-    making it an ideal choice for our classification tasks. We use
-    OpenClip for our task.
-  \item \textbf{Moondream}: Moondream is a deep learning framework that
-    provides a simple and efficient way to train image classification
-    models. Moondream is known for its ease of use and flexibility,
-    making it an ideal choice for our classification tasks. We use
-    Moondream for our task.
-  \item \textbf{OpenClip as encoder and classic Machine Learning (ML) Algorithms as classifier}: We use the pretrained
-  OpenClip model to encode the image into a 1 x 512 vector, then feed it to ML algorithm as input for
-  classification. The following Machine Learning Algorithms are used as classifier:
+\subsubsection{YOLO}
+YOLO (You Only Look Once) is a fast and efficient object detection algorithm that processes the entire image in a
+single forward pass of a neural network, enabling real-time performance. It simultaneously predicts multiple
+bounding boxes and class probabilities, offering both localization and classification in one step. YOLO is known for
+its speed, relatively high accuracy, and ability to detect objects in context.
 
-  \begin{itemize}
-    \item Logistic Regression
-    \item Support Vector Machine (SVM) with Stochastic Gradient Decent training
-    \item K-nearest Neighbors
-    \item Linear SVM
-    \item Decision Tree
-    \item Bagging Classifier with Decision Tree as base estimator
-    \item AdaBoost Classifier with Decision Tree as base estimator
-    \item Gradient Boosting Classifier
-    \item Random Forest
-    \item Voting Classifier
-  \end{itemize}
-  \item \textbf{Vision Transformer (ViT)}: Vision Transformer is a deep learning
-    model that has shown promising results in image classification
-    tasks. ViT uses self-attention mechanisms to capture long-range
-    dependencies in images, making it suitable for our classification
-    tasks.
-\end{itemize}
+Although primarily designed for object detection, YOLO can be used for image classification by adapting it to focus
+on the most confident class prediction for the whole image, making it suitable when speed and end-to-end processing
+are important. For our task, we will use YOLOv11, a popular version of the YOLO algorithm that has been widely
+adopted for its performance and ease of use.
 
-The above mentioned algorithms are used for both binary classification and
-multi-class classification tasks.
+\subsubsection{ResNet}
+ResNet (Residual Network) is a deep convolutional neural network architecture designed to overcome the vanishing
+gradient problem by introducing residual connections, which allow gradients to flow through the network more
+effectively during training. This enables the construction of very deep networks (e.g., ResNet-50, ResNet-101)
+without performance degradation. ResNet is known for its high accuracy and strong feature extraction capabilities.
+
+It is widely used for image classification because its deep architecture can learn complex patterns and
+representations in images, leading to excellent performance across a wide range of classification tasks. For our
+task, we will use ResNet50.
+
+\subsubsection{EfficientNet}
+EfficientNet is a family of convolutional neural networks that achieves high accuracy with significantly fewer
+parameters and computational resources by using a compound scaling method. This method uniformly scales depth,
+width, and resolution in a balanced way, optimizing both performance and efficiency. EfficientNet models are
+lightweight yet powerful, making them suitable for deployment on various devices.
+
+It is well-suited for image classification because it offers a strong trade-off between accuracy and efficiency,
+enabling high-performance classification even on limited hardware.
+
+\subsubsection{Vision Transformer (ViT)}
+The Vision Transformer (ViT) is an image classification model that applies the transformer architecture—originally
+developed for natural language processing—directly to image patches. It splits an image into fixed-size patches,
+linearly embeds them, adds positional encodings, and processes them through transformer layers to capture long-range
+dependencies and global context. ViT is highly scalable and achieves competitive accuracy, especially when trained
+on large datasets.
+
+It is suitable for image classification because it effectively captures global relationships in images, leading to
+strong performance on complex classification tasks, especially when ample training data is available.
+
+\subsubsection{OpenCLIP}
+OpenCLIP is an open-source implementation of the CLIP (Contrastive Language–Image Pretraining) model, which learns
+visual concepts from natural language supervision by training on image-text pairs. It maps images and text into a
+shared embedding space, enabling zero-shot image classification by comparing image embeddings to text prompt
+embeddings. OpenCLIP supports various backbone architectures and is trained on large-scale datasets, making it
+flexible and powerful.
+
+It can be used for image classification because it enables zero-shot learning, allowing the model to classify images
+based on text descriptions without needing task-specific training data.
+
+\subsubsection{Moondream}
+Moondream is a lightweight multimodal model designed for efficient vision-language tasks, particularly optimized for
+on-device applications with limited resources. It processes both images and text using compact encoders to perform
+tasks like visual question answering and basic image understanding. Despite its small size, it can handle image-text
+interactions effectively with relatively low computational overhead.
+
+While not primarily built for standard image classification, Moondream can be adapted for it by using descriptive
+text prompts, making it suitable for lightweight classification tasks where integrating visual and textual cues is
+beneficial, especially on resource-constrained devices.
+
+\subsubsection{OpenCLIP as encoder and classic ML algorithms as classifier}
+Using OpenCLIP as an encoder combined with classic machine learning (ML) algorithms for image classification
+involves first converting images into fixed-length embeddings using OpenCLIP's vision-language model. These
+embeddings capture high-level semantic features of the images, which are then fed into traditional ML classifiers
+such as logistic regression, SVM, KNN, decision trees, ensemble methods (e.g., random forest, AdaBoost), or a voting
+classifier to perform the final classification.
+
+This method is suitable for image classification because OpenCLIP provides rich, generalizable image
+representations, enabling even simple ML models to achieve strong classification performance without the need for
+deep neural network training, especially on smaller or specialized datasets.
+
 
 \subsection{Data Preprocessing}
 
@@ -546,16 +567,16 @@ We use the following evaluation metrics to assess the performance of the classif
 
     \begin{tabular}{|c|c|c|c|c|c|}
       \hline
-      Methods & Category & Precison & Recall & f1-score & Support \\\hline\hline
+      Methods & Category & Precison & Recall & f1-score \\\hline\hline
 
-      \multirow{2}{*}{ViT} & Nazi & 0.84 & 0.93 & 0.88 & 185\\\cline{2-6}
-      & Non-Nazi & 1.00 & 1.00 & 1.00 & 14833 \\\hline
+      \multirow{2}{*}{ViT} & Nazi & 0.84 & 0.93 & 0.88 \\\cline{2-6}
+      & Non-Nazi & 1.00 & 1.00 & 1.00 \\\hline
 
-      \multirow{2}{*}{EfficientNet} & Nazi & 0.00 & 0.00 & 0.00 & 0\\\cline{2-6}
-      & Non-Nazi & 1.00 & 0.99 & 0.99 & 15018 \\\hline
+      \multirow{2}{*}{EfficientNet} & Nazi & 0.00 & 0.00 & 0.00 \\\cline{2-6}
+      & Non-Nazi & 1.00 & 0.99 & 0.99 \\\hline
 
-      \multirow{2}{*}{ResNet} & Nazi & 0.41 & 0.77 & 0.54 & 213\\\cline{2-6}
-      & Non-Nazi & 1.00 & 0.98 & 0.99 & 14805 \\\hline
+      \multirow{2}{*}{ResNet} & Nazi & 0.41 & 0.77 & 0.54 \\\cline{2-6}
+      & Non-Nazi & 1.00 & 0.98 & 0.99 \\\hline
 
 
 
