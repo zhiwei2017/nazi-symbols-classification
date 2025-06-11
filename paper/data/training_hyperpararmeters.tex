@@ -1,0 +1,27 @@
+%! Author = zhiweizhang
+%! Date = 10.06.25
+
+% Preamble
+\begin{table}[ht]
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lcccccc}
+\toprule
+\textbf{Model}                  & \textbf{Epochs} & \textbf{Batch Size} & \textbf{Input Size} & \textbf{Loss Function} & \textbf{Optimizer} & \textbf{Learning Rate}  \\
+\midrule
+ResNet                          & 100             & 16                  & 224×224             & BCE/CCE                & Adam               & 1e-3                    \\
+EfficientNet (binary)           & 100             & 16                  & 224×224             & BCE                    & Nadam              & 2e-3                    \\
+EfficientNet (multi)            & 100             & 16                  & 224×224             & CCE                    & Adam               & 1e-3                    \\
+ViT                             & 100             & 16                  & 224×224             & BCE/CCE                & Adam               & 2e-5                    \\
+YOLOv11                         & 100             & 16                  & 224×224             & BCE/CCE                & SGD                & 0.01                    \\
+OpenCLIP + ML                   & –               & –                   & 224×224             & –                      & –                  & –                       \\
+Zero-shot (OpenCLIP, Moondream) & –               & –                   & –                   & –                      & –                  & –                       \\
+\bottomrule
+\end{tabular}
+}
+\vspace{0.5em}
+\footnotesize{\textbf{Note:} BCE = Binary Cross-Entropy, CCE = Categorical Cross-Entropy. Zero-shot models are not trained on the dataset.}
+
+\caption{Summary of training hyperparameters used for each model.}
+\label{tab:training-hyperparameters}
+\end{table}

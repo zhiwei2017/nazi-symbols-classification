@@ -1,0 +1,21 @@
+%! Author = zhiweizhang
+%! Date = 10.06.25
+
+% Preamble
+\begin{table}[ht]
+  \centering
+  \begin{tabular}{lp{3cm}p{8cm}}
+    \toprule
+    \textbf{Method} & \textbf{Endpoint} & \textbf{Description} \\
+    \midrule
+    POST & /predict & Accepts an image file and returns a prediction for binary classification (Nazi / Non-Nazi) and the predicted Nazi symbol class if applicable. \\
+    POST & /predict-binary & Accepts an image file and returns a prediction for binary classification (Nazi / Non-Nazi). \\
+    POST & /predict-multiclass & Accepts an image file and returns the predicted Nazi symbol class. \\
+    GET  & /health & Returns a status message to indicate if the service is running. \\
+    GET  & /version & Returns the current model and API version. \\
+    GET  & /docs & Provides interactive API documentation using Swagger UI. \\
+    \bottomrule
+  \end{tabular}
+  \caption{Summary of API endpoints.}
+  \label{tab:api-endpoints}
+\end{table}

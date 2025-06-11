@@ -1,0 +1,27 @@
+%! Author = zhiweizhang
+%! Date = 10.06.25
+
+% Preamble
+\begin{table}[ht]
+  \centering
+  \resizebox{\textwidth}{!}{
+    \begin{tabular}{lccccc}
+    \toprule
+    \textbf{Classifier}          & \textbf{Model Type} & \textbf{Linear}       & \textbf{Ensemble} & \textbf{Interpretable} & \textbf{Scalable} \\
+    \midrule
+    Logistic Regression          & Parametric          & Yes                   & No                & High                   & High              \\
+    SGD Classifier               & Parametric          & Yes                   & No                & Moderate               & Very High         \\
+    KNN Classifier               & Instance-based      & No                    & No                & Low                    & Low               \\
+    SVC                          & Parametric          & Yes                   & No                & Moderate               & High              \\
+    Decision Tree Classifier     & Non-parametric      & No                    & No                & High                   & Moderate          \\
+    Bagging Classifier           & Non-parametric      & No                    & Yes               & Moderate               & High              \\
+    AdaBoost Classifier          & Non-parametric      & No                    & Yes               & Low to Moderate        & Moderate          \\
+    Gradient Boosting Classifier & Non-parametric      & No                    & Yes               & Low                    & Moderate          \\
+    Random Forest Classifier     & Non-parametric      & No                    & Yes               & Moderate               & High              \\
+    Voting Classifier            & Hybrid              & Depends on estimators & Yes               & Low                    & High              \\
+    \bottomrule
+    \end{tabular}
+  }
+  \caption{Summary of classification algorithms and their key characteristics}
+  \label{tab:summary-classification-algorithms}
+\end{table}

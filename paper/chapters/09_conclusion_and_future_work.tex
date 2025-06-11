@@ -1,0 +1,66 @@
+%! Author = zhiweizhang
+%! Date = 10.06.25
+
+\chapter{Conclusion and Future Work}\label{chapter:conclusion-and-future-work}
+
+\section{Conclusion}
+
+This thesis presented a comprehensive study on the classification of Nazi symbols in images using a range of models,
+including convolutional neural networks (ResNet, EfficientNet), transformer-based architectures (ViT), object
+detection models (YOLOv11), and multimodal models (OpenCLIP). In addition to evaluating end-to-end deep learning
+approaches, we also explored hybrid pipelines that combined OpenCLIP image embeddings with classical machine
+learning classifiers.
+
+The models were evaluated on two classification tasks: binary classification (Nazi vs. non-Nazi symbols) and
+multi-class classification (discriminating among 13 specific Nazi-related symbol classes and a non-Nazi class). For
+the binary task, the best-performing models were OpenCLIP combined with classical classifiers (e.g., SVC and KNN),
+ViT, and YOLOv11, all achieving F1-scores above 0.89 and AUC values above 0.94. This indicates that both learned
+embeddings and high-resolution feature extractors are effective for distinguishing Nazi symbols from benign content.
+
+In the multi-class setting, YOLOv11 emerged as the top performer, followed closely by ViT. OpenCLIP alone performed
+poorly in zero-shot settings, but its performance improved substantially when paired with supervised
+classifiers—though still underperforming compared to end-to-end deep models. EfficientNet showed weak results in
+both settings, suggesting sensitivity to architectural choices and training hyperparameters.
+
+Overall, our results demonstrate that symbol classification, especially in sensitive and subtle contexts like
+detecting hate symbols, benefits from models that are either end-to-end optimized for the specific task or from
+hybrid approaches that combine semantic embeddings with suitable classifiers. The experiments also highlight the
+challenges in achieving reliable generalization across diverse classes of hate symbols, given their visual variability and contextual ambiguity.
+
+\section{Future Work}
+
+This study has demonstrated the feasibility of using deep learning and multimodal models to detect Nazi and
+extremist symbols. Building on these results, several directions for future work emerge:
+
+\begin{itemize}
+    \item \textbf{Dataset Expansion and Annotation:} Enhancing the dataset—particularly increasing the number of
+    examples for underrepresented or visually similar symbol classes—could significantly improve multi-class
+    classification performance. Incorporating domain expert feedback or leveraging semi-supervised and weakly
+    supervised learning strategies could further refine annotation quality and contextual relevance.
+
+    \item \textbf{Fine-Tuning Multimodal Models:} While OpenCLIP embeddings combined with classical classifiers
+    showed promise, future work should explore fine-tuning the vision backbone or jointly training multimodal models
+    on task-specific data. This may improve class separability and allow better adaptation to symbol-specific nuances.
+
+    \item \textbf{Explainability and Robustness:} The integration of explainable AI (XAI) techniques (e.g.,
+    Grad-CAM, SHAP) would help interpret classification decisions—especially important in sensitive applications
+    such as legal review or moderation. Evaluating model robustness to adversarial attacks, image distortions, or
+    low-quality inputs remains an important next step.
+
+    \item \textbf{Context-Aware and Multimodal Classification:} Incorporating metadata such as image captions,
+    filenames, or textual context from surrounding content may improve performance, particularly in ambiguous cases.
+    This aligns with the broader goal of context-aware content moderation in social platforms and digital archives.
+
+    \item \textbf{Online Deployment and Real-Time Integration:} Although this work implemented and containerized an
+    API service for local deployment, future work could involve deploying it in an online setting using cloud
+    platforms. This includes optimizing for inference speed, API scalability, and data privacy compliance in
+    real-time systems.
+
+    \item \textbf{User Feedback and Human-in-the-Loop Systems:} Integrating user feedback into the classification
+    pipeline could help refine model outputs over time and improve trustworthiness. This is especially relevant in
+    professional or archival environments, where user corrections can guide continuous learning.
+
+\end{itemize}
+
+In summary, this thesis lays a foundation for scalable and practical Nazi symbol classification. Extending it to real-world systems will require continued efforts in model refinement, dataset curation, deployment optimization, and ethical safeguards.
+

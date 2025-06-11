@@ -1,0 +1,62 @@
+%! Author = zhiweizhang
+%! Date = 11.06.25
+
+% Preamble
+\begin{figure}[ht]
+\centering
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}[
+    node distance=1.5cm and 2cm,
+    every node/.style={font=\small},
+    process/.style={rectangle, draw=blue!50, fill=blue!10, thick, minimum width=3.5cm, minimum height=0.9cm},
+    endpoint/.style={rectangle, draw=black!80, fill=gray!10, thick, minimum width=4cm, minimum height=0.9cm},
+    decision/.style={diamond, aspect=2, draw=red!60, fill=red!10, thick, minimum height=1.2cm},
+    response/.style={rectangle, draw=green!50!black, fill=green!10, thick, minimum width=3.5cm, minimum height=0.9cm},
+    arrow/.style={->, thick}
+]
+
+% API Endpoints
+\node[endpoint] (binary) {POST /predict-binary};
+\node[endpoint, below=of binary] (multi) {POST /predict-multiclass};
+\node[endpoint, below=of multi] (twolayer) {POST /predict};
+
+% Binary path
+\node[process, right=of binary] (binaryprep) {Image Preprocessing};
+\node[process, right=of binaryprep] (binarymodel) {Binary Classifier};
+\node[response, right=of binarymodel] (binaryresp) {Binary Prediction Response};
+
+% Multi-class path
+\node[process, right=of multi] (multiprep) {Image Preprocessing};
+\node[process, right=of multiprep] (multimodel) {Multi-Class Classifier};
+\node[response, right=of multimodel] (multiresp) {Multi-Class Prediction Response};
+
+% Two-layer path
+\node[process, right=of twolayer] (twoprep) {Image Preprocessing};
+\node[process, right=of twoprep] (twobinary) {Binary Classifier};
+\node[decision, right=of twobinary] (decision) {Contains Nazi Symbol?};
+\node[process, above right=1.2cm and 1.5cm of decision] (negresponse) {Return: No Symbol};
+\node[process, below right=1.2cm and 1.5cm of decision] (multiclass) {Multi-Class Classifier};
+\node[response, right=of multiclass] (finalresp) {Hierarchical Prediction Response};
+
+% Arrows
+\draw[arrow] (binary) -- (binaryprep);
+\draw[arrow] (binaryprep) -- (binarymodel);
+\draw[arrow] (binarymodel) -- (binaryresp);
+
+\draw[arrow] (multi) -- (multiprep);
+\draw[arrow] (multiprep) -- (multimodel);
+\draw[arrow] (multimodel) -- (multiresp);
+
+\draw[arrow] (twolayer) -- (twoprep);
+\draw[arrow] (twoprep) -- (twobinary);
+\draw[arrow] (twobinary) -- (decision);
+\draw[arrow] (decision) -- node[above right] {No} (negresponse);
+\draw[arrow] (decision) -- node[below right] {Yes} (multiclass);
+\draw[arrow] (multiclass) -- (finalresp);
+
+\end{tikzpicture}
+}
+\caption{API endpoints mapped to model pipelines, including the 2-layer classification logic.}
+\label{fig:api-model-routing}
+
+\end{figure}

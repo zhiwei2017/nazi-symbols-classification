@@ -1,0 +1,81 @@
+% !TeX root = ../main.tex
+% Add the above to each chapter to make compiling the PDF easier in some editors.
+
+\chapter{Introduction}\label{chapter:introduction}
+
+\section{Background}
+
+Social media platforms have become central hubs for the dissemination of vast quantities of multimedia content,
+including images, text, and videos. These data streams are increasingly valuable for research in the social
+sciences, particularly in domains such as regional political dynamics, extremism tracking, and hate speech analysis.
+To facilitate such studies, researchers often rely on web crawlers to collect relevant content. However, raw data
+scraped from the internet typically lacks structure and semantic labeling, necessitating extensive preprocessing.
+For image data in particular, classification is a critical preprocessing step that transforms raw images into
+structured information suitable for quantitative and qualitative analysis.
+
+Among the many types of harmful or sensitive content on social media, Nazi-related imagery remains a particularly
+pressing concern. Nazi symbols, most notably the swastika, were once appropriated by the German National Socialist
+regime (1933–1945) and have since become enduring emblems of hate and extremism. Other symbols—such as the SS bolts (
+representing the Schutzstaffel), the Black Sun (linked to fascist occult ideologies), and the Siegrune—have also
+been adopted by modern neo-Nazi movements. These symbols continue to appear in digital media, where they are used to
+spread hate, signal affiliation, or incite violence. Many countries ban or restrict the public display of such
+imagery, underscoring the need for robust detection tools to enforce policy and moderate content online.
+
+\section{Problem Statement}
+
+In the context of social science research, the ability to automatically detect and classify Nazi symbols in images
+is vital for analyzing trends in extremist communication and for enforcing legal or ethical guidelines on hate
+speech. However, commercial services offering image classification capabilities—especially for hate symbols—are
+often expensive and proprietary. This poses a significant barrier to researchers who wish to conduct large-scale
+studies with limited funding.
+
+To address this gap, an affordable, open, and effective classification system is needed. Such a system must be
+capable of both detecting the presence of Nazi symbols (binary classification) and identifying the specific symbol
+class (multi-class classification). The system must also be adaptable, transparent, and lightweight enough to run on
+limited hardware resources, such as a single GPU workstation.
+
+\section{Objectives}
+
+This study aims to design and evaluate a robust and efficient image classification framework for the automatic
+detection and categorization of Nazi symbols. Specifically, we:
+
+\begin{itemize}
+  \item Construct a curated dataset of approximately 100,000 images containing both Nazi-related and non-Nazi imagery.
+  \item Annotate and structure the dataset to support both binary and multi-class classification tasks.
+  \item Investigate a range of deep learning and multimodal models—including Convolutional Neural Networks (CNNs),
+  Vision Transformers (ViTs), and OpenCLIP embeddings—paired with classical machine learning algorithms.
+  \item Evaluate the models based on standard classification metrics and analyze their strengths and weaknesses.
+  \item Develop and package an API service that allows for model inference via HTTP requests, enabling practical
+  deployment.
+\end{itemize}
+
+While the dataset and scope are constrained, our overarching objective is to provide a generalizable methodology
+that can be extended to larger datasets and broader symbol categories.
+
+\section{Scope and Limitations}
+
+Due to the vast number and variation of Nazi and neo-Nazi symbols used historically and in contemporary extremist
+contexts, it is impractical to assemble a complete dataset. The dataset used in this study represents a subset of
+the most commonly encountered or visually distinctive symbols. Specifically, this study includes the following Nazi
+and neo-Nazi symbols: \textit{Sonnenrad}, \textit{Flash and circle}, \textit{Broken Sun Cross},
+\textit{The Happy Merchant}, \textit{Hitler}, \textit{Nazi salute}, \textit{Atomwaffen Division emblem},
+\textit{Blood \& Honor emblem}, \textit{Celtic Cross}, \textit{Combat 18 emblem}, \textit{Golden Dawn},
+\textit{Hammerskins emblem}, \textit{Identitarian movement emblem}, \textit{Kolovrat},
+\textit{National Rebirth of Poland emblem}, \textit{Popular front emblem}, \textit{Yellow badge}, \textit{Siegrune},
+\textit{SS Skull}, \textit{Sturmabteilung emblem}, \textit{Swastika}, and \textit{Wolfsangel}.
+
+This research addresses two main classification tasks:
+
+\begin{enumerate}
+  \item \textbf{Binary classification:} Determine whether a given image contains any Nazi-related symbol.
+  \item \textbf{Multi-class classification:} Identify which specific symbol (among the 13 defined categories) is
+  present in a Nazi-related image.
+\end{enumerate}
+
+In addition to dataset limitations, this study is constrained by hardware availability. All experiments were
+conducted using a single GPU with 16 GB of memory. This limitation necessitated the use of resource-efficient models
+and restricted the complexity of hyperparameter tuning and model ensembling.
+
+Despite these constraints, this work aims to demonstrate the feasibility of developing effective and efficient
+classification tools to assist researchers, content moderators, and civil society stakeholders in identifying
+extremist visual content.

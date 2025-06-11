@@ -1,0 +1,136 @@
+%! Author = zhiweizhang
+%! Date = 10.06.25
+
+\chapter{Model Deployment and API Service}\label{chapter:model-deployment-and-api-service}
+
+To facilitate real-world application and integration of the trained classification models, an API service was
+developed to serve the best-performing models from both the binary and multi-class classification tasks. The service
+was designed with modularity, portability, and ease of use in mind.
+
+Although the API service was not deployed to an online hosting platform due to infrastructure constraints, it was
+fully implemented, containerized using Docker, and published to Docker Hub. This approach ensures reproducibility
+and allows collaborators (e.g., from the social science department) or third-party researchers to easily run the
+service in local or cloud-based environments supporting Docker runtime.
+
+\section{System Architecture}
+
+~\autoref{fig:system-architecture} presents the system architecture of the classification API service. Users
+submit an image file via an HTTP request, which is then routed to one of three model pipelines based on the
+specified task: binary classification, multi-class classification, or a two-stage hierarchical pipeline.
+
+In the two-stage (or "2-layer") classification pipeline, the image is first passed to the binary classifier to
+determine whether it contains Nazi symbolism. If the result is negative, the API returns a response indicating the
+absence of such symbols. If the binary classifier detects the presence of Nazi-related content, the image is
+subsequently passed to the multi-class classifier, which identifies the specific type of Nazi symbol (e.g.,
+swastika, SS bolts, eagle).
+
+This cascaded approach reduces unnecessary computation for images that do not contain relevant content and mirrors
+real-world moderation workflows that apply more granular analysis only when initial filters are triggered.
+
+The backend is implemented using \texttt{FastAPI}, and each model is preloaded into memory at service startup for
+low-latency prediction. The architecture is stateless and containerized, making it suitable for horizontal scaling
+in distributed environments.
+
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{system_architecture}
+    \caption{System architecture of the implemented classification API service, including the 2-layer classification pipeline.}
+    \label{fig:system-architecture}
+\end{figure}
+
+\section{Model Integration and Selection Logic}
+
+To support different classification tasks, the API service provides separate, clearly defined endpoints for binary
+classification, multi-class classification, and the combined 2-layer classification pipeline. Rather than
+dynamically selecting the model based on a request payload parameter, each endpoint is mapped to a specific inference pipeline.
+
+This design simplifies both server-side logic and client-side usage, allowing users to directly call the appropriate
+endpoint for their task without needing to specify a task identifier. Each endpoint handles all necessary
+preprocessing, model loading, and prediction steps internally.
+
+All models are preloaded into memory when the API server starts. Models implemented using PyTorch are serialized with
+\texttt{TorchScript} or saved in standard PyTorch format, while traditional machine learning models (e.g., logistic
+regression or SVM with OpenCLIP embeddings) are serialized using \texttt{joblib}. Loading models once at startup
+significantly reduces runtime latency and avoids redundant I/O operations during each prediction request.
+
+This modular design also makes the system extensible—new models or task-specific pipelines can be added by
+registering additional routes in the API codebase without impacting the existing ones.
+
+The route-to-model mapping logic is summarized in ~\autoref{fig:api-model-routing}, which shows how each API
+endpoint corresponds to a specific classification pipeline.
+
+\input{figures/api_model_routing}
+
+\section{Continuous Integration and Deployment}
+
+The service is fully integrated with a GitHub Actions CI/CD pipeline, as shown in ~\autoref{fig:github-pipeline}.
+This pipeline automates the following tasks:
+
+\begin{itemize}
+    \item Code quality checks and unit testing.
+    \item Building and tagging of Docker images.
+    \item Publishing Sphinx-based documentation to GitHub Pages.
+    \item Pushing the Docker image to Docker Hub.
+\end{itemize}
+
+Although the final service is not deployed to a live endpoint, the CI/CD pipeline ensures that each commit to the
+main branch triggers a build and test process, ensuring long-term maintainability. Users can reliably pull the
+latest image version and run it locally or deploy it on a remote host with minimal setup.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{github_pipeline}
+    \caption{GitHub Actions CI/CD pipeline for Dockerized API service.}
+    \label{fig:github-pipeline}
+\end{figure}
+
+\section{API Endpoints}
+
+The REST API exposes several endpoints to support classification, health checks, and automatic documentation.
+~\autoref{tab:api-endpoints} provides an overview of the available endpoints.
+
+In addition to individual endpoints for binary and multi-class classification tasks, the API includes a dedicated
+endpoint for the 2-layer classification workflow. This endpoint abstracts the logic of cascading model inference: it
+first applies the binary classifier and, only if Nazi symbolism is detected, invokes the multi-class model to
+provide a more specific label.
+
+This design simplifies client-side logic and makes it easier to embed the classifier into larger moderation or
+research pipelines without needing to handle the decision tree manually.
+
+\input{data/api_endpoints}
+
+All classification endpoints accept images as multipart form data and return structured JSON responses. These
+responses include predicted class labels, confidence scores, and metadata about the model used. The API is
+documented using OpenAPI and is accessible via the \texttt{/docs} route.
+
+
+\section{Extensibility and Future Deployment}
+
+The API service is designed with modularity and extensibility in mind. New classification tasks—such as object
+detection for symbol localization, OCR, or broader hate symbol recognition—can be integrated by registering
+additional model pipelines and endpoints. Thanks to the decoupled routing logic and preloading of models, such
+extensions require minimal code changes.
+
+Although the service is not deployed online, it is fully containerized and prepared for local or remote deployment.
+The GitHub repository includes:
+
+\begin{itemize}
+    \item A \texttt{Dockerfile} and \texttt{pyproject.toml} to ensure consistent environments
+    \item Usage instructions for running the service locally via \texttt{docker run} or \texttt{docker-compose}
+    \item Example requests (e.g., \texttt{curl} commands) and a Postman collection for testing
+    \item CI pipelines using GitHub Actions for testing, documentation, and Docker image publishing
+\end{itemize}
+
+This setup ensures reproducibility and ease of use for collaborators such as the social science chair, who can
+launch the service locally with no additional configuration. All models are preloaded at startup, avoiding runtime
+delays or dependency mismatches.
+
+In future iterations, the service could be deployed to cloud platforms such as AWS, Google Cloud, or Azure, using
+container orchestration tools like Kubernetes or serverless options like AWS Lambda with API Gateway. To support
+public or production-level access, additional features such as user authentication, input rate-limiting, and secure
+storage of logs and models would be required.
+
+This flexible and portable design ensures that the system can evolve alongside the research project and scale into
+production-oriented or collaborative infrastructures as needed.
+

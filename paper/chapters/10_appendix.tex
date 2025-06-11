@@ -1,0 +1,199 @@
+% !TeX root = ../main.tex
+% Add the above to each chapter to make compiling the PDF easier in some editors.
+
+\chapter{Appendix}\label{chapter:appendix}
+
+\section{Dataset Sources}
+\label{appendix:datasets}
+The datasets used in this thesis are sourced from various platforms, including Roboflow and Kaggle. The Table~\ref{tab:dataset_summary}
+summarizes the datasets used for training, validation, and testing.
+\begin{table}[htbp]
+\centering
+\small
+%\renewcommand{\arraystretch}{2}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{clcl}
+\toprule
+\textbf{Platform} & \textbf{Dataset Name / Description} & \textbf{Purpose} & \textbf{Notes} \\
+\midrule
+Roboflow & detect Dataset~\parencite{detect-lhuia_dataset} & Positive Class & Swastika and related Nazi symbols \\
+
+Roboflow & swastika Dataset (imgann)~\parencite{swastika-o7bde_dataset} & Positive Class & Swastika symbol detection \\
+
+Roboflow & swastika Dataset (Darja Nechaeva)~\parencite{swastika-uw8xt_dataset} & Positive Class & Historical swastika variations \\
+
+Roboflow & swastika\_detect Dataset~\parencite{swastika_detect_dataset} & Positive Class & Swastika detection for moderation \\
+
+Roboflow & symbols Dataset~\parencite{symbols-w93jw_dataset} & Positive Class & Includes general and hate symbols \\
+
+Roboflow & violent object Dataset~\parencite{violent-object_dataset} & Positive Class & Hate symbols and violent imagery \\
+
+Roboflow & Swastiki\_Net Dataset~\parencite{swastiki_net_dataset} & Positive Class & Swastika symbol classification \\
+
+Roboflow & Content Moderation Dataset~\parencite{content-moderation-fwj5b_dataset} & Positive Class & Multiple harmful or extremist symbols \\
+
+Roboflow & Swastika\_Detection Dataset~\parencite{swastika_detection_dataset} & Positive Class & Swastikas in different contexts \\
+
+Kaggle & 100 Sports Image Classification~\parencite{100_sport_image_classification_dataset} & Negative Class & Neutral sports images \\
+
+Kaggle & Car vs Bike Classification Dataset~\parencite{car_bike_classification_dataset} & Negative Class & Background class diversity \\
+
+Kaggle & People Clothing Segmentation~\parencite{people_clothing_segmentation_dataset} & Negative Class & Background objects, neutral content \\
+
+Kaggle & Fruits and Vegetables Dataset~\parencite{fruit_and_vegetable_image_recognition_dataset} & Negative Class & For reducing false positives \\
+
+Kaggle & Animal Image Dataset~\parencite{animal_image_dataset} & Negative Class & Animal images for neutral comparison \\
+
+Kaggle & Kids and Adults Detection~\parencite{kids_and_adults_detection_dataset} & Negative Class & Human figures, non-extremist \\
+
+Kaggle & SCOOBY DOO Classification~\parencite{scooby_doo_classification_dataset} & Negative Class & Cartoon data for variance \\
+
+Kaggle & Low Light Animals~\parencite{subrata_sarkar_2025} & Negative Class & Low-light conditions for robustness \\
+
+Kaggle & AI vs Human-Generated Images~\parencite{ai_vs_human_generated_images_dataset} & Negative Class & Diverse image source simulation \\
+\bottomrule
+\end{tabular}
+}
+\caption{Summary of datasets used in this thesis for training, validation, and testing.}
+\label{tab:dataset_summary}
+\end{table}
+
+\section{Nazi Symbol Description}
+  \label{appendix:symbol-description}
+
+The Nazi symbols are mainly from Roboflow with labels. The symbols are defined as follows:
+
+\begin{itemize}
+  \item \textbf{Sonnenrad}: The sonnenrad, or sunwheel, is an ancient symbol
+  from Norse and Celtic cultures that was appropriated by the Nazis to
+  promote an idealized "Aryan" heritage. Its many variations include forms
+  of the swastika and Celtic Cross, and it was used by the Nazi Party,
+  SA, and SS. Today, it is commonly used by neo-Nazis and white
+  supremacists, especially a version with two concentric circles and
+  crooked rays, sometimes featuring a swastika in the center.
+  \item \textbf{Flash and circle}: The Flash and Circle is a symbol featuring
+  a lightning bolt within a circle, originally used by the British Union
+  of Fascists in the 1930s. It was meant to represent action within unity
+  and has since been adopted by neo-fascist and white supremacist groups.
+  Though less common today, it remains a recognizable hate symbol associated
+  with fascist ideology.
+  \item \textbf{Broken Sun Cross}: Symbols featuring an equilateral cross enclosed
+  in a circle have appeared in various cultures since the Bronze Age. Since
+  the 1930s, a version with ‘broken’ arms resembling a swastika gained far-right
+  associations. It was used by the German Faith Movement and later as insignia
+  for two Waffen SS divisions.
+  \item \textbf{The Happy Merchant}: The Happy Merchant is an antisemitic meme
+  depicting a Jewish man with exaggerated, stereotypical features, often used
+  by white supremacists to promote hate. It originated from racist artwork
+  by cartoonist Nick Bougas, who used the pseudonym “A. Wyatt Mann.” His
+  offensive cartoons, widely circulated in the 1980s and 1990s, were often
+  published by white supremacist Tom Metzger.
+  \item \textbf{Hitler}: The images of Adolf Hilter.
+  \item \textbf{Nazi salute}: The Nazi salute, also known as the Hitler salute
+  or Sieg Heil salute, was a gesture used
+  in Nazi Germany to show loyalty to Adolf Hitler and the Nazi Party, typically
+  accompanied by phrases like "Heil Hitler" or "Sieg Heil". Inspired by the
+  Italian Fascist salute, it became an official Nazi greeting in 1926 and
+  was mandatory for civilians but optional for military personnel until
+  1944. Today, the salute is banned in several countries—including Germany,
+  Austria, and Slovakia—and is considered hate speech or a criminal act in
+  many others if used to promote Nazi ideology.
+%  \item \textbf{Neo-Nazi emblems}: Neo-Nazi emblems are symbols used by modern
+%    white supremacist and neo-Nazi groups to express their extremist beliefs
+%    and allegiance to Nazi ideology. These emblems often include modified or
+%    obscure versions of historical Nazi symbols, such as the swastika, sonnenrad,
+%    or runes, to avoid legal restrictions or public scrutiny. While some are
+%    direct revivals, others are new creations that serve the same purpose of
+%    spreading hate and promoting white nationalist ideas. In this study, it includes
+%    symbols from various far-right extremist groups, such as Atomwaffen Division emblem,
+%    Blood \& Honor emblem, Celtic Cross, Combat 18 emblem, Golden Dawn, Hammerskins emblem,
+%    Identitarian movement emblem, Kolovrat, National Rebirth of Poland emblem,
+%    Popular front emblem. Since only a limited number of images were available for
+%    each group, they were consolidated under a single "Neo-Nazi" class for classification purposes.
+  \item \textbf{Yellow badge}: The Yellow badge was a cloth patch, usually in
+  the shape of a Star of David, that Jews were forced to wear by the Nazis
+  to identify and segregate them. It symbolized persecution and was used to
+  mark Jews publicly, contributing to their dehumanization and eventual
+  deportation. Today, it stands as a powerful symbol of the Holocaust and
+  the oppression of Jewish people.
+  \item \textbf{Siegrune}: The Siegrune, or "S rune", is a lightning-bolt-shaped
+  symbol used by the Nazi SS to represent victory ("Sieg" in German). It was
+  adapted from ancient runic alphabets and became one of the most recognizable
+  symbols of the SS, often displayed as a double rune on uniforms and insignia.
+  Today, it is widely recognized as a hate symbol and is banned or restricted
+  in several countries due to its association with Nazi ideology.
+  \item \textbf{SS Skull}: The SS skull, also known as the "Totenkopf" ("death's head"),
+  was a symbol used by the Nazi SS to represent loyalty unto death and intimidation.
+  It was prominently featured on SS uniforms, especially those of the elite units
+  and concentration camp guards. Today, it is considered a hate symbol due to
+  its strong association with the crimes and ideology of the SS and the Nazi regime.
+  \item \textbf{Sturmabteilung emblem}: The Sturmabteilung (SA) emblem was the
+  symbol of the Nazi Party's paramilitary wing, known for its violent tactics
+  and support for Adolf Hitler's rise to power. The emblem typically featured
+  a stylized version of the SA initials, often accompanied by a swastika.
+  It represented the SA's role in enforcing Nazi ideology and intimidation,
+  and the emblem is now recognized as a symbol of hate and fascism.
+  \item \textbf{Swastika}: The Swastika is an ancient symbol, originally used in
+  various cultures to represent good luck, prosperity, and well-being. However,
+  it was appropriated by the Nazi Party in the 1920s, becoming a powerful
+  symbol of their ideology and representing white supremacy, hate, and
+  anti-Semitism. Today, it is widely recognized as a symbol of Nazi oppression
+  and is illegal in many countries due to its association with hate and violence.
+  \item \textbf{Wolfsangel}: The Wolfsangel is a symbol originally used in medieval
+  Europe, representing a wolf trap, and later adopted by Nazi and neo-Nazi
+  groups. It was used by Nazi units during World War II, including the Waffen-SS,
+  and has become associated with white supremacy and fascist ideologies. Today,
+  the Wolfsangel is a recognized hate symbol, often used by extremist groups
+  to promote Nazi beliefs.
+  \item \textbf{Atomwaffen Division emblem}:The Atomwaffen Division emblem is a symbol
+  used by a violent neo-Nazi terrorist group known for promoting accelerationism and
+  engaging in acts of domestic terrorism. The emblem typically features a stylized
+  radiation warning symbol, representing the group's fascination with chaos,
+  destruction, and nuclear war. It is widely recognized as a hate symbol and is
+  associated with extremist violence, white supremacy, and far-right terrorism.
+  \item \textbf{Blood \& Honor emblem}: The Blood \& Honour emblem represents an international
+  neo-Nazi network that promotes white supremacist music and ideology. The name comes
+  from the Hitler Youth motto "Blut und Ehre" (Blood and Honor), and the emblem often
+  includes those words along with fascist symbols like runes or laurel wreaths. It
+  is widely recognized as a hate symbol linked to racist propaganda, violence,
+  and far-right extremism.
+  \item \textbf{Celtic Cross}: The Celtic Cross is an ancient symbol with religious
+  and cultural origins in Celtic Christianity, featuring a cross with a circle
+  around the intersection. While it remains a legitimate cultural and religious
+  symbol, white supremacists have adopted a simplified version as a symbol of white
+  identity and nationalism. This version is now widely recognized as a hate symbol
+  in extremist contexts.
+  \item \textbf{Combat 18 emblem}: Combat 18 is a violent neo-Nazi organization, with the
+  number "18" representing the initials A and H (Adolf Hitler). Its emblem typically
+  includes the number or stylized letters alongside other far-right imagery. The group
+  is known for promoting white supremacy and terrorism, and its emblem is a symbol of
+  hate and violence.
+  \item \textbf{Golden Dawn}: Golden Dawn is a far-right political party from Greece known for its neo-Nazi ideology
+  and involvement in violent, xenophobic acts. Its emblem resembles a Greek meander pattern, often compared to a
+  swastika due to its stylized, angular design. Though once politically active, the group has been widely condemned
+  and legally prosecuted for its extremist activities.
+  \item \textbf{Hammerskins emblem}: The Hammerskins emblem features two crossed hammers, symbolizing the group's
+  slogan "Hammerskins Nation" and white power. This violent white supremacist group is rooted in the skinhead
+  movement and is heavily involved in hate music and racist activism. The emblem is a well-known hate symbol tied to
+  global neo-Nazi networks.
+  \item \textbf{Identitarian movement emblem}: The Identitarian Movement emblem typically features a yellow circle
+  with a black Greek lambda symbol, inspired by the Spartan shield. This far-right European movement promotes
+  anti-immigration and ethnonationalist ideologies under the guise of cultural preservation. Although presented with
+  modern, clean branding, the emblem is associated with white nationalist beliefs.
+  \item \textbf{Kolovrat}: The Kolovrat is an ancient Slavic symbol representing the sun and cosmic cycles, used
+  historically in pagan contexts. In recent years, it has been appropriated by Slavic neo-Nazis and white
+  supremacists as a symbol of ethnic purity and nationalist pride. While some use it in a cultural or historical
+  sense, its association with extremist ideology marks it as a hate symbol in certain contexts.
+  \item \textbf{National Rebirth of Poland emblem}: The National Rebirth of Poland (NOP) emblem represents a
+  far-right nationalist party in Poland known for its anti-Semitic and xenophobic views. The emblem often
+  incorporates stylized nationalist imagery, including swords or eagles, designed to evoke Polish strength and
+  purity. It is associated with extremist rhetoric and far-right political activism in Poland.
+  \item \textbf{Popular front emblem}: The Popular Front emblem is used by a range of nationalist or fascist groups,
+  often combining traditional nationalist symbols like eagles or stars with militaristic imagery. Though the term "
+  Popular Front" historically referred to leftist coalitions, in extremist contexts, it can represent
+  ultra-nationalist, anti-democratic movements. The emblem typically signals far-right or authoritarian ideologies.
+%  \item \textbf{Doppelsiegrune}: The Doppelsiegrune, or "double Siegrune," features two lightning-bolt-like runes
+%  and was the official insignia of the Nazi SS. It symbolized power, obedience, and loyalty to Adolf Hitler and
+%  became one of the most infamous emblems of the Nazi regime. Today, it is banned or heavily restricted in many
+%  countries and is recognized worldwide as a symbol of hate and terror.
+\end{itemize}

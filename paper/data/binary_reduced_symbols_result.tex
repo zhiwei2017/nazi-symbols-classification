@@ -1,0 +1,32 @@
+%! Author = zhiweizhang
+%! Date = 10.06.25
+
+\begin{table}[ht]
+  \centering
+  \resizebox{\textwidth}{!}{
+    \begin{tabular}{lccccc}
+    \toprule
+    \textbf{Model}                        & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{AUC}   \\
+    \midrule
+    YOLOv11                               & 0.994             & 0.792              & 0.568           & 0.661             & 0.783          \\
+    ResNet                                & 0.994             & 0.712              & 0.750           & 0.730             & 0.873          \\
+    EfficientNet                          & 0.988             & 0.781              & 0.558           & 0.651             & 0.777          \\
+    ViT                                   & \textbf{0.998}    & 0.972              & 0.926           & \textbf{0.948}    & 0.962          \\
+    Moondream                             & 0.996             & 0.840              & 0.851           & 0.846             & 0.924          \\
+    OpenCLIP                              & 0.864             & 0.025              & 0.338           & 0.047             & 0.604          \\
+    OpenCLIP + Logistic Regression        & 0.996             & 0.917              & 0.835           & 0.874             & 0.917          \\
+    OpenCLIP + SGDClassifier              & 0.996             & 0.899              & 0.895           & 0.897             & 0.946          \\
+    OpenCLIP + KNeighborsClassifier       & \textbf{0.998}    & 0.895              & \textbf{0.989}  & 0.940             & \textbf{0.993} \\
+    OpenCLIP + SVC                        & \textbf{0.998}    & \textbf{0.973}     & 0.900           & 0.935             & 0.949          \\
+    OpenCLIP + DecisionTreeClassifier     & 0.985             & 0.514              & 0.635           & 0.568             & 0.812          \\
+    OpenCLIP + BaggingClassifier          & 0.987             & 0.566              & 0.639           & 0.600             & 0.815          \\
+    OpenCLIP + AdaBoostClassifier         & 0.994             & 0.869              & 0.742           & 0.800             & 0.869          \\
+    OpenCLIP + GradientBoostingClassifier & 0.993             & 0.837              & 0.708           & 0.767             & 0.853          \\
+    OpenCLIP + RandomForestClassifier     & 0.988             & 0.959              & 0.209           & 0.344             & 0.604          \\
+    OpenCLIP + VotingClassifier           & 0.997             & 0.964              & 0.833           & 0.894             & 0.916          \\
+    \bottomrule
+    \end{tabular}
+  }
+  \caption{Binary classification performance across different models on reduced-symbol set. The best scores for each metric are highlighted in bold.}
+  \label{tab:binary-reduced-symbols-result}
+\end{table}
