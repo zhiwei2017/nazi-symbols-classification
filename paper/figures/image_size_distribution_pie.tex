@@ -1,0 +1,19 @@
+%! Author = zhiweizhang
+%! Date = 15.06.25
+
+% Preamble
+\begin{figure}[ht]
+  \centering
+  \begin{tikzpicture}
+    \pie[text=legend, radius=3, after number=\%, explode = 0.1]{
+      71.5/(0{,} 200],
+      5.5/(200{,} 400],
+      12.3/(400{,} 600],
+      6.8/(600{,} 800],
+      1.4/(800{,} 1000],
+      2.5/(1000{,} 5000]
+    }
+  \end{tikzpicture}
+  \caption{Distribution of image sizes in the dataset, grouped by pixel width and height. The majority of images fall into the $(0, 200]$ range.}
+  \label{fig:image-size-distribution}
+\end{figure}

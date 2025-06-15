@@ -1,0 +1,79 @@
+%! Author = zhiweizhang
+%! Date = 13.06.25
+
+% Preamble
+\begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            colormap={bluewhite}{color=(white) rgb255=(90,96,191)},
+            xlabel=Predicted,
+            xlabel style={yshift=-10pt},
+            ylabel=Actual,
+            ylabel style={yshift=10pt},
+            xticklabels={
+                Sonnenrad,
+                Flash and circle,
+                Broken Sun Cross,
+                The Happy Merchant,
+                Hitler,
+                Nazi salute,
+                Yellow badge,
+                Neo-Nazi,
+                Siegrune,
+                SS Skull,
+                Sturmabteilung emblem,
+                Swastika,
+                Wolfsangel
+            }, % changed
+            xtick={0,...,12}, % changed
+            xtick style={draw=none},
+            yticklabels={
+                Sonnenrad,
+                Flash and circle,
+                Broken Sun Cross,
+                The Happy Merchant,
+                Hitler,
+                Nazi salute,
+                Yellow badge,
+                Neo-Nazi,
+                Siegrune,
+                SS Skull,
+                Sturmabteilung emblem,
+                Swastika,
+                Wolfsangel
+            }, % changed
+            ytick={0,...,12}, % changed
+            ytick style={draw=none},
+            enlargelimits=false,
+            colorbar,
+%            colorbar style={
+%              ytick={0, 0.5, 1.0, 1.5},
+%              yticklabels={0, 0.5, 1.0, 1.5},
+%%              xtick=\empty,
+%%              ylabel style={yshift=10pt},
+%            },
+            point meta min=0,
+            point meta max=100,
+            xticklabel style={
+              rotate=90,
+            },
+%            yticklabel style={
+%              text width=1cm,align=center
+%            },
+            nodes near coords={\pgfmathprintnumber\pgfplotspointmeta},
+            nodes near coords style={
+                yshift=-7pt
+            },
+        ]
+            \addplot[
+                matrix plot,
+                mesh/cols=13, % changed
+                point meta=explicit,
+                draw=gray
+            ] table [meta=C, x=x, y=y, col sep=comma] {data/vit-multiclass-confusion-matrix-data.csv};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Confusion matrix for the binary classification task using ViT. The values represent the number of samples in each cell.}
+    \label{fig:vit-confusion-matrix-multiple}
+\end{figure}

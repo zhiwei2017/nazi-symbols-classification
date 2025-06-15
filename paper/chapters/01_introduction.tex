@@ -15,8 +15,8 @@ structured information suitable for quantitative and qualitative analysis.
 
 Among the many types of harmful or sensitive content on social media, Nazi-related imagery remains a particularly
 pressing concern. Nazi symbols, most notably the swastika, were once appropriated by the German National Socialist
-regime (1933–1945) and have since become enduring emblems of hate and extremism. Other symbols—such as the SS bolts (
-representing the Schutzstaffel), the Black Sun (linked to fascist occult ideologies), and the Siegrune—have also
+regime (1933–1945) and have since become enduring emblems of hate and extremism. Other symbols—such as the \ac{SS} bolts,
+the Black Sun (linked to fascist occult ideologies), and the Siegrune—have also
 been adopted by modern neo-Nazi movements. These symbols continue to appear in digital media, where they are used to
 spread hate, signal affiliation, or incite violence. Many countries ban or restrict the public display of such
 imagery, underscoring the need for robust detection tools to enforce policy and moderate content online.
@@ -42,10 +42,10 @@ detection and categorization of Nazi symbols. Specifically, we:
 \begin{itemize}
   \item Construct a curated dataset of approximately 100,000 images containing both Nazi-related and non-Nazi imagery.
   \item Annotate and structure the dataset to support both binary and multi-class classification tasks.
-  \item Investigate a range of deep learning and multimodal models—including Convolutional Neural Networks (CNNs),
-  Vision Transformers (ViTs), and OpenCLIP embeddings—paired with classical machine learning algorithms.
+  \item Investigate a range of deep learning and multimodal models—including \ac{CNN}s,
+  \ac{ViT}, and OpenCLIP embeddings—paired with classical \ac{ML} algorithms.
   \item Evaluate the models based on standard classification metrics and analyze their strengths and weaknesses.
-  \item Develop and package an API service that allows for model inference via HTTP requests, enabling practical
+  \item Develop and package an \ac{API} service that allows for model inference via HTTP requests, enabling practical
   deployment.
 \end{itemize}
 
@@ -62,7 +62,7 @@ and neo-Nazi symbols: \textit{Sonnenrad}, \textit{Flash and circle}, \textit{Bro
 \textit{Blood \& Honor emblem}, \textit{Celtic Cross}, \textit{Combat 18 emblem}, \textit{Golden Dawn},
 \textit{Hammerskins emblem}, \textit{Identitarian movement emblem}, \textit{Kolovrat},
 \textit{National Rebirth of Poland emblem}, \textit{Popular front emblem}, \textit{Yellow badge}, \textit{Siegrune},
-\textit{SS Skull}, \textit{Sturmabteilung emblem}, \textit{Swastika}, and \textit{Wolfsangel}.
+\textit{\ac{SS} Skull}, \textit{Sturmabteilung emblem}, \textit{Swastika}, and \textit{Wolfsangel}.
 
 This research addresses two main classification tasks:
 
@@ -79,3 +79,35 @@ and restricted the complexity of hyperparameter tuning and model ensembling.
 Despite these constraints, this work aims to demonstrate the feasibility of developing effective and efficient
 classification tools to assist researchers, content moderators, and civil society stakeholders in identifying
 extremist visual content.
+
+\section{Thesis Structure}
+
+This thesis is organized as follows:
+
+\begin{itemize}
+  \item \textbf{Chapter 2: Literature Review} – This chapter surveys existing research on Nazi symbol detection and
+  classification, emphasizing methodological trends, key findings, and identifying research gaps addressed in this work.
+
+  \item \textbf{Chapter 3: Data and Model Development Methodology} – This chapter outlines the data collection
+  process, dataset composition, preprocessing techniques, and the classification algorithms employed. It also
+  describes the model training process, evaluation metrics, and justifies the chosen methodologies.
+
+  \item \textbf{Chapter 4: Ethical Considerations} – We explore the ethical implications of working with sensitive
+  content, including data privacy, the potential for misuse, and the broader responsibilities associated with
+  automated hate symbol detection.
+
+  \item \textbf{Chapter 5: Results} – This chapter presents the outcomes of our experiments, providing both
+  quantitative and qualitative analyses of model performance on binary and multi-class classification tasks.
+
+  \item \textbf{Chapter 6: Discussion and Analysis} – We interpret the results, analyze their implications in light
+  of the research objectives, compare our findings with prior work, and highlight the system's limitations and areas
+  for improvement.
+
+  \item \textbf{Chapter 7: Model Deployment and \ac{API} Service} – This chapter describes the deployment strategy
+  for the best-performing models, including the architecture of the API service, the \ac{CI/CD} pipeline, and
+  details of the available endpoints.
+
+  \item \textbf{Chapter 8: Conclusion and Future Work} – The final chapter summarizes the contributions of this
+  thesis, reflects on key insights gained, and outlines directions for future research in the field of Nazi symbol
+  classification.
+\end{itemize}

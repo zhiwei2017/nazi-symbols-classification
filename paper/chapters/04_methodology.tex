@@ -15,7 +15,7 @@ comprehensive dataset containing both positive and negative image classes was co
 from two major platforms:
 
 \begin{itemize}
-  \item \textbf{Roboflow}: Provided labeled datasets containing Nazi symbols such as swastikas, SS bolts, and the
+  \item \textbf{Roboflow}: Provided labeled datasets containing Nazi symbols such as Swastikas, SS bolts, and the
   Black Sun. These datasets constituted the positive class and were selected based on symbol relevance, label
   accuracy, and visual diversity.
 
@@ -34,68 +34,19 @@ were taken:
 \begin{itemize}
   \item Manual inspection was performed on each dataset to verify label accuracy and image quality.
   \item Nazi symbol datasets were annotated and filtered into predefined classes based on visual traits and
-  historical context, guided by taxonomies from the Anti-Defamation League (ADL) and academic research on hate iconography.
+  historical context, guided by taxonomies from the \ac{ADL}~\parencite{ADL} and academic research on hate iconography.
   \item Duplicate or near-duplicate images across datasets were removed to prevent data leakage.
 \end{itemize}
 
 The aggregated dataset was randomly partitioned into three subsets: 70\% for training, 15\% for validation, and 15\%
 for testing. Care was taken to avoid overlap of symbol instances across these partitions.
 
-\begin{table}[htbp]
-\centering
-\small
-%\renewcommand{\arraystretch}{2}
-\resizebox{\textwidth}{!}{
-\begin{tabular}{clcl}
-\toprule
-\textbf{Platform} & \textbf{Dataset Name / Description} & \textbf{Purpose} & \textbf{Notes} \\
-\midrule
-Roboflow & detect Dataset~\parencite{detect-lhuia_dataset} & Positive Class & Swastika and related Nazi symbols \\
-
-Roboflow & swastika Dataset (imgann)~\parencite{swastika-o7bde_dataset} & Positive Class & Swastika symbol detection \\
-
-Roboflow & swastika Dataset (Darja Nechaeva)~\parencite{swastika-uw8xt_dataset} & Positive Class & Historical swastika variations \\
-
-Roboflow & swastika\_detect Dataset~\parencite{swastika_detect_dataset} & Positive Class & Swastika detection for moderation \\
-
-Roboflow & symbols Dataset~\parencite{symbols-w93jw_dataset} & Positive Class & Includes general and hate symbols \\
-
-Roboflow & violent object Dataset~\parencite{violent-object_dataset} & Positive Class & Hate symbols and violent imagery \\
-
-Roboflow & Swastiki\_Net Dataset~\parencite{swastiki_net_dataset} & Positive Class & Swastika symbol classification \\
-
-Roboflow & Content Moderation Dataset~\parencite{content-moderation-fwj5b_dataset} & Positive Class & Multiple harmful or extremist symbols \\
-
-Roboflow & Swastika\_Detection Dataset~\parencite{swastika_detection_dataset} & Positive Class & Swastikas in different contexts \\
-
-Kaggle & 100 Sports Image Classification~\parencite{100_sport_image_classification_dataset} & Negative Class & Neutral sports images \\
-
-Kaggle & Car vs Bike Classification Dataset~\parencite{car_bike_classification_dataset} & Negative Class & Background class diversity \\
-
-Kaggle & People Clothing Segmentation~\parencite{people_clothing_segmentation_dataset} & Negative Class & Background objects, neutral content \\
-
-Kaggle & Fruits and Vegetables Dataset~\parencite{fruit_and_vegetable_image_recognition_dataset} & Negative Class & For reducing false positives \\
-
-Kaggle & Animal Image Dataset~\parencite{animal_image_dataset} & Negative Class & Animal images for neutral comparison \\
-
-Kaggle & Kids and Adults Detection~\parencite{kids_and_adults_detection_dataset} & Negative Class & Human figures, non-extremist \\
-
-Kaggle & SCOOBY DOO Classification~\parencite{scooby_doo_classification_dataset} & Negative Class & Cartoon data for variance \\
-
-Kaggle & Low Light Animals~\parencite{subrata_sarkar_2025} & Negative Class & Low-light conditions for robustness \\
-
-Kaggle & AI vs Human-Generated Images~\parencite{ai_vs_human_generated_images_dataset} & Negative Class & Diverse image source simulation \\
-\bottomrule
-\end{tabular}
-}
-\caption{Summary of datasets used in this thesis for training, validation, and testing.}
-\label{tab:dataset_summary}
-\end{table}
+\input{data/dataset_summary}
 
 \subsection{Nazi Symbol Taxonomy and Distribution}
 
 The final dataset includes \textbf{22 distinct Nazi-related symbols}, ranging from widely recognized emblems (e.g.,
-swastika, SS bolts) to lesser-known variants (e.g., Wolfsangel, Kolovrat). These were selected based on their
+swastika, \ac{SS} bolts) to lesser-known variants (e.g., Wolfsangel, Kolovrat). These were selected based on their
 documented use in historical Nazi insignia, far-right propaganda, and contemporary neo-Nazi subcultures. A visual
 overview of representative images is shown in Figure~\ref{figure:nazi-symbol-examples}, while
 Section~\autoref{section:symbol-description} provides full symbol descriptions.
@@ -117,20 +68,20 @@ The Nazi symbols are mainly from Roboflow with labels. The symbols are defined a
   from Norse and Celtic cultures that was appropriated by the Nazis to
   promote an idealized "Aryan" heritage. Its many variations include forms
   of the swastika and Celtic Cross, and it was used by the Nazi Party,
-  SA, and SS. Today, it is commonly used by neo-Nazis and white
+  \ac{SA}, and \ac{SS}. Today, it is commonly used by neo-Nazis and white
   supremacists, especially a version with two concentric circles and
   crooked rays, sometimes featuring a swastika in the center.
   \item \textbf{Flash and circle}: The Flash and Circle is a symbol featuring
-  a lightning bolt within a circle, originally used by the British Union
-  of Fascists in the 1930s. It was meant to represent action within unity
+  a lightning bolt within a circle, originally used by the \ac{BUF} in the 1930s.
+  It was meant to represent action within unity
   and has since been adopted by neo-fascist and white supremacist groups.
   Though less common today, it remains a recognizable hate symbol associated
   with fascist ideology.
   \item \textbf{Broken Sun Cross}: Symbols featuring an equilateral cross enclosed
   in a circle have appeared in various cultures since the Bronze Age. Since
-  the 1930s, a version with ‘broken’ arms resembling a swastika gained far-right
+  the 1930s, a version with 'broken' arms resembling a swastika gained far-right
   associations. It was used by the German Faith Movement and later as insignia
-  for two Waffen SS divisions.
+  for two Waffen \ac{SS} divisions.
   \item \textbf{The Happy Merchant}: The Happy Merchant is an antisemitic meme
   depicting a Jewish man with exaggerated, stereotypical features, often used
   by white supremacists to promote hate. It originated from racist artwork
@@ -168,19 +119,19 @@ The Nazi symbols are mainly from Roboflow with labels. The symbols are defined a
   \item \textbf{Siegrune}: The Siegrune, or "S rune", is a lightning-bolt-shaped
   symbol used by the Nazi SS to represent victory ("Sieg" in German). It was
   adapted from ancient runic alphabets and became one of the most recognizable
-  symbols of the SS, often displayed as a double rune on uniforms and insignia.
+  symbols of the \ac{SS}, often displayed as a double rune on uniforms and insignia.
   Today, it is widely recognized as a hate symbol and is banned or restricted
   in several countries due to its association with Nazi ideology.
-  \item \textbf{SS Skull}: The SS skull, also known as the "Totenkopf" ("death's head"),
-  was a symbol used by the Nazi SS to represent loyalty unto death and intimidation.
-  It was prominently featured on SS uniforms, especially those of the elite units
+  \item \textbf{\ac{SS} Skull}: The SS skull, also known as the "Totenkopf" ("death's head"),
+  was a symbol used by the Nazi \ac{SS} to represent loyalty unto death and intimidation.
+  It was prominently featured on \ac{SS} uniforms, especially those of the elite units
   and concentration camp guards. Today, it is considered a hate symbol due to
-  its strong association with the crimes and ideology of the SS and the Nazi regime.
-  \item \textbf{Sturmabteilung emblem}: The Sturmabteilung (SA) emblem was the
+  its strong association with the crimes and ideology of the \ac{SS} and the Nazi regime.
+  \item \textbf{Sturmabteilung emblem}: The \ac{SA} emblem was the
   symbol of the Nazi Party's paramilitary wing, known for its violent tactics
   and support for Adolf Hitler's rise to power. The emblem typically featured
   a stylized version of the SA initials, often accompanied by a swastika.
-  It represented the SA's role in enforcing Nazi ideology and intimidation,
+  It represented the \ac{SA}'s role in enforcing Nazi ideology and intimidation,
   and the emblem is now recognized as a symbol of hate and fascism.
   \item \textbf{Swastika}: The Swastika is an ancient symbol, originally used in
   various cultures to represent good luck, prosperity, and well-being. However,
@@ -190,7 +141,7 @@ The Nazi symbols are mainly from Roboflow with labels. The symbols are defined a
   and is illegal in many countries due to its association with hate and violence.
   \item \textbf{Wolfsangel}: The Wolfsangel is a symbol originally used in medieval
   Europe, representing a wolf trap, and later adopted by Nazi and neo-Nazi
-  groups. It was used by Nazi units during World War II, including the Waffen-SS,
+  groups. It was used by Nazi units during World War II, including the Waffen-\ac{SS},
   and has become associated with white supremacy and fascist ideologies. Today,
   the Wolfsangel is a recognized hate symbol, often used by extremist groups
   to promote Nazi beliefs.
@@ -233,7 +184,7 @@ The Nazi symbols are mainly from Roboflow with labels. The symbols are defined a
   historically in pagan contexts. In recent years, it has been appropriated by Slavic neo-Nazis and white
   supremacists as a symbol of ethnic purity and nationalist pride. While some use it in a cultural or historical
   sense, its association with extremist ideology marks it as a hate symbol in certain contexts.
-  \item \textbf{National Rebirth of Poland emblem}: The National Rebirth of Poland (NOP) emblem represents a
+  \item \textbf{National Rebirth of Poland emblem}: The \ac{NOP} emblem represents a
   far-right nationalist party in Poland known for its anti-Semitic and xenophobic views. The emblem often
   incorporates stylized nationalist imagery, including swords or eagles, designed to evoke Polish strength and
   purity. It is associated with extremist rhetoric and far-right political activism in Poland.
@@ -271,7 +222,6 @@ structured as follows:
 This structuring strategy ensured that the dataset aligned with the goals of each classification task: broad
 detection capability in the binary case and fine-grained categorization in the multi-class case.
 
-
 Due to the limited number of images in several classes, a new category labeled \textit{Neo-Nazi} was created to
 group together symbol classes with very few examples. This regrouping allows the classifier to generalize better and
 prevents overfitting on sparsely represented classes. Table~\autoref{tab:symbol-distribution} presents the distribution
@@ -280,6 +230,15 @@ of images in both the main Nazi-related symbol classes and the individual symbol
 retaining interpretability for downstream applications.
 
 \input{data/symbol_distribution}
+
+The distribution of the dataset used for binary classification is heavily imbalanced, with non-Nazi samples
+significantly outnumbering Nazi-related instances, as illustrated in the pie chart in ~\autoref{fig:binary-dataset-pie}.
+For the multi-class classification task, the dataset further reveals a strong imbalance among individual symbol
+classes, with the majority of samples concentrated in a few categories such as swastika and siegrune. This
+distribution is shown in ~\autoref{fig:multi-class-dataset-distribution}.
+
+\input{figures/binary_dataset_pie}
+\input{figures/multi_class_dataset_distribution}
 
 \subsection{Sample Images}
 
@@ -310,40 +269,40 @@ countering extremism.
 
 \section{Algorithms}
 To evaluate the effectiveness of different machine learning approaches in Nazi symbol detection and classification,
-we experimented with a diverse set of models. These include both modern deep learning architectures and traditional
-machine learning algorithms, allowing us to compare performance across various paradigms and computational complexities.
+we experimented with a diverse set of models. These include both modern \ac{DL} architectures and traditional
+\ac{ML} algorithms, allowing us to compare performance across various paradigms and computational complexities.
 
-\subsection{YOLO (You Only Look Once)}
-YOLO is a real-time object detection framework that treats detection as a single regression problem, directly
-predicting bounding boxes and class probabilities from full images. YOLO processes the entire image in one forward
+\subsection{\ac{YOLO}}
+\ac{YOLO} is a real-time object detection framework that treats detection as a single regression problem, directly
+predicting bounding boxes and class probabilities from full images. \ac{YOLO} processes the entire image in one forward
 pass, offering a trade-off between speed and accuracy that is well-suited for applications requiring real-time
-inference. While primarily intended for detection tasks, YOLO can be adapted for classification by interpreting the
-most confident detection as the image label. In this study, we adopt YOLOv11 for its enhanced speed and robustness,
+inference. While primarily intended for detection tasks, \ac{YOLO} can be adapted for classification by interpreting the
+most confident detection as the image label. In this study, we adopt \ac{YOLO}v11 for its enhanced speed and robustness,
 leveraging its latest improvements in backbone design and label assignment.
 
-\subsection{ResNet (Residual Network)}
-ResNet is a convolutional neural network that employs residual learning to ease the training of very deep networks
+\subsection{\ac{ResNet}}
+\ac{ResNet} is a \ac{CNN} that employs residual learning to ease the training of very deep networks
 by introducing identity shortcut connections. This design mitigates the vanishing gradient problem, enabling
-efficient training of architectures with hundreds of layers. ResNet has demonstrated strong performance in image
-classification benchmarks. We utilize ResNet-50, a 50-layer deep variant, for its proven balance between model
+efficient training of architectures with hundreds of layers. \ac{ResNet} has demonstrated strong performance in image
+classification benchmarks. We utilize \ac{ResNet}-34, a 34-layer deep variant, for its proven balance between model
 complexity and classification accuracy.
 
 \subsection{EfficientNet}
-EfficientNet is a family of CNN architectures that systematically scales depth, width, and resolution using a
-compound coefficient, resulting in a series of models that achieve state-of-the-art accuracy with significantly
+EfficientNet is a family of \ac{CNN} architectures that systematically scales depth, width, and resolution using a
+compound coefficient, resulting in a series of models that achieve \ac{SotA} accuracy with significantly
 fewer parameters. EfficientNet is highly efficient in resource usage, making it suitable for large-scale image
 classification on limited hardware. In our experiments, it serves as a lightweight alternative to deeper networks
 without substantial sacrifice in accuracy.
 
-\subsection{Vision Transformer (ViT)}
-The Vision Transformer adapts the transformer architecture from NLP to vision tasks by dividing images into patches
+\subsection{\ac{ViT}}
+The \ac{ViT} adapts the transformer architecture from \ac{NLP} to vision tasks by dividing images into patches
 and processing them as a sequence of tokens. It eliminates convolutions entirely and instead relies on
-self-attention mechanisms to capture long-range dependencies and global context. ViT has shown competitive or
-superior performance compared to CNNs when trained on sufficiently large datasets. We include ViT in our comparison
+self-attention mechanisms to capture long-range dependencies and global context. \ac{ViT} has shown competitive or
+superior performance compared to CNNs when trained on sufficiently large datasets. We include \ac{ViT} in our comparison
 to evaluate the effectiveness of transformer-based models in classifying visual symbols with complex semantics.
 
 \subsubsection{OpenCLIP}
-OpenCLIP is an open-source implementation of CLIP (Contrastive Language–Image Pretraining), a vision-language model
+OpenCLIP is an open-source implementation of \ac{CLIP}, a vision-language model
 trained on a large-scale dataset of image-text pairs. OpenCLIP learns a shared embedding space for both modalities,
 allowing for zero-shot classification by comparing image embeddings to text prompt embeddings. We use OpenCLIP both
 in zero-shot mode and as a feature extractor, offering a flexible and semantically rich representation of images
@@ -356,21 +315,22 @@ text-image comparisons. Its strength lies in efficient on-device performance, ma
 constrained computational resources. We explore Moondream as a potential solution for mobile or embedded
 classification settings.
 
-\subsubsection{OpenCLIP as Encoder with Classical Machine Learning Classifiers}
+\subsubsection{OpenCLIP as Encoder with Classical \ac{ML} Classifiers}
 To leverage the semantic richness of OpenCLIP’s embeddings, we also employ it as a frozen feature encoder. The
-resulting vector representations are then used as input to traditional machine learning classifiers. This two-stage
+resulting vector representations are then used as input to traditional \ac{ML} classifiers. This two-stage
 pipeline allows rapid experimentation with interpretable and computationally efficient models, particularly
-advantageous for small datasets or when deep learning is computationally prohibitive. A summary of the key
+advantageous for small datasets or when \ac{DL} is computationally prohibitive. A summary of the key
 characteristics of used classification algorithms is provided in Table~\ref{tab:summary-classification-algorithms}.
 
 \paragraph{Classic Classifiers Used:}
 \begin{itemize}
   \item \textbf{Logistic Regression:} A linear probabilistic model ideal for binary classification problems.
-  \item \textbf{SGD Classifier:} An efficient linear classifier using stochastic gradient descent, scalable to large
+  \item \textbf{\ac{SGD} Classifier:} An efficient linear classifier using stochastic gradient descent, scalable to
+  large
   datasets.
-  \item \textbf{K-Nearest Neighbors (KNN):} A non-parametric algorithm that assigns labels based on the closest
+  \item \textbf{\ac{KNN}:} A non-parametric algorithm that assigns labels based on the closest
   training examples in feature space.
-  \item \textbf{Support Vector Classifier (SVC):} A margin-based classifier effective for high-dimensional data.
+  \item \textbf{\ac{SVC}:} A margin-based classifier effective for high-dimensional data.
   \item \textbf{Decision Tree Classifier:} A hierarchical model that splits data based on feature thresholds,
   enabling interpretable decision-making.
   \item \textbf{Bagging Classifier:} An ensemble of decision trees trained on bootstrapped samples to reduce variance.
@@ -380,7 +340,7 @@ characteristics of used classification algorithms is provided in Table~\ref{tab:
   \item \textbf{Random Forest Classifier:} An ensemble of decision trees with random feature selection, offering
   robustness and high accuracy.
   \item \textbf{Voting Classifier:} Combines predictions from multiple base models (e.g., Logistic Regression,
-  Random Forest, Linear SVC) via soft or hard voting to improve overall performance.
+  Random Forest, Linear \ac{SVC}) via soft or hard voting to improve overall performance.
 \end{itemize}
 
 \input{data/summary_classification_algorithms}
@@ -391,10 +351,19 @@ To ensure the robustness and consistency of our models, we applied a comprehensi
 includes resizing, normalization, and offline data augmentation. These steps are essential for reducing noise,
 simulating real-world variations, and enabling efficient training.
 
+\input{figures/image_size_distribution_pie}
+
+
 \begin{itemize}
-  \item \textbf{Resizing}: All images were resized to a fixed resolution to ensure uniform dimensions across the
-  dataset. This not only standardizes input for model compatibility but also improves computational efficiency
-  during both training and inference.
+  \item \textbf{Resizing}: All input images were resized to a fixed resolution of $224 \times 224$ pixels. This
+  decision was motivated by two primary considerations. First, as shown in ~\autoref{fig:image-size-distribution}, an
+  analysis of the collected dataset revealed that approximately $71\%$ of all Nazi symbol images had native
+  dimensions smaller than $200 \times 200$ pixels, while only $5.5\%$ fell within the $200 \times 200$ to
+  \item $400 \times 400$ range. Standardizing the input size to $224 \times 224$ allows for minimal distortion or
+  loss of detail for the majority of the images, which were already relatively small. Second, several of the
+  evaluated models, including \texttt{vit\_base\_patch16\_224}, require fixed input dimensions of $224 \times 224$
+  due to architectural constraints. Adopting this resolution ensures compatibility with these models and enables
+  consistent performance comparisons across all evaluated architectures.
 
   \item \textbf{Normalization}: Each image was normalized by scaling pixel values to the range $[0, 1]$ on a per-image
   basis. This helps stabilize the training process and accelerates convergence by ensuring consistent data scaling.
@@ -455,100 +424,133 @@ Examples of these preprocessing steps—including augmentation, resizing, and no
 
 \section{Model Training}
 
-Each model in this study was trained using specific hyperparameter configurations suited to its architecture and classification task. For all deep learning models, early stopping was applied based on validation loss with a patience of 10 epochs to prevent overfitting. The best-performing model on the validation set was preserved for final evaluation. A summary of the key training hyperparameters is provided in Table~\ref{tab:training-hyperparameters}.
+Each model in this study was trained using specific hyperparameter configurations suited to its architecture and
+classification task. For all \ac{DL} models, early stopping was applied based on validation loss with a
+patience of 10 epochs to prevent overfitting. The best-performing model on the validation set was preserved for
+final evaluation. A summary of the key training hyperparameters is provided in Table~\ref{tab:training-hyperparameters}.
 
-\textbf{ResNet50} was trained for 100 epochs with a batch size of 16 and input image size of $224 \times 224$. Binary cross-entropy (BCE) loss was used for binary classification tasks and categorical cross-entropy (CCE) for multi-class classification. The Adam optimizer was employed with an initial learning rate of $1 \times 10^{-3}$, along with weight decay of $1 \times 10^{-5}$. A 1-cycle learning rate scheduler was used to adjust the learning rate dynamically over the epochs.
+\textbf{\ac{ResNet}34} was trained for 100 epochs with a batch size of 16 and input image size of $224 \times 224$.
+\ac{BCE} loss was used for binary classification tasks and \ac{CCE} for multi-class classification.
+The Adam optimizer was employed with an initial learning rate of $1 \times 10^{-3}$, along with weight decay of $1 \times 10^{-5}$.
+A 1-cycle learning rate scheduler was used to adjust the learning rate dynamically over the epochs.
 
-\textbf{EfficientNet} was trained for 100 epochs using a batch size of 16 and input size of $224 \times 224$. For binary classification, the Nesterov momentum variant of Adam (NAdam) was used with a learning rate of $2 \times 10^{-3}$, zero weight decay, and a momentum decay of 0.004. For multi-class classification, the Adam optimizer with an initial learning rate of $1 \times 10^{-3}$ was used. In both cases, the model’s fully connected layer was modified to a linear layer, where the number of output features matched the number of classes.
+\textbf{EfficientNet} was trained for 100 epochs using a batch size of 16 and input size of $224 \times 224$. For
+binary classification, the \ac{NAdam} was used with a learning rate of $2 \times 10^{-3}$, zero weight decay, and a
+momentum decay of 0.004. For multi-class classification, the Adam optimizer with an initial learning rate of
+$1 \times 10^{-3}$ was used. In both cases, the model’s fully connected layer was modified to a linear layer, where
+the number of output features matched the number of classes.
 
-\textbf{Vision Transformer (ViT)} was trained for 100 epochs with a batch size of 16 and input image size of $224 \times 224$. The Adam optimizer with a learning rate of $2 \times 10^{-5}$ was used, and loss functions were selected according to the classification task (BCE for binary, CCE for multi-class).
+\textbf{\ac{ViT}} was trained for 100 epochs with a batch size of 16 and input image size of $224 \times 224$. The Adam
+optimizer with a learning rate of $2 \times 10^{-5}$ was used, and loss functions were selected according to the
+classification task (\ac{BCE} for binary, \ac{CCE} for multi-class).
 
-\textbf{YOLOv11} was trained for 100 epochs with a batch size of 16 and input image size of $224 \times 224$. SGD was used as the optimizer with an initial learning rate of 0.01, momentum of 0.9, and weight decay of 0.0005. Binary cross-entropy and categorical cross-entropy were used for binary and multi-class classification, respectively.
+\textbf{YOLOv11} was trained for 100 epochs with a batch size of 16 and input image size of $224 \times 224$. \ac{SGD}
+was used as the optimizer with an initial learning rate of 0.01, momentum of 0.9, and weight decay of 0.0005. \ac{BCE}
+and \ac{CCE} were used for binary and multi-class classification, respectively.
 
-\textbf{OpenCLIP-based models}: When using OpenCLIP as a feature encoder followed by classical machine learning classifiers, embeddings were extracted from resized input images ($224 \times 224$), and classifiers (e.g., logistic regression, SVM, KNN) were trained on these features. These training processes were straightforward and executed on CPU. In contrast, zero-shot classification with OpenCLIP and Moondream did not involve training on the dataset. Instead, classification was performed by measuring the cosine similarity between image and text embeddings, enabling inference without fine-tuning.
+\textbf{OpenCLIP-based models}: When using OpenCLIP as a feature encoder followed by classical \ac{ML} classifiers,
+embeddings were extracted from resized input images ($224 \times 224$), and classifiers (e.g., logistic regression,
+\ac{SVC}, \ac{KNN}) were trained on these features. These training processes were straightforward and executed on
+CPU. In contrast, zero-shot classification with OpenCLIP and Moondream did not involve training on the dataset. Instead,
+classification was performed by measuring the cosine similarity between image and text embeddings, enabling
+inference without fine-tuning.
 
-All training experiments were conducted on an NVIDIA RTX 4090 GPU with 16 GB VRAM (10 GB available).
+All training experiments were conducted on an NVIDIA RTX 4090 GPU with 16 GB VRAM (16 GB available).
 
 \input{data/training_hyperpararmeters}
 
-\begin{figure}[ht]
-    \centering
-    \begin{tikzpicture}
-        \pie[text=legend, radius=3,
-            color={blue!60, red!70}] % 99435 + 2338
-            {97.7/Non-Nazi, 2.3/Nazi}
-    \end{tikzpicture}
-    \caption{Pie chart showing binary classification dataset distribution.}
-    \label{fig:binary-dataset-pie}
-\end{figure}
+\subsection{Example Prompts for OpenCLIP}
+
+OpenCLIP is a contrastive vision-language model. The following prompts were used to represent the Nazi symbol classes during classification:
+
+\begin{itemize}
+  \item \texttt{``A skull and crossbones insignia, often used by the Nazi SS, with a sinister and militaristic design.''}
+  \item \texttt{``A black swastika symbol with arms bent at 90 degrees, typically rotated at a 45-degree angle, often shown on a red circular background or a white circle, used during World War II by Nazi Germany.''}
+  \item \texttt{``The Wolfsangel symbol, resembling a hook-like rune, used by Nazi groups and German military units during World War II.''}
+\end{itemize}
+
+These prompts are used to calculate image-text similarity scores and rank candidate classes. The OpenCLIP model
+returns the class with the highest similarity score as the predicted label for each image.
 
 
 
-\begin{figure}[ht]
-    \centering
-    \begin{tikzpicture}
-        \begin{axis}[
-            xbar,
-            bar width=10pt,
-            width=\textwidth,
-            height=9cm,
-            xlabel={Number of Images},
-            symbolic y coords={
-                swastika,
-                siegrune,
-                ss\_skull,
-                hitler,
-                neo-nazi,
-                black\_sun,
-                happy\_merchant,
-                wolfsangel,
-                broken\_sun\_cross,
-                british\_union\_of\_fascist,
-                sturmabteilung\_emblem,
-                hitler\_salute,
-                judenstern
-            },
-            ytick=data,
-            yticklabels={
-                Swastika,
-                Siegrune,
-                SS Skull,
-                Hitler,
-                Neo-Nazi,
-                Black Sun,
-                Happy Merchant,
-                Wolfsangel,
-                Broken Sun Cross,
-                British Union of Fascist,
-                Sturmabteilung Emblem,
-                Hitler Salute,
-                Judenstern
-            },
-            xmin=0,
-            xmax=1200,
-            nodes near coords,
-            nodes near coords align={horizontal},
-            enlarge y limits=0.1,
-            grid=major,
-            bar shift=0pt,
-            ]
+\subsection{Example Prompts for Moondream}
 
-            % bars with color coding
-            \addplot[fill=red!70] coordinates {(1070,swastika)};
-            \addplot[fill=orange!70] coordinates {(311,siegrune)};
-            \addplot[fill=green!70] coordinates {(257,ss\_skull)};
-            \addplot[fill=purple!70] coordinates {(228,hitler)};
-            \addplot[fill=yellow!70] coordinates {(188,neo-nazi)};
-            \addplot[fill=cyan!70] coordinates {(152,black\_sun)};
-            \addplot[fill=brown!70] coordinates {(39,happy\_merchant)};
-            \addplot[fill=gray!70] coordinates {(38,wolfsangel)};
-            \addplot[fill=magenta!70] coordinates {(21,broken\_sun\_cross)};
-            \addplot[fill=teal!70] coordinates {(13,british\_union\_of\_fascist)};
-            \addplot[fill=pink!70] coordinates {(11,sturmabteilung\_emblem)};
-            \addplot[fill=lime!70] coordinates {(6,hitler\_salute)};
-            \addplot[fill=olive!70] coordinates {(4,judenstern)};
-        \end{axis}
-    \end{tikzpicture}
-    \caption{Dataset distribution of the multi-class classification task.}
-    \label{fig:multi-class-dataset-distribution}
-\end{figure}
+Moondream is a vision-language model capable of open-ended image captioning and VQA-style answering. Used Promtps are
+similiar to the ones used for OpenCLIP, but are more descriptive to fit the model's capabilities. Example prompts
+include:
+
+\begin{itemize}
+  \item \texttt{``Analyse whether the image contains a skull and crossbones insignia, often used by the Nazi SS, with a sinister and militaristic design.''}
+  \item \texttt{``Analyse whether the image contains a black swastika symbol with arms bent at 90 degrees, typically rotated at a 45-degree angle, often shown on a red circular background or a white circle, used during World War II by Nazi Germany.''}
+  \item \texttt{``Analyse whether the image contains the Wolfsangel symbol, resembling a hook-like rune, used by Nazi groups and German military units during World War II.''}
+\end{itemize}
+
+The generated responses were post-processed to match against known symbol categories. This approach allows Moondream to
+leverage its multimodal capabilities for classification tasks, even though it is not primarily designed for this purpose.
+With this kind of prompt, its answers are just "Yes" or "No", indicating whether the image contains the symbol or not.
+
+\section{Evaluation Metrics}
+
+To assess the performance of the classification models, several standard evaluation metrics widely used in image
+classification tasks were employed. These metrics provide comprehensive insight into the predictive capabilities of
+the models in both binary and multi-class classification contexts.
+
+Let:
+\begin{itemize}
+    \item $TP$ = True Positives
+    \item $TN$ = True Negatives
+    \item $FP$ = False Positives
+    \item $FN$ = False Negatives
+\end{itemize}
+
+The evaluation metrics are defined as follows:
+
+\begin{itemize}
+  \item \textbf{Accuracy}:
+  \[
+  \text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN}
+  \]
+
+  Accuracy quantifies the overall proportion of correct predictions made by the model and is most informative when
+  class distributions are balanced.
+
+  \item \textbf{Precision}:
+  \[
+  \text{Precision} = \frac{TP}{TP + FP}
+  \]
+
+  Precision is especially critical when the cost of false positives is high, indicating the model’s ability to avoid
+  misclassifying negative samples as positive.
+
+  \item \textbf{Recall}:
+  \[
+  \text{Recall} = \frac{TP}{TP + FN}
+  \]
+
+  Recall measures the model’s effectiveness in identifying all relevant positive instances, which is vital when
+  false negatives carry significant consequences.
+
+  \item \textbf{F1-Score}:
+  \[
+  \text{F1-Score} = 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}
+  \]
+
+  The F1-Score balances precision and recall, serving as a robust metric in cases of imbalanced class distributions.
+
+  \item \textbf{\ac{AUC-ROC}}: The AUC-ROC evaluates the model’s
+  ability to discriminate between classes by plotting the \ac{TPR} against \ac{FPR} across various
+  classification thresholds.
+
+  \[
+  \text{TPR} = \frac{TP}{TP + FN}, \quad \text{FPR} = \frac{FP}{FP + TN}
+  \]
+\end{itemize}
+
+For multi-class classification, accuracy, precision, recall, and F1-score are computed using \textit{macro-averaging},
+which calculates the metric independently for each class and then averages the results. This approach ensures that
+each class is given equal importance, regardless of its frequency in the dataset.
+
+All metrics are reported for each model under both binary and multi-class classification tasks. Model selection was
+based on validation loss, and the final results were obtained using the corresponding test sets.
+

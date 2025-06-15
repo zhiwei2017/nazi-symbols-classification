@@ -1,0 +1,88 @@
+%! Author = zhiweizhang
+%! Date = 13.06.25
+
+% Preamble
+\begin{figure}[ht]
+    \begin{subfigure}[b]{0.45\textwidth}
+    \centering
+        \begin{tikzpicture}
+            \begin{axis}[
+                width=0.9\textwidth,
+                colormap={bluewhite}{color=(white) rgb255=(90,96,191)},
+                xlabel=Predicted,
+                ylabel=Actual,
+                xticklabels={Non-Nazi, Nazi}, % changed
+                xtick={0,...,1}, % changed
+                xtick style={draw=none},
+                yticklabels={Non-Nazi, Nazi}, % changed
+                ytick={0,...,1}, % changed
+                ytick style={draw=none},
+                enlargelimits=false,
+                colorbar,
+                point meta min=0,
+                point meta max=200,
+                xticklabel style={
+                  text width=1cm,align=center
+                },
+                yticklabel style={
+                  text width=1cm,align=center
+                },
+                nodes near coords={\pgfmathprintnumber\pgfplotspointmeta},
+                nodes near coords style={
+                    yshift=-7pt
+                },
+            ]
+                \addplot[
+                    matrix plot,
+                    mesh/cols=2, % changed
+                    point meta=explicit,
+                    draw=gray
+                ] table [meta=C, x=x, y=y, col sep=comma] {data/efficientnet-binary-confusion-matrix-data.csv};
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Confusion matrix of EfficientNet-b2.}\label{fig:efficient-confusion-matrix-binary}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+    \centering
+        \begin{tikzpicture}
+            \begin{axis}[
+                width=0.9\textwidth,
+                colormap={bluewhite}{color=(white) rgb255=(90,96,191)},
+                xlabel=Predicted,
+                ylabel=Actual,
+                xticklabels={Non-Nazi, Nazi}, % changed
+                xtick={0,...,1}, % changed
+                xtick style={draw=none},
+                yticklabels={Non-Nazi, Nazi}, % changed
+                ytick={0,...,1}, % changed
+                ytick style={draw=none},
+                enlargelimits=false,
+                colorbar,
+                point meta min=0,
+                point meta max=200,
+                xticklabel style={
+                  text width=1cm,align=center
+                },
+                yticklabel style={
+                  text width=1cm,align=center
+                },
+                nodes near coords={\pgfmathprintnumber\pgfplotspointmeta},
+                nodes near coords style={
+                    yshift=-7pt
+                },
+            ]
+                \addplot[
+                    matrix plot,
+                    mesh/cols=2, % changed
+                    point meta=explicit,
+                    draw=gray
+                ] table [meta=C, x=x, y=y, col sep=comma] {data/openclip_encoder-binary-confusion-matrix-data.csv};
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Confusion matrix of OpenCLIP encoder and SVC.}\label{fig:openclip-encoder-confusion-matrix-binary}
+    \end{subfigure}
+
+    \caption{Confusion matrix for the binary classification task. The values represent the number of samples in each cell.}
+    \label{fig:confusion-matrix-binary}
+\end{figure}

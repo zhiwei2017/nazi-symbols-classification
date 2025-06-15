@@ -4,14 +4,14 @@
 \chapter{Literature Review}\label{chapter:literature-review}
 
 The classification of Nazi symbols in images is a highly specialized task that intersects multiple domains including
-computer vision, hate speech detection, few-shot learning, and ethical AI deployment. Given the sensitive and varied
-visual forms of Nazi symbols, this problem introduces unique challenges such as the need for robust visual
+computer vision, hate speech detection, few-shot learning, and ethical \ac{AI} deployment. Given the sensitive and
+varied visual forms of Nazi symbols, this problem introduces unique challenges such as the need for robust visual
 representations, limited training data, and open-set recognition capabilities.
 
 \section{Visual Symbol and Logo Recognition}
 
 Early work in symbol and logo classification has laid the foundation for the visual recognition of hate symbols.
-Iandola et al.~\parencite{iandola2015deeplogo} demonstrated that convolutional neural networks (CNNs) can effectively
+Iandola et al.~\parencite{iandola2015deeplogo} demonstrated that \ac{CNN}s can effectively
 recognize logos in natural scenes, which parallels the need for recognizing hate symbols in complex visual contexts.
 To support large-scale classification, Wang et al.~\parencite{li2020logo2k} proposed Logo-2K+, a dataset with over 2,000
 logo categories, emphasizing the importance of intra-class variation and scalability.
@@ -24,8 +24,8 @@ and contextual variations across images.
 \section{Hate Content Detection in Social Media and Memes}
 
 The intersection of visual and textual hate content has been studied in the context of online memes and extremist
-messaging. Belete and Alitasb~\parencite{belete2025200258} developed a deep learning pipeline for detecting offensive
-Amharic-language memes using BiLSTM and Dense architectures. Though language-specific, their framework provides
+messaging. Belete and Alitasb~\parencite{belete2025200258} developed a \ac{DL} pipeline for detecting offensive
+Amharic-language memes using \ac{BiLSTM} and Dense architectures. Though language-specific, their framework provides
 useful insights for multimodal hate symbol classification, where visual symbols are embedded in broader meme contexts.
 
 Das Bhattacharjee et al.~\parencite{dasbhattacharjee2019365} explored the detection of malicious content in social
@@ -36,14 +36,14 @@ Scrivens et al.~\parencite{scrivens2021dangerous} further analyzed how violent r
 Their sociological insights underscore the importance of identifying not just overt symbols, but also subtler visual
 cues tied to extremist behavior.
 
-\section{Deep Learning Models for Visual Classification}
+\section{\ac{DL} Models for Visual Classification}
 
 The backbone of Nazi symbol classification lies in deep visual models. Krizhevsky et al.~\parencite{krizhevsky2012imagenet}
-introduced AlexNet, a pioneering CNN architecture that enabled large-scale image
-classification. VGGNet~\parencite{simonyan2014very} demonstrated the value of deeper networks, which can extract nuanced
-visual features—critical when symbols are partially obscured or stylized.
+introduced AlexNet, a pioneering \ac{CNN} architecture that enabled large-scale image
+classification. \ac{VGGNet}~\parencite{simonyan2014very} demonstrated the value of deeper networks, which can extract
+nuanced visual features—critical when symbols are partially obscured or stylized.
 
-Dosovitskiy et al.~\parencite{dosovitskiy2020image} proposed the Vision Transformer (ViT), which forgoes convolutions in
+Dosovitskiy et al.~\parencite{dosovitskiy2020image} proposed the \ac{ViT}, which forgoes convolutions in
 favor of self-attention, enabling the model to consider global image context. This is especially relevant when Nazi
 symbols appear in complex backgrounds or compositions.
 
@@ -51,22 +51,22 @@ symbols appear in complex backgrounds or compositions.
 
 Nazi symbol classification often lacks sufficient labeled training examples, particularly for rare or obscure
 variations. This makes zero-shot and few-shot learning indispensable. Xian et al.~\parencite{xian2017zeroshot}
-systematically evaluated zero-shot learning (ZSL) approaches, emphasizing benchmark consistency and generalization.
+systematically evaluated \ac{ZSL} approaches, emphasizing benchmark consistency and generalization.
 
-Radford et al.~\parencite{radford2021clip} introduced CLIP, a powerful model that aligns image and text representations
-through contrastive learning. Its ability to perform zero-shot classification using only textual descriptions makes
-it well-suited for detecting hate symbols that are rare or constantly evolving. DiffCLIP~\parencite{zhang2021language}
-expands on this by improving few-shot classification through prompt-based tuning, a strategy ideal for small Nazi
-symbol datasets.
+Radford et al.~\parencite{radford2021clip} introduced \ac{CLIP}, a powerful model that aligns image and text
+representations through contrastive learning. Its ability to perform zero-shot classification using only textual
+descriptions makes it well-suited for detecting hate symbols that are rare or constantly evolving.
+DiffCLIP~\parencite{zhang2021language} expands on this by improving few-shot classification through
+prompt-based tuning, a strategy ideal for small Nazi symbol datasets.
 
-Few-shot learning methods like the Relation Network~\parencite{sung2018learning} offer another pathway, using
-similarity-based reasoning to classify novel instances with only a few examples. This complements zero-shot
+Few-shot learning methods like the \ac{RN}~\parencite{sung2018learning} offer another pathway, using
+similarity-based reasoning to classify novel instances with only a few examples. This complements \ac{ZSL}
 approaches and can be effective when a limited annotated dataset of Nazi symbols is available.
 
 \section{Dataset Transparency and Ethical Considerations}
 
-Given the sensitive nature of Nazi symbol detection, ethical AI development is crucial. Gebru et al.~\parencite{gebru2021datasheets}
-advocated for “datasheets for datasets” to ensure transparency in dataset creation and
-usage—critical when handling hate-related imagery. In parallel, Shahriari and Shahriari~\parencite{ieee2021ethics}
+Given the sensitive nature of Nazi symbol detection, ethical \ac{AI} development is crucial. Gebru et al.
+~\parencite{gebru2021datasheets} advocated for “datasheets for datasets” to ensure transparency in dataset creation and
+usage—critical when handling hate-related imagery. In parallel, Shahriari~\parencite{ieee2021ethics}
 emphasized ethically aligned design principles, stressing the importance of prioritizing human wellbeing and
-fairness when deploying AI systems in politically sensitive domains.
+fairness when deploying \ac{AI} systems in politically sensitive domains.

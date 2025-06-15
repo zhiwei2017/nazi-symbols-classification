@@ -1,0 +1,53 @@
+%! Author = zhiweizhang
+%! Date = 12.06.25
+
+% Preamble
+\begin{table}[htbp]
+\centering
+\small
+\resizebox{\textwidth}{!}{
+\begin{tabular}{clcl}
+\toprule
+\textbf{Platform} & \textbf{Dataset Name / Description} & \textbf{Purpose} & \textbf{Notes} \\
+\midrule
+Roboflow & detect Dataset~\parencite{detect-lhuia_dataset} & Positive Class & Swastika and related Nazi symbols \\
+
+Roboflow & swastika Dataset (imgann)~\parencite{swastika-o7bde_dataset} & Positive Class & Swastika symbol detection \\
+
+Roboflow & swastika Dataset (Darja Nechaeva)~\parencite{swastika-uw8xt_dataset} & Positive Class & Historical swastika variations \\
+
+Roboflow & swastika\_detect Dataset~\parencite{swastika_detect_dataset} & Positive Class & Swastika detection for moderation \\
+
+Roboflow & symbols Dataset~\parencite{symbols-w93jw_dataset} & Positive Class & Includes general and hate symbols \\
+
+Roboflow & violent object Dataset~\parencite{violent-object_dataset} & Positive Class & Hate symbols and violent imagery \\
+
+Roboflow & Swastiki\_Net Dataset~\parencite{swastiki_net_dataset} & Positive Class & Swastika symbol classification \\
+
+Roboflow & Content Moderation Dataset~\parencite{content-moderation-fwj5b_dataset} & Positive Class & Multiple harmful or extremist symbols \\
+
+Roboflow & Swastika\_Detection Dataset~\parencite{swastika_detection_dataset} & Positive Class & Swastikas in different contexts \\
+
+Kaggle & 100 Sports Image Classification~\parencite{100_sport_image_classification_dataset} & Negative Class & Neutral sports images \\
+
+Kaggle & Car vs Bike Classification Dataset~\parencite{car_bike_classification_dataset} & Negative Class & Background class diversity \\
+
+Kaggle & People Clothing Segmentation~\parencite{people_clothing_segmentation_dataset} & Negative Class & Background objects, neutral content \\
+
+Kaggle & Fruits and Vegetables Dataset~\parencite{fruit_and_vegetable_image_recognition_dataset} & Negative Class & For reducing false positives \\
+
+Kaggle & Animal Image Dataset~\parencite{animal_image_dataset} & Negative Class & Animal images for neutral comparison \\
+
+Kaggle & Kids and Adults Detection~\parencite{kids_and_adults_detection_dataset} & Negative Class & Human figures, non-extremist \\
+
+Kaggle & SCOOBY DOO Classification~\parencite{scooby_doo_classification_dataset} & Negative Class & Cartoon data for variance \\
+
+Kaggle & Low Light Animals~\parencite{subrata_sarkar_2025} & Negative Class & Low-light conditions for robustness \\
+
+Kaggle & AI vs Human-Generated Images~\parencite{ai_vs_human_generated_images_dataset} & Negative Class & Diverse image source simulation \\
+\bottomrule
+\end{tabular}
+}
+\caption{Summary of datasets used in this thesis for training, validation, and testing.}
+\label{tab:dataset_summary}
+\end{table}

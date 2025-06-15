@@ -1,28 +1,28 @@
 %! Author = zhiweizhang
 %! Date = 10.06.25
 
-\chapter{Model Deployment and API Service}\label{chapter:model-deployment-and-api-service}
+\chapter{Model Deployment and \ac{API} Service}\label{chapter:model-deployment-and-api-service}
 
-To facilitate real-world application and integration of the trained classification models, an API service was
+To facilitate real-world application and integration of the trained classification models, an \ac{API} service was
 developed to serve the best-performing models from both the binary and multi-class classification tasks. The service
 was designed with modularity, portability, and ease of use in mind.
 
-Although the API service was not deployed to an online hosting platform due to infrastructure constraints, it was
+Although the \ac{API} service was not deployed to an online hosting platform due to infrastructure constraints, it was
 fully implemented, containerized using Docker, and published to Docker Hub. This approach ensures reproducibility
 and allows collaborators (e.g., from the social science department) or third-party researchers to easily run the
 service in local or cloud-based environments supporting Docker runtime.
 
 \section{System Architecture}
 
-~\autoref{fig:system-architecture} presents the system architecture of the classification API service. Users
+~\autoref{fig:system-architecture} presents the system architecture of the classification \ac{API} service. Users
 submit an image file via an HTTP request, which is then routed to one of three model pipelines based on the
 specified task: binary classification, multi-class classification, or a two-stage hierarchical pipeline.
 
 In the two-stage (or "2-layer") classification pipeline, the image is first passed to the binary classifier to
-determine whether it contains Nazi symbolism. If the result is negative, the API returns a response indicating the
+determine whether it contains Nazi symbolism. If the result is negative, the \ac{API} returns a response indicating the
 absence of such symbols. If the binary classifier detects the presence of Nazi-related content, the image is
 subsequently passed to the multi-class classifier, which identifies the specific type of Nazi symbol (e.g.,
-swastika, SS bolts, eagle).
+swastika, \ac{SS} bolts, eagle).
 
 This cascaded approach reduces unnecessary computation for images that do not contain relevant content and mirrors
 real-world moderation workflows that apply more granular analysis only when initial filters are triggered.
@@ -34,14 +34,14 @@ in distributed environments.
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.7\textwidth]{system_architecture}
-    \caption{System architecture of the implemented classification API service, including the 2-layer classification pipeline.}
+    \includegraphics[width=0.7\textwidth]{figures/system_architecture}
+    \caption{System architecture of the implemented classification \ac{API} service, including the 2-layer classification pipeline.}
     \label{fig:system-architecture}
 \end{figure}
 
 \section{Model Integration and Selection Logic}
 
-To support different classification tasks, the API service provides separate, clearly defined endpoints for binary
+To support different classification tasks, the \ac{API} service provides separate, clearly defined endpoints for binary
 classification, multi-class classification, and the combined 2-layer classification pipeline. Rather than
 dynamically selecting the model based on a request payload parameter, each endpoint is mapped to a specific inference pipeline.
 
@@ -49,22 +49,22 @@ This design simplifies both server-side logic and client-side usage, allowing us
 endpoint for their task without needing to specify a task identifier. Each endpoint handles all necessary
 preprocessing, model loading, and prediction steps internally.
 
-All models are preloaded into memory when the API server starts. Models implemented using PyTorch are serialized with
+All models are preloaded into memory when the \ac{API} server starts. Models implemented using PyTorch are serialized with
 \texttt{TorchScript} or saved in standard PyTorch format, while traditional machine learning models (e.g., logistic
-regression or SVM with OpenCLIP embeddings) are serialized using \texttt{joblib}. Loading models once at startup
+regression or \ac{SVC} with OpenCLIP embeddings) are serialized using \texttt{joblib}. Loading models once at startup
 significantly reduces runtime latency and avoids redundant I/O operations during each prediction request.
 
 This modular design also makes the system extensible—new models or task-specific pipelines can be added by
-registering additional routes in the API codebase without impacting the existing ones.
+registering additional routes in the \ac{API} codebase without impacting the existing ones.
 
-The route-to-model mapping logic is summarized in ~\autoref{fig:api-model-routing}, which shows how each API
+The route-to-model mapping logic is summarized in ~\autoref{fig:api-model-routing}, which shows how each \ac{API}
 endpoint corresponds to a specific classification pipeline.
 
 \input{figures/api_model_routing}
 
 \section{Continuous Integration and Deployment}
 
-The service is fully integrated with a GitHub Actions CI/CD pipeline, as shown in ~\autoref{fig:github-pipeline}.
+The service is fully integrated with a GitHub Actions \ac{CI/CD} pipeline, as shown in ~\autoref{fig:github-pipeline}.
 This pipeline automates the following tasks:
 
 \begin{itemize}
@@ -74,23 +74,23 @@ This pipeline automates the following tasks:
     \item Pushing the Docker image to Docker Hub.
 \end{itemize}
 
-Although the final service is not deployed to a live endpoint, the CI/CD pipeline ensures that each commit to the
+Although the final service is not deployed to a live endpoint, the \ac{CI/CD} pipeline ensures that each commit to the
 main branch triggers a build and test process, ensuring long-term maintainability. Users can reliably pull the
 latest image version and run it locally or deploy it on a remote host with minimal setup.
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.7\textwidth]{github_pipeline}
-    \caption{GitHub Actions CI/CD pipeline for Dockerized API service.}
+    \includegraphics[width=0.7\textwidth]{figures/github_pipeline}
+    \caption{GitHub Actions \ac{CI/CD} pipeline for Dockerized \ac{API} service.}
     \label{fig:github-pipeline}
 \end{figure}
 
-\section{API Endpoints}
+\section{\ac{API} Endpoints}
 
-The REST API exposes several endpoints to support classification, health checks, and automatic documentation.
+The \ac{REST} \ac{API} exposes several endpoints to support classification, health checks, and automatic documentation.
 ~\autoref{tab:api-endpoints} provides an overview of the available endpoints.
 
-In addition to individual endpoints for binary and multi-class classification tasks, the API includes a dedicated
+In addition to individual endpoints for binary and multi-class classification tasks, the \ac{API} includes a dedicated
 endpoint for the 2-layer classification workflow. This endpoint abstracts the logic of cascading model inference: it
 first applies the binary classifier and, only if Nazi symbolism is detected, invokes the multi-class model to
 provide a more specific label.
@@ -100,15 +100,95 @@ research pipelines without needing to handle the decision tree manually.
 
 \input{data/api_endpoints}
 
-All classification endpoints accept images as multipart form data and return structured JSON responses. These
-responses include predicted class labels, confidence scores, and metadata about the model used. The API is
+All classification endpoints accept images as multipart form data and return structured \ac{JSON} responses. These
+responses include predicted class labels, confidence scores, and metadata about the model used. The \ac{API} is
 documented using OpenAPI and is accessible via the \texttt{/docs} route.
+
+\subsection{Example \ac{JSON} Response: Binary Classification}
+The \ac{API} returns predictions in \ac{JSON} format. An example response for the binary classification endpoint is shown below:
+
+\begin{figure}[ht]
+\centering
+\begin{lstlisting}[language=json]
+[
+  {
+    "prediction": "nazi",
+    "confidence": 0.965,
+  }
+]
+\end{lstlisting}
+\caption{Sample \ac{JSON} response for binary classification prediction.}
+\end{figure}
+
+\subsection{Example \ac{JSON} Response: Multi-Class Classification}
+For multi-class classification, the \ac{API} returns all predicted classes with probability above the threshold ($\geq 0.1$).
+
+\begin{figure}[ht]
+\centering
+\begin{lstlisting}[language=json]
+{
+  "nazi_symbols": ["swastika", "siegrune", "black_sun"],
+  "details": [
+    {"label": "swastika", "confidence": 0.882},
+    {"label": "siegrune", "confidence": 0.062},
+    {"label": "black_sun", "confidence": 0.016}
+  ],
+}
+\end{lstlisting}
+\caption{Sample \ac{JSON} response for multi-class classification prediction.}
+\end{figure}
+
+\subsection{Example \ac{JSON} Response: 2-layer Classification}
+This endpoint combines binary and multi-class classification. It first predicts whether the image contains Nazi
+symbols, then returns all matching symbols above the confidence threshold.
+
+\begin{figure}[ht]
+\centering
+\begin{lstlisting}[language=json]
+{
+  "containing_nazi_symbols": true,
+  "prob": 0.97,
+  "nazi_symbols": ["swastika", "siegrune", "black_sun"],
+  "details": [
+    {"label": "swastika", "confidence": 0.882},
+    {"label": "siegrune", "confidence": 0.062},
+    {"label": "black_sun", "confidence": 0.016}
+  ]
+}
+\end{lstlisting}
+\caption{Sample \ac{JSON} response for 2-layer classification prediction.}
+\end{figure}
+
+\subsection{Thresholding vs. Top-$k$ in Multi-label Classification}
+
+In the multi-class classification task, an image may contain more than one Nazi symbol, making it inherently a
+multi-label problem. Instead of using a top-$k$ prediction strategy, where the model returns the $k$ most confident
+classes regardless of their absolute probabilities, a fixed probability threshold of 0.1 was used to filter
+predicted classes.
+
+The thresholding approach offers two key advantages in this context:
+
+\begin{enumerate}
+    \item \textbf{Adaptability to Varying Symbol Counts}: Since different images may contain a varying number of
+    symbols—including just one or many—the threshold-based method allows the model to return a flexible number of
+    predictions based on actual confidence levels. In contrast, a top-$k$ method would always return a fixed number
+    of classes, potentially introducing irrelevant or low-confidence predictions.
+
+    \item \textbf{Minimization of False Positives}: By applying a threshold (empirically chosen as 0.1), the system
+    filters out low-probability predictions, thereby reducing the risk of returning implausible or incorrect symbol
+    classifications. This is especially important in a sensitive domain such as Nazi symbol detection, where false
+    positives can have serious implications.
+\end{enumerate}
+
+This threshold-based multi-label design more accurately reflects the real-world complexity of the task and aligns
+with the goal of precise and responsible detection of harmful content.
+
 
 
 \section{Extensibility and Future Deployment}
 
-The API service is designed with modularity and extensibility in mind. New classification tasks—such as object
-detection for symbol localization, OCR, or broader hate symbol recognition—can be integrated by registering
+The \ac{API} service is designed with modularity and extensibility in mind. New classification tasks—such as object
+detection for symbol localization, \ac{OCR}, or broader hate symbol recognition—can be integrated by registering
 additional model pipelines and endpoints. Thanks to the decoupled routing logic and preloading of models, such
 extensions require minimal code changes.
 
@@ -127,7 +207,7 @@ launch the service locally with no additional configuration. All models are prel
 delays or dependency mismatches.
 
 In future iterations, the service could be deployed to cloud platforms such as AWS, Google Cloud, or Azure, using
-container orchestration tools like Kubernetes or serverless options like AWS Lambda with API Gateway. To support
+container orchestration tools like Kubernetes or serverless options like AWS Lambda with \ac{API} Gateway. To support
 public or production-level access, additional features such as user authentication, input rate-limiting, and secure
 storage of logs and models would be required.
 

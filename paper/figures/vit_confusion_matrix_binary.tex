@@ -1,0 +1,52 @@
+%! Author = zhiweizhang
+%! Date = 13.06.25
+
+% Preamble
+\begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+%            width=0.7\textwidth,
+            colormap={bluewhite}{color=(white) rgb255=(90,96,191)},
+            xlabel=Predicted,
+            xlabel style={yshift=-10pt},
+            ylabel=Actual,
+            ylabel style={yshift=10pt},
+            xticklabels={Non-Nazi, Nazi}, % changed
+            xtick={0,...,1}, % changed
+            xtick style={draw=none},
+            yticklabels={Non-Nazi, Nazi}, % changed
+            ytick={0,...,1}, % changed
+            ytick style={draw=none},
+            enlargelimits=false,
+            colorbar,
+%            colorbar style={
+%              ytick={0, 0.5, 1.0, 1.5},
+%              yticklabels={0, 0.5, 1.0, 1.5},
+%%              xtick=\empty,
+%%              ylabel style={yshift=10pt},
+%            },
+            point meta min=0,
+            point meta max=15000,
+            xticklabel style={
+              text width=1cm,align=center
+            },
+            yticklabel style={
+              text width=1cm,align=center
+            },
+            nodes near coords={\pgfmathprintnumber\pgfplotspointmeta},
+            nodes near coords style={
+                yshift=-7pt
+            },
+        ]
+            \addplot[
+                matrix plot,
+                mesh/cols=2, % changed
+                point meta=explicit,
+                draw=gray
+            ] table [meta=C, x=x, y=y, col sep=comma] {data/vit-binary-confusion-matrix-data.csv};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Confusion matrix for the binary classification task using ViT. The values represent the number of samples in each cell.}
+    \label{fig:vit-confusion-matrix-binary}
+\end{figure}

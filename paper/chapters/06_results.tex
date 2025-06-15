@@ -3,137 +3,140 @@
 
 \chapter{Results}\label{chapter:results}
 
-\section{Evaluation Metrics}
 
-To evaluate the performance of the classification models, we employ several standard metrics widely used in image
-classification tasks. These metrics provide insight into the models' predictive capabilities across both binary and
-multi-class scenarios.
+\section{Binary Classification Results}
 
-Let:
-\begin{itemize}
-    \item $TP$ = True Positives
-    \item $TN$ = True Negatives
-    \item $FP$ = False Positives
-    \item $FN$ = False Negatives
-\end{itemize}
+\subsection{Tabular Results}
 
-The evaluation metrics are defined as follows:
-
-\begin{itemize}
-  \item \textbf{Accuracy}:
-  \begin{math}
-  \text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN}
-  \end{math}
-
-  Accuracy provides an overall measure of how often the model is correct. It is most informative when class
-  distributions are balanced.
-
-  \item \textbf{Precision}:
-  \begin{math}
-  \text{Precision} = \frac{TP}{TP + FP}
-  \end{math}
-
-  Precision is particularly important when false positives carry a high cost.
-
-  \item \textbf{Recall}:
-  \begin{math}
-  \text{Recall} = \frac{TP}{TP + FN}
-  \end{math}
-
-  Recall indicates the model’s ability to identify relevant instances, especially useful when false negatives are
-  critical.
-
-  \item \textbf{F1-Score}:
-  \begin{math}
-  \text{F1-Score} = 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}}
-  \end{math}
-
-  F1-Score balances the trade-off between precision and recall and is useful when the class distribution is uneven.
-
-  \item \textbf{Area Under the ROC Curve (AUC-ROC)}: AUC-ROC evaluates the model’s ability to distinguish between
-  classes by plotting the True Positive Rate (TPR) against the False Positive Rate (FPR) at various thresholds.
-
-  \begin{math}
-  \text{TPR} = \frac{TP}{TP + FN}, \quad \text{FPR} = \frac{FP}{FP + TN}
-  \end{math}
-\end{itemize}
-
-For multi-class classification, accuracy, precision, recall, and F1-score are computed using \textit{macro-averaging},
-which calculates the metric independently for each class and then takes the average. This ensures equal treatment of
-all classes, regardless of their frequency.
-
-These metrics are reported for each model under both binary and multi-class classification settings. The
-best-performing models were selected based on their validation loss, and the final results were obtained using the
-corresponding test set.
-
-
-\section{Binary Classification}
-The binary classification result is showed as in ~\autoref{tab:binary-results},
+The results for the binary classification task are summarized in Table~\autoref{tab:binary-results}, which reports
+accuracy, precision, recall, F1-score, and \ac{AUC} for each evaluated model.
 
 \input{data/binary_results}
 
+\subsection{Visual Comparison}
 
-\subsection{ROC and Precision-Recall Curves for Binary Classification}
+To facilitate a clear visual comparison of model performance on the binary classification task, bar plots were
+generated for all selected models, including YOLOv11, ResNet34, EfficientNet-B2, \ac{ViT}, Moondream, OpenCLIP, and
+OpenCLIP combined with \ac{SVC}.
 
-To provide a more detailed view of model performance under imbalanced data conditions, we also plotted the Receiver
-Operating Characteristic (ROC) curve and Precision-Recall (PR) curve for the binary classification task. These
-curves allow for a better understanding of how each model balances sensitivity and specificity across different
-thresholds.
+Figures~\autoref{fig:model-accuracy}, \autoref{fig:model-precision}, \autoref{fig:model-recall}, and
+\autoref{fig:model-f1-score} depict the performance metrics, with the left side of each figure representing binary
+classification results. These visualizations highlight trade-offs among models and assist in identifying the most
+effective architectures.
 
-~\autoref{fig:roc-curve} displays the ROC curves, highlighting the trade-off between true positive rate (TPR) and
-false positive rate (FPR). AUC scores (reported in ~\autoref{tab:binary-results}) align with the visual performance
-in this plot.
+For binary classification, \ac{ViT}, YOLOv11, and OpenCLIP-based models paired with classical
+classifiers—particularly \ac{SVC} and \ac{KNN}—demonstrated superior performance. Specifically, \ac{ViT} and
+OpenCLIP + \ac{SVC} achieved the highest F1-scores of 0.890 and 0.939, respectively. Conversely, Moondream and the
+base OpenCLIP encoder exhibited comparatively lower effectiveness.
 
-~\autoref{fig:pr-curve} shows the PR curves, which are especially informative for evaluating classifier
-performance under class imbalance. The area under the PR curve (average precision) complements the ROC AUC and
-emphasizes how well models perform in retrieving relevant positive samples.
+\input{figures/model_accuracy}
+\input{figures/model_precision}
+\input{figures/model_recall}
+\input{figures/model_f1_score}
+
+\subsection{Confusion Matrices}
+
+Confusion matrices for the binary classification task are presented in ~\autoref{fig:confusion-matrix-binary}. Each
+matrix corresponds to a model trained to distinguish images as either:
+
+\begin{itemize}
+  \item \textbf{Non-Nazi}
+  \item \textbf{Nazi}
+\end{itemize}
+
+The evaluated models include ResNet, YOLOv11, EfficientNet, \ac{ViT}, and OpenCLIP encoder combined with \ac{SVC}.
+
+These matrices provide detailed insight into each model’s discriminative capabilities, where a high count of true
+positives and true negatives indicates accurate classification, while false positives and false negatives reveal
+specific challenges such as visual similarity or low symbol clarity.
+
+\input{figures/confusion_matrix_binary}
+
+\subsection{ROC and Precision-Recall Curves}
+
+To further characterize model performance under class imbalance, \ac{ROC} and \ac{PR} curves were plotted for the
+binary classification task.
+
+Figure~\autoref{fig:roc-curve} illustrates the \ac{ROC} curves, demonstrating the trade-off between true positive rate
+and false positive rate across different thresholds. The \ac{AUC} values reported in Table~\autoref{tab:binary-results}
+correspond with the visual trends observed.
+
+Figure~\autoref{fig:pr-curve} presents the \ac{PR} curves, which are particularly informative when evaluating
+classifiers under imbalanced conditions. The area under the \ac{PR} curve (average precision) complements the
+\ac{ROC-AUC}, emphasizing each model's ability to retrieve relevant positive samples effectively.
 
 \begin{figure}[ht]
   \centering
   \includegraphics[width=0.8\textwidth]{ROC}
-  \caption{ROC curves of all models on the binary classification task.}
+  \caption{Receiver Operating Characteristic (ROC) curves for all models on the binary classification task, depicting the trade-off between true positive rate and false positive rate across classification thresholds.}
   \label{fig:roc-curve}
 \end{figure}
 
 \begin{figure}[ht]
   \centering
   \includegraphics[width=0.8\textwidth]{PR}
-  \caption{Precision-Recall curves of all models on the binary classification task.}
+  \caption{Precision-Recall (PR) curves for all models on the binary classification task, highlighting model performance under class imbalance conditions.}
   \label{fig:pr-curve}
 \end{figure}
 
-\subsubsection{Reduced-Symbol Set Experiment}
-To further evaluate the robustness of our models, we conducted an additional experiment using a reduced nazi symbol set from the
-original dataset. This set included only the three most visually distinct symbols, specifically ss skull, siegrune, and Swastika.
-The results of this experiment are shown in ~\autoref{tab:binary-reduced-symbols-result}.
+\subsection{Reduced-Symbol Set Experiment}
+
+To further evaluate model robustness, an additional experiment was conducted using a reduced set of Nazi symbols
+from the original dataset. This subset included the three most visually distinct symbols: the SS Skull, Siegrune,
+and Swastika.
+
+The results of this reduced-symbol experiment are presented in Table~\autoref{tab:binary-reduced-symbols-result},
+indicating the models' performance when focusing on a smaller, more visually distinct set of classes.
 
 \input{data/binary_reduced_symbols_result}
 
-\subsection{Multi-class Classification}
+\section{Multi-Class Classification Results}
 
-The muilti-class classification result is showed as in ~\autoref{tab:multi-class-results},
+\subsection{Tabular Results}
+
+The multi-class classification results are summarized in Table~\autoref{tab:multi-class-results}, reporting
+macro-averaged accuracy, precision, recall, and F1-score for each model.
 
 \input{data/multi_class_results}
 
-\subsection{Comparison of Evaluation Metrics Across Models}
+\subsection{Visual Comparison}
 
-To provide a comprehensive visual overview of model performance across different evaluation criteria, we present bar
-plots comparing all selected models (YOLOv11, ResNet50, EfficientNet-B2, ViT, Moondream, OpenCLIP, OpenCLIP + SVC)
-under both binary and multi-class classification settings.
+Figures~\autoref{fig:model-accuracy}, \autoref{fig:model-precision}, \autoref{fig:model-recall}, and
+\autoref{fig:model-f1-score} also include the multi-class classification results, presented on the right side of
+each plot. These visualizations allow for direct comparison of model effectiveness across multiple symbol classes.
 
-~\autoref{fig:model-accuracy}, \autoref{fig:model-precision}, \autoref{fig:model-recall}, and
-~\autoref{fig:model-f1-score} show side-by-side comparisons of accuracy,
-precision, recall, and F1-score respectively. These visualizations make it easier to observe performance trade-offs
-between models and help identify consistently strong performers across metrics.
+In this setting, YOLOv11 consistently outperformed other models across all evaluation metrics, followed closely by
+ResNet34 and \ac{ViT}, both of which demonstrated strong and consistent classification performance. Models such as
+EfficientNet and Moondream showed less consistent results across different classes.
 
-Overall, YOLOv11 and OpenCLIP-based models exhibit the highest performance across most metrics, particularly in
-binary classification tasks. In contrast, models like Moondream and EfficientNet-B2 show lower consistency,
-especially in multi-class classification. These observations suggest that embedding-based and detection-based
-methods may generalize better across symbol types.
+\subsection{Confusion Matrices}
 
+Confusion matrices for the multi-class classification task are shown in the figures below. Each matrix corresponds
+to a model trained to classify images into one of thirteen symbol categories:
 
+\begin{quote}
+\texttt{['Sonnenrad', 'Flash and circle', 'Broken Sun Cross', 'The Happy Merchant', 'Hitler', 'Nazi salute',
+  'Yellow badge', 'Neo-Nazi', 'Siegrune', 'SS Skull', 'Sturmabteilung emblem', 'Swastika', 'Wolfsangel']}
+\end{quote}
 
-\input{figures/model_accuracy}
-\input{figures/model_precision}
-\input{figures/model_recall}
-\input{figures/model_f1_score}
+These matrices reveal class-specific performance, highlighting where misclassifications occur and identifying
+classes that are frequently confused. Such insights assist in understanding model limitations and potential areas
+for improvement.
+
+\begin{itemize}
+  \item \textbf{ResNet:} Demonstrates strong performance on prominent symbols such as \textit{Swastika} and
+  \textit{Siegrune}, with occasional confusion among visually similar classes.
+  \item \textbf{YOLOv11:} Achieves high accuracy on frequent classes but struggles with rarer symbols like
+  \textit{Flash and circle} and \textit{Yellow badge}.
+  \item \textbf{EfficientNet:} Yields balanced performance but exhibits reduced confidence on ambiguous or
+  underrepresented categories.
+  \item \textbf{Vision Transformer (ViT):} Shows strong recognition for dominant classes, with some misclassifications on less frequent symbols.
+  \item \textbf{OpenCLIP encoder + SVC:} The text-image contrastive learning approach produces reasonable results,
+  particularly for \textit{Swastika}, but is sensitive to class imbalance.
+\end{itemize}
+
+\input{figures/yolo_confusion_matrix_multiclass}
+\input{figures/efficientnet_confusion_matrix_multiclass}
+\input{figures/resnet_confusion_matrix_multiclass}
+\input{figures/vit_confusion_matrix_multiclass}
+\input{figures/openclip_encoder_confusion_matrix_multiclass}

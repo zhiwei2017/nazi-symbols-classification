@@ -7,13 +7,13 @@
 
 The results presented in Table~\autoref{tab:binary-results} highlight substantial variation in performance across
 different models. Notably, classical machine learning classifiers using OpenCLIP embeddings achieved some of the
-highest scores overall. The \textbf{OpenCLIP + SVC} model delivered the best F1-score (0.939), indicating a strong
+highest scores overall. The \textbf{OpenCLIP + \ac{SVC}} model delivered the best F1-score (0.939), indicating a strong
 balance between precision (0.948) and recall (0.929). Similarly, \textbf{OpenCLIP + KNeighborsClassifier} attained
-the highest AUC (0.966) and the best recall (0.936), demonstrating its effectiveness at detecting positive (Nazi)
+the highest \ac{AUC} (0.966) and the best recall (0.936), demonstrating its effectiveness at detecting positive (Nazi)
 samples.
 
-Among deep learning models, both \textbf{YOLOv11} and \textbf{ViT} performed competitively, with F1-scores of 0.889
-and 0.890, respectively. These results suggest that strong feature extraction capabilities (as seen in ViT) and
+Among deep learning models, both \textbf{YOLOv11} and \textbf{\ac{ViT}} performed competitively, with F1-scores of 0.889
+and 0.890, respectively. These results suggest that strong feature extraction capabilities (as seen in \ac{ViT}) and
 object-localization attention (as leveraged by YOLOv11) benefit binary classification, even in a non-detection context.
 
 Interestingly, the \textbf{Moondream} model achieved perfect recall (1.000) but had an extremely low precision (
@@ -22,28 +22,28 @@ numerous false positives. The \textbf{OpenCLIP zero-shot model} (without classif
 emphasizing the value of fine-tuning or classifier integration on task-specific data.
 
 Traditional ensemble classifiers (e.g., GradientBoosting, AdaBoost, VotingClassifier) using OpenCLIP features
-generally outperformed standalone CNNs like ResNet and EfficientNet. This reinforces the advantage of combining rich
-pretrained vision-language embeddings with well-established decision models in low-data or imbalanced scenarios.
+generally outperformed standalone \ac{CNN}s like ResNet and EfficientNet. This reinforces the advantage of combining
+rich pretrained vision-language embeddings with well-established decision models in low-data or imbalanced scenarios.
 
 In summary, models integrating OpenCLIP embeddings with classical classifiers clearly outperform others in this
-binary task. However, deep learning models like ViT and YOLOv11 still show strong potential, especially when trained
+binary task. However, deep learning models like \ac{ViT} and YOLOv11 still show strong potential, especially when trained
 end-to-end with high-resolution inputs.
 
 \subsection{Binary Classification with Reduced Nazi Symbol Classes}
 
 To further examine model robustness and adaptability, we conducted a binary classification experiment restricted to
-a reduced subset of Nazi symbols (\textit{siegrune}, \textit{swastika}, and \textit{SS skull}) against the full set
-of non-Nazi images. The goal was to evaluate model performance when the semantic diversity of the positive class is
-reduced.
+a reduced subset of Nazi symbols (\textit{siegrune}, \textit{swastika}, and \textit{\ac{SS} skull}) against the
+full set of non-Nazi images. The goal was to evaluate model performance when the semantic diversity of the positive
+class is reduced.
 
 Despite the narrower scope, overall trends remained consistent with the full binary task. Transformer-based
-architectures continued to perform strongly. ViT achieved excellent results with an F1-score of 0.948 and an AUC of
+architectures continued to perform strongly. ViT achieved excellent results with an F1-score of 0.948 and an \ac{AUC} of
 0.962, indicating its strong ability to generalize even with reduced symbol variety. Among OpenCLIP-based hybrid
-models, \textit{OpenCLIP + KNeighborsClassifier} attained the highest AUC of \textbf{0.993}, while
+models, \textit{OpenCLIP + KNeighborsClassifier} attained the highest \ac{AUC} of \textbf{0.993}, while
 \textit{OpenCLIP + SVC} achieved the best overall performance with an accuracy of \textbf{0.998}, precision of
 \textbf{0.973}, recall of \textbf{0.900}, and F1-score of \textbf{0.935}.
 
-Interestingly, YOLOv11 underperformed in this setup (F1-score 0.661, AUC 0.783) compared to its results on the full
+Interestingly, YOLOv11 underperformed in this setup (F1-score 0.661, \ac{AUC} 0.783) compared to its results on the full
 binary task, potentially due to its reliance on spatial object features that may be less effective when class
 variety is reduced. Conversely, models like Moondream and OpenCLIP hybrids maintained high performance, indicating
 that text-image aligned embeddings may still effectively capture distinguishing features in constrained settings.
@@ -62,7 +62,7 @@ with its efficient architectural design.
 
 The \textbf{ViT} model also performed well, ranking second across all metrics (e.g., F1-score of 0.790),
 demonstrating that transformer-based architectures are effective at capturing complex spatial and semantic
-relationships in images. In contrast, traditional CNN-based models like \textbf{ResNet} and especially
+relationships in images. In contrast, traditional \ac{CNN}-based models like \textbf{ResNet} and especially
 \textbf{EfficientNet} showed weaker performance. ResNet reached a reasonable accuracy of 0.819 but struggled with
 recall (0.655), while EfficientNet severely underperformed (F1-score of only 0.048), suggesting sensitivity to model
 input size or optimization instability for multi-class tasks.
@@ -72,13 +72,14 @@ highlighting the limitations of general-purpose vision-language models when appl
 symbol recognition tasks without fine-tuning.
 
 When combining OpenCLIP embeddings with classical machine learning classifiers, performance varied widely. Notably,
-\textbf{OpenCLIP + SGDClassifier} and \textbf{OpenCLIP + SVC} stood out, achieving F1-scores of 0.632 and 0.620
+\textbf{OpenCLIP + \ac{SGD}Classifier} and \textbf{OpenCLIP + \ac{SVC}} stood out, achieving F1-scores of 0.632 and
+0.620
 respectively, outperforming other classical classifiers. This suggests that linear models and kernel methods can
 partially leverage the semantic richness of OpenCLIP features. However, ensemble-based classifiers like
 \textbf{RandomForest}, \textbf{Bagging}, and \textbf{GradientBoosting} generally performed worse, indicating
 potential overfitting or a mismatch between embedding distributions and classifier assumptions.
 
-Overall, models that operate end-to-end with high-quality image representations, such as YOLOv11 and ViT, clearly
+Overall, models that operate end-to-end with high-quality image representations, such as YOLOv11 and \ac{ViT}, clearly
 outperform both zero-shot methods and OpenCLIP embedding pipelines in this multi-class setting. This emphasizes the
 importance of feature specialization and architectural alignment for symbol classification tasks involving subtle
 visual differences across many classes.
