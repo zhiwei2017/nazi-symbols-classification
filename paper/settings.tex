@@ -34,6 +34,28 @@
 \usepackage{amsmath}
 \usepackage{wrapfig,lipsum,booktabs}
 \usepackage{xcolor}
+\usepackage[para,online,flushleft]{threeparttable}
+
+\makeatletter
+\def\TPT@doparanotes{\par
+   \prevdepth\z@ \TPT@hsize
+   \TPTnoteSettings
+   \parindent\z@ \pretolerance 8
+   \linepenalty 200
+   \renewcommand\item[1][]{\relax\ifhmode \begingroup
+       \unskip
+       \advance\hsize 10em % \hsize is scratch register, based on real hsize
+       \penalty -45 \hskip\z@\@plus\hsize \penalty-19
+       \hskip .15\hsize \penalty 9999 \hskip-.15\hsize
+       \hskip .01\hsize\@plus-\hsize\@minus.01\hsize
+       \hskip 6em\@plus .3em
+              %%%%%
+      \endgroup\fi
+      \tnote{##1}\,\ignorespaces}%
+   \let\TPToverlap\relax
+   \def\endtablenotes{\par}%
+}
+
 
 \graphicspath{ {./figures/} }
 \usetikzlibrary{arrows.meta, positioning, shapes.geometric, matrix}

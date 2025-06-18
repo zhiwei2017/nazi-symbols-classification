@@ -8,17 +8,18 @@ was compiled, consisting of 99,435 non-Nazi images and 2,338 Nazi-related images
 to limited examples in some classes, several were regrouped into a consolidated \textit{Neo-Nazi} category to
 improve model learnability.
 
-Multiple deep learning architectures were evaluated, including ResNet50, EfficientNet, Vision Transformers (ViT),
-OpenCLIP, and Moondream. Additionally, classical machine learning models were explored using OpenCLIP visual
-embeddings as input features. Model performance was assessed using standard metrics such as accuracy, precision,
-recall, F1-score, and AUC-ROC.
+Multiple \ac{DL} architectures were evaluated, including \ac{YOLO}, \ac{ResNet}, EfficientNet, \ac{ViT},
+OpenCLIP, and Moondream. Additionally, classical machine learning models were explored using
+OpenCLIP visual embeddings as input features. Model performance was assessed using standard metrics such as
+accuracy, precision, recall, and F1-score.
 
 Experimental results demonstrate that for the binary classification task, OpenCLIP embeddings combined with
 classical classifiers achieved competitive performance while requiring significantly fewer computational resources.
-However, in the multi-class classification task, this combination underperformed substantially compared to ViT and
-YOLOv11, with YOLOv11 achieving the best overall performance in identifying specific symbol classes.
+However, in the multi-class classification task, this combination underperformed substantially compared to \ac{ViT} and
+\ac{YOLO}, with \ac{YOLO} achieving the best overall performance in identifying specific symbol classes.
 
-To support practical application, the best-performing models were integrated into an \ac{API} service. A CI/CD pipeline
-was implemented to automate packaging and publishing of the service as a Docker image, enabling easy deployment by
-researchers or institutions. This work provides a lightweight and effective solution for detecting Nazi symbols in
-large-scale image datasets and contributes to broader efforts in content moderation and digital extremism research.
+To support practical application, the best-performing models were integrated into an \ac{API} service. A \ac{CI/CD}
+pipeline was implemented to automate packaging and publishing of the service as a Docker image, enabling easy
+deployment by researchers or institutions. This work provides a lightweight and effective solution for detecting
+Nazi symbols in large-scale image datasets and contributes to broader efforts in content moderation and digital
+extremism research.

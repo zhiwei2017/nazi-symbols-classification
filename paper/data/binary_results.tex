@@ -4,26 +4,26 @@
 \begin{table}[ht]
 \centering
 \resizebox{\textwidth}{!}{
-\begin{tabular}{lccccc}
+\begin{tabular}{lcccccc}
 \toprule
-\textbf{Model}                        & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{AUC}   \\
+\textbf{Model}                        & \textbf{Accuracy} & \textbf{Precision} & \textbf{Recall} & \textbf{F1-Score} & \textbf{AUC}   & \textbf{AP}    \\
 \midrule
-YOLOv11                               & 0.995             & 0.793              & 0.932           & 0.857             & 0.964          \\
-ResNet                                & 0.996             & 0.843              & 0.893           & 0.867             & 0.945          \\
-EfficientNet                          & 0.993             & 0.772              & 0.761           & 0.767             & 0.878          \\
-ViT                                   & 0.997             & 0.910              & 0.893           & 0.901             & 0.945          \\
-Moondream                             & 0.718             & 0.046              & 1.000           & 0.088             & 0.857          \\
-OpenCLIP                              & 0.314             & 0.013              & 0.639           & 0.025             & 0.474          \\
-OpenCLIP + Logistic Regression        & 0.996             & 0.923              & 0.882           & 0.902             & 0.940          \\
-OpenCLIP + SGDClassifier              & 0.996             & 0.924              & 0.880           & 0.901             & 0.939          \\
-OpenCLIP + KNeighborsClassifier       & 0.996             & 0.895              & \textbf{0.936}  & 0.915             & \textbf{0.966} \\
-OpenCLIP + SVC                        & \textbf{0.997}    & 0.948              & 0.929           & \textbf{0.939}    & 0.964          \\
-OpenCLIP + DecisionTreeClassifier     & 0.987             & 0.674              & 0.742           & 0.706             & 0.867          \\
-OpenCLIP + BaggingClassifier          & 0.989             & 0.744              & 0.717           & 0.730             & 0.856          \\
-OpenCLIP + AdaBoostClassifier         & 0.994             & 0.901              & 0.791           & 0.842             & 0.894          \\
-OpenCLIP + GradientBoostingClassifier & 0.993             & 0.879              & 0.801           & 0.838             & 0.899          \\
-OpenCLIP + RandomForestClassifier     & 0.981             & \textbf{0.983}     & 0.097           & 0.177             & 0.548          \\
-OpenCLIP + VotingClassifier           & 0.996             & 0.945              & 0.873           & 0.908             & 0.936          \\
+YOLO                                  & 0.995             & 0.793              & 0.932           & 0.857             & 0.999          & 0.913          \\
+ResNet                                & 0.996             & 0.843              & 0.893           & 0.867             & 0.999          & 0.943          \\
+EfficientNet                          & 0.993             & 0.772              & 0.761           & 0.767             & 0.993          & 0.780          \\
+ViT                                   & 0.997             & 0.910              & 0.893           & 0.901             & 0.999          & 0.962          \\
+Moondream                             & 0.924             & 0.153              & \textbf{0.995}  & 0.265             & -              & -              \\
+OpenCLIP                              & 0.314             & 0.013              & 0.639           & 0.025             & -              & -              \\
+OpenCLIP + Logistic Regression        & 0.996             & 0.923              & 0.882           & 0.902             & \textbf{1.000} & \textbf{0.964} \\
+OpenCLIP + SGDClassifier              & 0.996             & 0.924              & 0.880           & 0.901             & -              & -              \\
+OpenCLIP + KNeighborsClassifier       & 0.996             & 0.895              & 0.936           & 0.915             & 0.999          & 0.934          \\
+OpenCLIP + SVC                        & \textbf{0.997}    & 0.948              & 0.929           & \textbf{0.939}    & -              & -              \\
+OpenCLIP + DecisionTreeClassifier     & 0.987             & 0.674              & 0.742           & 0.706             & 0.993          & 0.625          \\
+OpenCLIP + BaggingClassifier          & 0.989             & 0.744              & 0.717           & 0.730             & 0.955          & 0.742          \\
+OpenCLIP + AdaBoostClassifier         & 0.994             & 0.901              & 0.791           & 0.842             & 0.998          & 0.925          \\
+OpenCLIP + GradientBoostingClassifier & 0.993             & 0.879              & 0.801           & 0.838             & 0.998          & 0.919          \\
+OpenCLIP + RandomForestClassifier     & 0.981             & \textbf{0.983}     & 0.097           & 0.177             & 0.999          & 0.895          \\
+OpenCLIP + VotingClassifier           & 0.996             & 0.945              & 0.873           & 0.908             & -              & -              \\
 \bottomrule
 \end{tabular}
 }

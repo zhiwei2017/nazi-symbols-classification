@@ -5,65 +5,76 @@
 
 \section{Conclusion}
 
-This thesis presented a comprehensive study on the classification of Nazi symbols in images using a range of models,
-including convolutional neural networks (\ac{ResNet}, EfficientNet), transformer-based architectures (\ac{ViT}), object
-detection models (YOLOv11), and multimodal models (OpenCLIP). In addition to evaluating end-to-end deep learning
-approaches, we also explored hybrid pipelines that combined OpenCLIP image embeddings with classical machine
-learning classifiers.
+This thesis presented a comprehensive study on the classification of Nazi symbols in images using a diverse set of
+models, including \ac{CNN}s (\ac{ResNet}, EfficientNet), transformer-based architectures (\ac{ViT}), object detection
+models (\ac{YOLO}), and multimodal embeddings from OpenCLIP. In addition to end-to-end \ac{DL} approaches, we
+evaluated hybrid pipelines that combined OpenCLIP-generated image embeddings with classical \ac{ML} classifiers.
 
-The models were evaluated on two classification tasks: binary classification (Nazi vs. non-Nazi symbols) and
-multi-class classification (discriminating among 13 specific Nazi-related symbol classes and a non-Nazi class). For
-the binary task, the best-performing models were OpenCLIP combined with classical classifiers (e.g., \ac{SVC} and \ac{KNN}),
-\ac{ViT}, and YOLOv11, all achieving F1-scores above 0.89 and \ac{AUC} values above 0.94. This indicates that both
-learned embeddings and high-resolution feature extractors are effective for distinguishing Nazi symbols from benign content.
+Two classification settings were addressed: binary classification (Nazi vs. non-Nazi) and multi-class
+classification (13 Nazi-related symbol classes).
 
-In the multi-class setting, YOLOv11 emerged as the top performer, followed closely by \ac{ViT}. OpenCLIP alone performed
-poorly in zero-shot settings, but its performance improved substantially when paired with supervised
-classifiers—though still underperforming compared to end-to-end deep models. EfficientNet showed weak results in
-both settings, suggesting sensitivity to architectural choices and training hyperparameters.
+In the binary classification task, several models demonstrated exceptional performance. OpenCLIP combined with
+classical classifiers—such as \ac{SVC}, \ac{LR}, KNeighborsClassifier, and SGDClassifier—achieved high F1-scores (
+$\geq$\ 0.89), with
+some reaching near-perfect \ac{ROC} \ac{AUC} values (e.g., \ac{LR} with \ac{AUC} = 1.0).
+Transformer-based \ac{ViT} and object detector \ac{YOLO} also yielded strong results, balancing high \ac{AUC} and
+\ac{AP}. These findings indicate that both learned visual-semantic embeddings and end-to-end deep feature extractors
+are effective for distinguishing Nazi symbols from non-Nazi content. While some models such as OpenCLIP + Decision
+Tree or Bagging Classifier lagged in \ac{PR} performance, the overall trend confirms the strength of hybrid
+pipelines and attention-based architectures in this classification setting.
 
-Overall, our results demonstrate that symbol classification, especially in sensitive and subtle contexts like
-detecting hate symbols, benefits from models that are either end-to-end optimized for the specific task or from
-hybrid approaches that combine semantic embeddings with suitable classifiers. The experiments also highlight the
-challenges in achieving reliable generalization across diverse classes of hate symbols, given their visual
-variability and contextual ambiguity.
+However, models such as OpenCLIP + Decision Tree or Bagging Classifier demonstrated noticeably weaker performance,
+particularly in the \ac{PR} space, indicating limited reliability in predicting the positive class under imbalanced
+conditions. While EfficientNet performed reasonably well in terms of \ac{AUC} (0.993), its lower \ac{AP} (0.780)
+suggests it may be less suited to high-precision tasks in this context.
+
+In the multi-class setting, \ac{YOLO} remained the strongest performer, followed closely by \ac{ViT}. OpenCLIP alone did
+not perform well in zero-shot classification, but its results improved considerably when paired with supervised
+classifiers—though still trailing end-to-end deep models. These findings highlight that while OpenCLIP embeddings
+encode useful visual-semantic information, their effectiveness heavily depends on the downstream classifier and task
+supervision.
+
+In summary, the experiments demonstrate that both end-to-end \ac{DL} models and hybrid systems can be highly
+effective for classifying Nazi symbols. Nonetheless, model choice significantly affects performance depending on the
+metric of interest (e.g., \ac{AUC} vs. \ac{AP}), and success depends not only on feature representations but also on
+classifier robustness and sensitivity to data imbalance and symbol diversity.
 
 \section{Future Work}
 
-This study has demonstrated the feasibility of using deep learning and multimodal models to detect Nazi and
-extremist symbols. Building on these results, several directions for future work emerge:
+Building on the encouraging results of this study, several key directions for future work emerge:
 
 \begin{itemize}
-    \item \textbf{Dataset Expansion and Annotation:} Enhancing the dataset—particularly increasing the number of
-    examples for underrepresented or visually similar symbol classes—could significantly improve multi-class
-    classification performance. Incorporating domain expert feedback or leveraging semi-supervised and weakly
-    supervised learning strategies could further refine annotation quality and contextual relevance.
+    \item \textbf{Dataset Expansion and Balancing:} Increasing the volume and diversity of labeled images,
+    especially for underrepresented or visually ambiguous symbol classes, would likely improve multi-class
+    classification performance and generalizability. Including hard negatives could also enhance the robustness of
+    binary classifiers.
 
-    \item \textbf{Fine-Tuning Multimodal Models:} While OpenCLIP embeddings combined with classical classifiers
-    showed promise, future work should explore fine-tuning the vision backbone or jointly training multimodal models
-    on task-specific data. This may improve class separability and allow better adaptation to symbol-specific nuances.
+    \item \textbf{Fine-Tuning Vision Backbones and Multimodal Training:} While OpenCLIP embeddings performed well
+    with classical classifiers, further gains may be achieved through task-specific fine-tuning of the vision
+    backbone or full multimodal retraining. This could improve class separability and address limitations observed
+    in zero-shot settings.
 
-    \item \textbf{Explainability and Robustness:} The integration of \ac{XAI} techniques (e.g.,
-    \ac{Grad-CAM}, \ac{SHAP}) would help interpret classification decisions—especially important in sensitive applications
-    such as legal review or moderation. Evaluating model robustness to adversarial attacks, image distortions, or
-    low-quality inputs remains an important next step.
+    \item \textbf{Precision-Oriented Optimization:} Models with high \ac{AUC} do not always translate to high
+    precision under class imbalance. Future work could explore loss functions or calibration techniques that
+    explicitly optimize for precision and recall, especially when false positives have severe consequences.
 
-    \item \textbf{Context-Aware and Multimodal Classification:} Incorporating metadata such as image captions,
-    filenames, or textual context from surrounding content may improve performance, particularly in ambiguous cases.
-    This aligns with the broader goal of context-aware content moderation in social platforms and digital archives.
+    \item \textbf{Explainability and Human Oversight:} Integrating \ac{XAI} techniques like
+    \ac{Grad-CAM}~\parencite{Selvaraju_2019} or \ac{SHAP}~\parencite{SHAP2025}
+    will enhance interpretability, allowing users to understand and verify predictions. This is critical in
+    sensitive use cases such as archival documentation or legal review.
 
-    \item \textbf{Online Deployment and Real-Time Integration:} Although this work implemented and containerized an
-    \ac{API} service for local deployment, future work could involve deploying it in an online setting using cloud
-    platforms. This includes optimizing for inference speed, \ac{API} scalability, and data privacy compliance in
-    real-time systems.
+    \item \textbf{Contextual and Multimodal Learning:} Extending the classification pipeline to include metadata (
+    e.g., captions, filenames, surrounding text) may improve classification of ambiguous images. Joint
+    vision-language models or contextual classifiers could aid in more nuanced understanding.
 
-    \item \textbf{User Feedback and Human-in-the-Loop Systems:} Integrating user feedback into the classification
-    pipeline could help refine model outputs over time and improve trustworthiness. This is especially relevant in
-    professional or archival environments, where user corrections can guide continuous learning.
+    \item \textbf{Real-Time Deployment and Scalability:} Building on the containerized \ac{API} service, future work
+    should target online deployment with support for low-latency inference, scalability across cloud platforms, and
+    compliance with data privacy standards.
+
+    \item \textbf{User Feedback and Continuous Learning:} Introducing human-in-the-loop systems with user feedback
+    can help refine classification boundaries over time, improve trustworthiness, and support use in dynamic or
+    evolving symbol landscapes.
 
 \end{itemize}
 
-In summary, this thesis lays a foundation for scalable and practical Nazi symbol classification. Extending it to
-real-world systems will require continued efforts in model refinement, dataset curation, deployment optimization,
-and ethical safeguards.
-
+Overall, this thesis establishes a strong foundation for practical hate symbol recognition. The most promising avenues involve balancing high precision with explainability and integrating contextual and user-driven inputs to support real-world deployment in ethically sensitive environments.

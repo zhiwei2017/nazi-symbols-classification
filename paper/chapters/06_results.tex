@@ -8,25 +8,25 @@
 
 \subsection{Tabular Results}
 
-The results for the binary classification task are summarized in Table~\autoref{tab:binary-results}, which reports
-accuracy, precision, recall, F1-score, and \ac{AUC} for each evaluated model.
+The results for the binary classification task are summarized in ~\autoref{tab:binary-results}, which reports
+accuracy, precision, recall, and F1-score for each evaluated model, \ac{AUC} and \ac{AP} for applicable models.
 
 \input{data/binary_results}
 
 \subsection{Visual Comparison}
 
 To facilitate a clear visual comparison of model performance on the binary classification task, bar plots were
-generated for all selected models, including YOLOv11, ResNet34, EfficientNet-B2, \ac{ViT}, Moondream, OpenCLIP, and
+generated for all selected models, including \ac{YOLO}, \ac{ResNet}, EfficientNet, \ac{ViT}, Moondream, OpenCLIP, and
 OpenCLIP combined with \ac{SVC}.
 
-Figures~\autoref{fig:model-accuracy}, \autoref{fig:model-precision}, \autoref{fig:model-recall}, and
+~\autoref{fig:model-accuracy}, \autoref{fig:model-precision}, \autoref{fig:model-recall}, and
 \autoref{fig:model-f1-score} depict the performance metrics, with the left side of each figure representing binary
 classification results. These visualizations highlight trade-offs among models and assist in identifying the most
 effective architectures.
 
-For binary classification, \ac{ViT}, YOLOv11, and OpenCLIP-based models paired with classical
-classifiers—particularly \ac{SVC} and \ac{KNN}—demonstrated superior performance. Specifically, \ac{ViT} and
-OpenCLIP + \ac{SVC} achieved the highest F1-scores of 0.890 and 0.939, respectively. Conversely, Moondream and the
+For binary classification, \ac{ViT}, \ac{YOLO}, and OpenCLIP-based models paired with classical
+classifiers—particularly \ac{SVC} and KNeighborsClassifier—demonstrated superior performance. Specifically, \ac{ViT} and
+OpenCLIP + \ac{SVC} achieved the highest F1-scores of 0.901 and 0.939, respectively. Conversely, Moondream and the
 base OpenCLIP encoder exhibited comparatively lower effectiveness.
 
 \input{figures/model_accuracy}
@@ -37,14 +37,9 @@ base OpenCLIP encoder exhibited comparatively lower effectiveness.
 \subsection{Confusion Matrices}
 
 Confusion matrices for the binary classification task are presented in ~\autoref{fig:confusion-matrix-binary}. Each
-matrix corresponds to a model trained to distinguish images as either:
+matrix corresponds to a model trained to distinguish images as either \textbf{Non-Nazi} or \textbf{Nazi}.
 
-\begin{itemize}
-  \item \textbf{Non-Nazi}
-  \item \textbf{Nazi}
-\end{itemize}
-
-The evaluated models include ResNet, YOLOv11, EfficientNet, \ac{ViT}, and OpenCLIP encoder combined with \ac{SVC}.
+The evaluated models include \ac{ResNet}, \ac{YOLO}, EfficientNet, \ac{ViT}, and OpenCLIP encoder combined with \ac{SVC}.
 
 These matrices provide detailed insight into each model’s discriminative capabilities, where a high count of true
 positives and true negatives indicates accurate classification, while false positives and false negatives reveal
@@ -52,29 +47,29 @@ specific challenges such as visual similarity or low symbol clarity.
 
 \input{figures/confusion_matrix_binary}
 
-\subsection{ROC and Precision-Recall Curves}
+\subsection{Receiver Operating Characteristic (ROC) and Precision-Recall (PR) Curves}
 
 To further characterize model performance under class imbalance, \ac{ROC} and \ac{PR} curves were plotted for the
 binary classification task.
 
-Figure~\autoref{fig:roc-curve} illustrates the \ac{ROC} curves, demonstrating the trade-off between true positive rate
-and false positive rate across different thresholds. The \ac{AUC} values reported in Table~\autoref{tab:binary-results}
+~\autoref{fig:roc-curve} illustrates the \ac{ROC} curves, demonstrating the trade-off between true positive rate
+and false positive rate across different thresholds. The \ac{AUC} values reported in ~\autoref{tab:binary-results}
 correspond with the visual trends observed.
 
-Figure~\autoref{fig:pr-curve} presents the \ac{PR} curves, which are particularly informative when evaluating
+~\autoref{fig:pr-curve} presents the \ac{PR} curves, which are particularly informative when evaluating
 classifiers under imbalanced conditions. The area under the \ac{PR} curve (average precision) complements the
-\ac{ROC-AUC}, emphasizing each model's ability to retrieve relevant positive samples effectively.
+\ac{AUC-ROC}, emphasizing each model's ability to retrieve relevant positive samples effectively.
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[width=0.8\textwidth]{ROC}
+  \includegraphics[width=0.8\textwidth]{figures/ROC}
   \caption{Receiver Operating Characteristic (ROC) curves for all models on the binary classification task, depicting the trade-off between true positive rate and false positive rate across classification thresholds.}
   \label{fig:roc-curve}
 \end{figure}
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[width=0.8\textwidth]{PR}
+  \includegraphics[width=0.8\textwidth]{figures/PR}
   \caption{Precision-Recall (PR) curves for all models on the binary classification task, highlighting model performance under class imbalance conditions.}
   \label{fig:pr-curve}
 \end{figure}
@@ -85,29 +80,29 @@ To further evaluate model robustness, an additional experiment was conducted usi
 from the original dataset. This subset included the three most visually distinct symbols: the SS Skull, Siegrune,
 and Swastika.
 
-The results of this reduced-symbol experiment are presented in Table~\autoref{tab:binary-reduced-symbols-result},
+The results of this reduced-symbol experiment are presented in ~\autoref{tab:binary-reduced-symbols-result},
 indicating the models' performance when focusing on a smaller, more visually distinct set of classes.
 
-\input{data/binary_reduced_symbols_result}
+\input{data/binary_reduced_symbols_results}
 
 \section{Multi-Class Classification Results}
 
 \subsection{Tabular Results}
 
-The multi-class classification results are summarized in Table~\autoref{tab:multi-class-results}, reporting
+The multi-class classification results are summarized in ~\autoref{tab:multi-class-results}, reporting
 macro-averaged accuracy, precision, recall, and F1-score for each model.
 
 \input{data/multi_class_results}
 
 \subsection{Visual Comparison}
 
-Figures~\autoref{fig:model-accuracy}, \autoref{fig:model-precision}, \autoref{fig:model-recall}, and
+~\autoref{fig:model-accuracy}, \autoref{fig:model-precision}, \autoref{fig:model-recall}, and
 \autoref{fig:model-f1-score} also include the multi-class classification results, presented on the right side of
 each plot. These visualizations allow for direct comparison of model effectiveness across multiple symbol classes.
 
-In this setting, YOLOv11 consistently outperformed other models across all evaluation metrics, followed closely by
-ResNet34 and \ac{ViT}, both of which demonstrated strong and consistent classification performance. Models such as
-EfficientNet and Moondream showed less consistent results across different classes.
+In this setting, \ac{YOLO} consistently outperformed other models across all evaluation metrics, followed closely by
+\ac{ResNet} and \ac{ViT}, both of which demonstrated strong and consistent classification performance. Models such as
+Moondream and OpenCLIP showed less consistent results across different classes.
 
 \subsection{Confusion Matrices}
 
@@ -115,8 +110,8 @@ Confusion matrices for the multi-class classification task are shown in the figu
 to a model trained to classify images into one of thirteen symbol categories:
 
 \begin{quote}
-\texttt{['Sonnenrad', 'Flash and circle', 'Broken Sun Cross', 'The Happy Merchant', 'Hitler', 'Nazi salute',
-  'Yellow badge', 'Neo-Nazi', 'Siegrune', 'SS Skull', 'Sturmabteilung emblem', 'Swastika', 'Wolfsangel']}
+\texttt{['Black Sun', 'Flash and circle', 'Broken Sun Cross', 'The Happy Merchant', 'Hitler', 'Nazi salute',
+  'Yellow badge', 'neo-Nazi', 'Siegrune', 'SS Skull', 'Sturmabteilung emblem', 'Swastika', 'Wolfsangel']}
 \end{quote}
 
 These matrices reveal class-specific performance, highlighting where misclassifications occur and identifying
@@ -124,14 +119,14 @@ classes that are frequently confused. Such insights assist in understanding mode
 for improvement.
 
 \begin{itemize}
-  \item \textbf{ResNet:} Demonstrates strong performance on prominent symbols such as \textit{Swastika} and
+  \item \textbf{\ac{ResNet}:} Demonstrates strong performance on prominent symbols such as \textit{Swastika} and
   \textit{Siegrune}, with occasional confusion among visually similar classes.
-  \item \textbf{YOLOv11:} Achieves high accuracy on frequent classes but struggles with rarer symbols like
-  \textit{Flash and circle} and \textit{Yellow badge}.
+  \item \textbf{\ac{YOLO}:} Achieves high accuracy on frequent classes but struggles with rarer symbols like
+  \textit{Nazi salute} and \textit{Broken Sun Cross}. Overall, it has the best performance across all classes.
   \item \textbf{EfficientNet:} Yields balanced performance but exhibits reduced confidence on ambiguous or
   underrepresented categories.
-  \item \textbf{Vision Transformer (ViT):} Shows strong recognition for dominant classes, with some misclassifications on less frequent symbols.
-  \item \textbf{OpenCLIP encoder + SVC:} The text-image contrastive learning approach produces reasonable results,
+  \item \textbf{\ac{ViT}:} Shows strong recognition for dominant classes, with some misclassifications on less frequent symbols.
+  \item \textbf{OpenCLIP encoder + \ac{SVC}:} The text-image contrastive learning approach produces reasonable results,
   particularly for \textit{Swastika}, but is sensitive to class imbalance.
 \end{itemize}
 

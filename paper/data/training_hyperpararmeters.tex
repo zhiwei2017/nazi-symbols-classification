@@ -5,23 +5,30 @@
 \begin{table}[ht]
 \centering
 \resizebox{\textwidth}{!}{
+\begin{threeparttable}
+
 \begin{tabular}{lcccccc}
 \toprule
 \textbf{Model}                  & \textbf{Epochs} & \textbf{Batch Size} & \textbf{Input Size} & \textbf{Loss Function} & \textbf{Optimizer} & \textbf{Learning Rate}  \\
 \midrule
-ResNet                          & 100             & 16                  & 224×224             & BCE/CCE                & Adam               & 1e-3                    \\
-EfficientNet (binary)           & 100             & 16                  & 224×224             & BCE                    & Nadam              & 2e-3                    \\
-EfficientNet (multi)            & 100             & 16                  & 224×224             & CCE                    & Adam               & 1e-3                    \\
-ViT                             & 100             & 16                  & 224×224             & BCE/CCE                & Adam               & 2e-5                    \\
-YOLOv11                         & 100             & 16                  & 224×224             & BCE/CCE                & SGD                & 0.01                    \\
+ResNet-34                       & 100             & 48                  & 224×224             & BCE/CCE\tnote{1}       & Adam               & 1e-3                    \\
+EfficientNet-b2 (binary)        & 100             & 48                  & 224×224             & BCE                    & Nadam              & 2e-3                    \\
+EfficientNet-b2 (multi)         & 100             & 48                  & 224×224             & CCE                    & Adam               & 1e-3                    \\
+ViT                             & 100             & 48                  & 224×224             & BCE/CCE                & Adam               & 2e-5                    \\
+YOLOv11                         & 100             & 48                  & 224×224             & BCE/CCE                & SGD                & 0.01                    \\
 OpenCLIP + ML                   & –               & –                   & 224×224             & –                      & –                  & –                       \\
-Zero-shot (OpenCLIP, Moondream) & –               & –                   & –                   & –                      & –                  & –                       \\
+Zero-shot (OpenCLIP, Moondream)\tnote{2} & –               & –                   & –                   & –                      & –                  & –                       \\
 \bottomrule
 \end{tabular}
-}
-\vspace{0.5em}
-\footnotesize{\textbf{Note:} BCE = Binary Cross-Entropy, CCE = Categorical Cross-Entropy. Zero-shot models are not trained on the dataset.}
 
+\smallskip\footnotesize
+\begin{tablenotes}
+    \item[1] BCE = Binary Cross-Entropy, CCE = Categorical Cross-Entropy.\vfill
+    \item[2] Zero-shot models are not trained on the dataset; they use pretrained weights and inference directly.
+
+\end{tablenotes}
+\end{threeparttable}
+}
 \caption{Summary of training hyperparameters used for each model.}
 \label{tab:training-hyperparameters}
 \end{table}

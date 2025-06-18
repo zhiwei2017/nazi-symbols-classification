@@ -60,3 +60,4 @@ venv
 */build/*
 !paper/data/*
 !paper/figures/*
+!paper/build/main.pdf
