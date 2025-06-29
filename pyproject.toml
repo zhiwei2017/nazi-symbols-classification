@@ -20,6 +20,11 @@ exclude = ["tests", "docs", "scripts"]
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
 opencv-python = "~4.10"
+loguru = "~0.7"
+matplotlib = "~3.9"
+torch = "~2.2"
+pandas = "~2.2"
+roboflow = "~1.1"
 
 [tool.poetry.group.dev.dependencies]
 bandit = "~1.7"
@@ -37,7 +42,9 @@ click = "*"
 uvicorn = "^0.32.0"
 python-multipart = "==0.0.9"
 torch = "~2.2"
+scikit-learn = "~1.6"
 ultralytics = "~8.3"
+open-clip-torch = "~2.24"
 
 [tool.poetry.group.test]
 optional = true
@@ -67,6 +74,7 @@ pandas = "~2.2"
 pytorch-lightning = "~2.3"
 open-clip-torch = "~2.24"
 jupyter = "~1.1"
+scikit-learn = "~1.6"
 
 [build-system]
 requires = ["poetry"]

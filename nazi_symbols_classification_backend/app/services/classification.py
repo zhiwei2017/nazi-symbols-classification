@@ -1,5 +1,11 @@
 import cv2
+from PIL import Image
 import os
+import open_clip
+import torch
+import joblib
+import numpy as np
+from sklearn.svm import SVC
 from nazi_symbols_classification.image_processing import (
     auto_resize, grayscale, auto_adjust_contrast
 )
@@ -7,9 +13,44 @@ from nazi_symbols_classification.pipeline import Pipeline
 from ultralytics import YOLO
 from typing import List, Dict, Any
 from ..globals import state
+from ..configs import get_settings
 
+setting = get_settings()
 data_folder = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
                            "data")
+
+
+class OpenCLIPTransformerSVC:
+    def __init__(self, svc_model_path: str,
+                 openclip_model_name: str = 'ViT-B-32',
+                 device: str = "cpu"):
+        self.openclip_model, _, self.preprocess = open_clip.create_model_and_transforms(
+            openclip_model_name, pretrained="laion2b_s34b_b79k", device=device
+        )
+        self.openclip_model.eval()
+        self.device = device
+        self.model = joblib.load(svc_model_path)
+
+
+    def encode_image(self, image):
+        """Encodes an image into a feature vector using OpenCLIP."""
+        with torch.no_grad(), torch.autocast(self.device):
+            image = self.preprocess(image).unsqueeze(0)
+            image_features = self.openclip_model.encode_image(image)
+            image_features /= image_features.norm(dim=-1, keepdim=True)
+            return image_features.cpu().float().numpy()
+
+    def predict(self, image):
+        """Predicts the class of an image using the SVC model."""
+        if isinstance(image, str):
+            image = Image.open(image).convert("RGB")
+        elif isinstance(image, Image.Image):
+            image = image.convert("RGB")
+        elif isinstance(image, np.ndarray):
+            image = Image.fromarray(image).convert("RGB")
+        image_features = self.encode_image(image)
+        prediction = self.model.predict(image_features)
+        return prediction[0]
 
 
 def init_state_for_classification():
@@ -47,14 +88,45 @@ def init_state_for_classification():
         ("grayscale", grayscale, None),
         ("auto_adjust_contrast", auto_adjust_contrast, None),
     ])
-    state["first_layer_model"] = YOLO(os.path.join(data_folder, "first-layer.pt"))
+    if setting.FIRST_LAYER_MODEL == "SVC":
+        state["first_layer_model"] = OpenCLIPTransformerSVC(
+            svc_model_path=os.path.join(data_folder, "first-layer.pt"),
+            openclip_model_name="ViT-B-32",
+            device="cpu" if torch.cuda.is_available() else "cpu"
+        )
+    elif setting.FIRST_LAYER_MODEL == "YOLO":
+        state["first_layer_model"] = YOLO(os.path.join(data_folder, "first-layer.pt"))
+    else:
+        raise ValueError(f"Unsupported first layer model: {setting.FIRST_LAYER_MODEL}")
     state["second_layer_model"] = YOLO(os.path.join(data_folder, "second-layer.pt"))
 
 
 def get_first_layer_result(images):
+    if setting.FIRST_LAYER_MODEL == "SVC":
+    # get first layer prediction result
+        return get_svc_first_layer_result(images)
+    elif setting.FIRST_LAYER_MODEL == "YOLO":
+        # get first layer prediction result
+        return get_yolo_first_layer_result(images)
+    else:
+        raise ValueError(f"Unsupported first layer model: {setting.FIRST_LAYER_MODEL}")
+
+
+def get_svc_first_layer_result(images):
+    # get first layer prediction result
+    result = []
+    for image in images:
+        predicted_label = state["first_layer_model"].predict(image)
+        result.append(dict(first_layer_result=dict(label=predicted_label,
+                                                    prob=None),
+                           second_layer_result=list()))
+    return result
+
+
+def get_yolo_first_layer_result(images):
     # get first layer prediction result
     first_layer_names = state["first_layer_model"].names
-    original_results = state["first_layer_model"](source=images, stream=True)
+    original_results = state["first_layer_model"](source=images, stream=False)
     results = []
     for original_result in original_results:
         probs_result = original_result.probs
@@ -67,7 +139,7 @@ def get_first_layer_result(images):
 
 def get_second_layer_result(images, results, second_layer_threshold: float = 0.3):
     second_layer_names = state["second_layer_model"].names
-    original_results = state["second_layer_model"](source=images, stream=True)
+    original_results = state["second_layer_model"](source=images, stream=False)
     for i in range(len(results)):
         if results[i]["first_layer_result"]["label"] == "nazi-symbol":  # type: ignore
             original_result = original_results.pop(0)
@@ -75,7 +147,7 @@ def get_second_layer_result(images, results, second_layer_threshold: float = 0.3
             top5_probs = probs_result.top5conf.numpy()
             probs = [prob for prob in top5_probs if prob >= second_layer_threshold]
             labels = [second_layer_names[label] for label in probs_result.top5[:len(probs)]]
-            results[i]["second_layer_result"] = [dict(label=label, prob=prob)  # type: ignore
+            results[i]["second_layer_result"] = [dict(label=setting.CLASSIFICATION_LABEL_TRANSLATIONS[label], prob=prob)  # type: ignore
                                                  for label, prob in zip(labels, probs)]
     return results
 

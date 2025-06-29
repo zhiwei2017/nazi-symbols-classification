@@ -30,8 +30,8 @@ FROM base-with-dependencies
 # install the project and download models from huggingface
 COPY . ./
 RUN poetry install && \
-    curl -L https://huggingface.co/zhiwei2017/yolo11s-cls-nazi-symbols/resolve/main/yolo11s-cls-multiple-nazi-symbols/weights/best.pt --output nazi_symbols_classification_backend/data/second-layer.pt &&  \
-    curl -L https://huggingface.co/zhiwei2017/yolo11s-cls-nazi-symbols/resolve/main/yolo11s-cls-nazi-symbol-detection/weights/best.pt --output nazi_symbols_classification_backend/data/first-layer.pt
+    curl -L https://huggingface.co/zhiwei2017/nazi-symbols-multi-class-classification/blob/main/yolo11s/yolo11s-cls.pt --output nazi_symbols_classification_backend/data/second-layer.pt &&  \
+    curl -L https://huggingface.co/zhiwei2017/nazi-symbols-binary-classification/blob/main/svc/svc.pt --output nazi_symbols_classification_backend/data/first-layer.pt
 
 EXPOSE ${API_PORT}
 

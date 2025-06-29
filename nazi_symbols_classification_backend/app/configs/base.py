@@ -7,6 +7,7 @@ from typing import List, Union, Dict
 from pydantic import BaseModel, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from ..utils.logging import StandardFormatter, ColorFormatter
+from ..constants import ModelType
 
 
 class LoggingConfig(BaseModel):
@@ -108,4 +109,21 @@ class Settings(BaseSettings):
                 "handlers": []
             },
         },
+    }
+    FIRST_LAYER_MODEL: ModelType = "SVC"
+    # SECOND_LAYER_MODEL: ModelType = "YOLO"
+    CLASSIFICATION_LABEL_TRANSLATIONS: Dict[str, str] = {
+        'black_sun': "Black Sun",
+        'british_union_of_fascist': "Flash and circle",
+        'broken_sun_cross': "Broken Sun Cross",
+        'happy_merchant': "The Happy Merchant",
+        'hitler': "Hitler",
+        'hitler_salute': "Nazi salute",
+        'judenstern': "Yellow badge",
+        'neo-nazi': "neo-Nazi",
+        'siegrune': "Siegrune",
+        'ss_skull': "SS Skull",
+        'sturmabteilung_emblem': "Sturmabteilung emblem",
+        'swastika': "Swastika",
+        'wolfsangel': "Wolfsangel"
     }
