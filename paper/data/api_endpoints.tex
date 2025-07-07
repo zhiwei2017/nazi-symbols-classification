@@ -9,20 +9,15 @@
     \toprule
     \textbf{Method} & \textbf{Endpoint} & \textbf{Description} \\
     \midrule
-    \texttt{POST}   & \texttt{/predict} & Accepts a list of image files and returns predictions for binary classification (Nazi / Non-Nazi). If an image is classified as Nazi, it also returns all predicted Nazi symbol classes with probability $\geq$ 0.1. \\
-
-    \texttt{POST}   & \texttt{/predict-binary} & Accepts one or more image files and returns binary classification results (Nazi / Non-Nazi) with associated confidence scores. \\
-
-    \texttt{POST}   & \texttt{/predict-multiclass} & Accepts a list of image files and returns all predicted Nazi symbol classes per image where the prediction probability is greater than or equal to 0.1. Supports multi-label classification. \\
-
-    \texttt{GET}    & \texttt{/health} & Returns a status message (e.g., \texttt{\{"status": "ok"\}}) to confirm the \ac{API} is operational. \\
-
-    \texttt{GET}    & \texttt{/version} & Returns metadata including the current model version, \ac{API} version, and build timestamp. \\
-
-    \texttt{GET}    & \texttt{/docs} & Provides interactive Swagger UI documentation for exploring and testing endpoints. \\
+    \texttt{POST}   & \texttt{/predict} & Runs the 2-layer pipeline: binary classification followed by multi-class prediction if Nazi content is detected. Threshold for symbol inclusion is 0.1. \\
+    \texttt{POST}   & \texttt{/predict-binary} & Performs binary classification with associated confidence scores. \\
+    \texttt{POST}   & \texttt{/predict-multiclass} & Performs multi-label classification of Nazi symbol types. Returns predictions above confidence threshold 0.1. \\
+    \texttt{GET}    & \texttt{/health} & Health check endpoint. \\
+    \texttt{GET}    & \texttt{/version} & Returns model and \ac{API} version metadata. \\
+    \texttt{GET}    & \texttt{/docs} & Serves OpenAPI documentation via Swagger UI. \\
     \bottomrule
   \end{tabular}
   }
-  \caption{Summary of available \ac{API} endpoints. The prediction endpoints support multiple image inputs and return structured \ac{JSON} responses with top-k results.}
+  \caption{Summary of available \ac{API} endpoints.}
   \label{tab:api-endpoints}
 \end{table}

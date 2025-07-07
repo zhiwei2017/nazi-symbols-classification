@@ -20,19 +20,20 @@ generated for all selected models, including \ac{YOLO}, \ac{ResNet}, EfficientNe
 OpenCLIP combined with \ac{SVC}.
 
 ~\autoref{fig:model-accuracy}, \autoref{fig:model-precision}, \autoref{fig:model-recall}, and
-\autoref{fig:model-f1-score} depict the performance metrics, with the left side of each figure representing binary
-classification results. These visualizations highlight trade-offs among models and assist in identifying the most
-effective architectures.
+\autoref{fig:model-f1-score} depict the performance metrics, with the y-axis of each figure representing a metric of
+the binary classification results. These visualizations highlight trade-offs among models and assist in identifying
+the most effective architectures.
 
 For binary classification, \ac{ViT}, \ac{YOLO}, and OpenCLIP-based models paired with classical
 classifiers—particularly \ac{SVC} and KNeighborsClassifier—demonstrated superior performance. Specifically, \ac{ViT} and
 OpenCLIP + \ac{SVC} achieved the highest F1-scores of 0.901 and 0.939, respectively. Conversely, Moondream and the
 base OpenCLIP encoder exhibited comparatively lower effectiveness.
 
+\input{figures/model_f1_score}
 \input{figures/model_accuracy}
 \input{figures/model_precision}
 \input{figures/model_recall}
-\input{figures/model_f1_score}
+\newpage
 
 \subsection{Confusion Matrices}
 
@@ -41,7 +42,7 @@ matrix corresponds to a model trained to distinguish images as either \textbf{No
 
 The evaluated models include \ac{ResNet}, \ac{YOLO}, EfficientNet, \ac{ViT}, and OpenCLIP encoder combined with \ac{SVC}.
 
-These matrices provide detailed insight into each model’s discriminative capabilities, where a high count of true
+These matrices provide detailed insight into each model’s classification capabilities, where a high count of true
 positives and true negatives indicates accurate classification, while false positives and false negatives reveal
 specific challenges such as visual similarity or low symbol clarity.
 
@@ -125,7 +126,8 @@ for improvement.
   \textit{Nazi salute} and \textit{Broken Sun Cross}. Overall, it has the best performance across all classes.
   \item \textbf{EfficientNet:} Yields balanced performance but exhibits reduced confidence on ambiguous or
   underrepresented categories.
-  \item \textbf{\ac{ViT}:} Shows strong recognition for dominant classes, with some misclassifications on less frequent symbols.
+  \item \textbf{\ac{ViT}:} Shows strong recognition for dominant classes, with some misclassifications on less
+  frequent symbols.
   \item \textbf{OpenCLIP encoder + \ac{SVC}:} The text-image contrastive learning approach produces reasonable results,
   particularly for \textit{Swastika}, but is sensitive to class imbalance.
 \end{itemize}

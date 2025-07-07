@@ -16,7 +16,7 @@ classification (13 Nazi-related symbol classes).
 In the binary classification task, several models demonstrated exceptional performance. OpenCLIP combined with
 classical classifiers—such as \ac{SVC}, \ac{LR}, KNeighborsClassifier, and SGDClassifier—achieved high F1-scores (
 $\geq$\ 0.89), with
-some reaching near-perfect \ac{ROC} \ac{AUC} values (e.g., \ac{LR} with \ac{AUC} = 1.0).
+some reaching near-perfect \ac{ROC} \ac{AUC} values (e.g., \ac{LR} with \ac{AUC} = 1.00).
 Transformer-based \ac{ViT} and object detector \ac{YOLO} also yielded strong results, balancing high \ac{AUC} and
 \ac{AP}. These findings indicate that both learned visual-semantic embeddings and end-to-end deep feature extractors
 are effective for distinguishing Nazi symbols from non-Nazi content. While some models such as OpenCLIP + Decision
@@ -77,4 +77,6 @@ Building on the encouraging results of this study, several key directions for fu
 
 \end{itemize}
 
-Overall, this thesis establishes a strong foundation for practical hate symbol recognition. The most promising avenues involve balancing high precision with explainability and integrating contextual and user-driven inputs to support real-world deployment in ethically sensitive environments.
+Overall, this thesis establishes a strong foundation for practical hate symbol recognition. The most promising
+avenues involve balancing high precision with explainability and integrating contextual and user-driven inputs to
+support real-world deployment in ethically sensitive environments.

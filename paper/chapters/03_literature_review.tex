@@ -3,10 +3,17 @@
 
 \chapter{Literature Review}\label{chapter:literature-review}
 
-The classification of Nazi symbols in images is a highly specialized task situated at the intersection of computer
-vision, hate speech detection, few-shot learning, and ethical \ac{AI} deployment. Owing to the diverse and sensitive
-visual characteristics of such symbols, this problem introduces unique challenges, including the need for robust
-visual representations, limited annotated data, and open-set recognition capabilities.
+This chapter surveys relevant literature across computer vision~\parencite{krizhevsky2012imagenet}, hate symbol
+recognition~\parencite{belete2025200258,dasbhattacharjee2019365}, multimodal learning
+~\parencite{dosovitskiy2020image}, few-shot classification~\parencite{radford2021clip}, and the broader ethical
+challenges in AI system deployment~\parencite{ieee2021ethics}. Although direct research on image-based Nazi symbol
+classification remains scarce, related work in extremist content moderation, iconographic recognition, and hate
+speech detection provides valuable methodological context.
+
+The review also addresses literature on dataset transparency, labeling practices, and the risks associated with
+training AI on sensitive or harmful content. Together, these studies establish the technical and ethical foundations
+of this thesis, and underscore key challenges such as limited annotated data, the need for robust visual features,
+and open-set recognition.
 
 \section{Visual Symbol and Logo Recognition}
 
@@ -25,7 +32,7 @@ for the classification of hate symbols, which often appear in modified or contex
 \section{Hate Content Detection in Social Media and Memes}
 
 Hate symbol recognition increasingly intersects with multimodal content analysis, especially in memes and online
-extremist media. Belete and Alitasb~\parencite{belete2025200258} developed a deelp learning pipeline for detecting
+extremist media. Belete and Alitasb~\parencite{belete2025200258} developed a \ac{DL} pipeline for detecting
 offensive Amharic-language memes using \ac{BiLSTM} and dense networks. Although language-specific, their work
 demonstrates the potential of combining textual and visual cues for hate content detection—a key consideration for
 memes that integrate Nazi symbols with provocative slogans or captions.
@@ -57,7 +64,8 @@ common or region-specific variations. In such cases, zero-shot and few-shot lear
 et al.~\parencite{xian2017zeroshot} systematically benchmarked \ac{ZSL} approaches,
 underscoring the trade-offs between generalization and domain adaptation.
 
-\ac{CLIP}, introduced by Radford et al.~\parencite{radford2021clip}, leverages contrastive learning to align image and
+\ac{CLIP}, introduced by Radford et al.~\parencite{radford2021clip}, leverages contrastive
+learning~\parencite{chen2020simpleframeworkcontrastivelearning} to align image and
 text representations, allowing for zero-shot classification based on descriptive prompts. This modality is
 especially promising for detecting evolving or rarely seen Nazi symbols. DiffCLIP~\parencite{zhang2021language}
 extends this work by enabling prompt-based fine-tuning, making it suitable for few-shot scenarios where only minimal
@@ -78,4 +86,3 @@ Additionally, Shahriari~\parencite{ieee2021ethics} emphasized ethically aligned 
 encouraging practitioners to prioritize human rights, safety, and fairness. These principles are particularly
 salient for Nazi symbol classifiers, where the risk of misuse, false positives, or sociopolitical harm must be
 carefully mitigated through responsible design and deployment.
-

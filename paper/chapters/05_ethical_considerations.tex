@@ -3,45 +3,64 @@
 
 \chapter{Ethical Considerations}\label{chapter:ethical-considerations}
 
-In conducting research on the classification of Nazi symbols in images, several critical ethical considerations must
-be acknowledged and addressed to ensure responsible and conscientious scientific practice.
+The development of machine learning systems for the classification of Nazi symbols entails a range of ethical
+challenges due to the sensitive, harmful, and potentially illegal nature of the target content. These concerns
+reflect broader societal expectations for responsible AI, as articulated in international frameworks such as \ac{UNESCO}’s
+\textit{Recommendation on the Ethics of Artificial Intelligence}~\parencite{unesco2021}. This chapter
+outlines the core ethical principles guiding the research, grounded in widely recognized frameworks such as the \ac{IEEE}
+\textit{Ethically Aligned Design} guidelines~\parencite{ieee2021ethics}, the EU AI Act~\parencite{euai2023}, and the
+\ac{DFG}’s \textit{Guidelines for Safeguarding Good Research Practice}~\parencite{dfg2022}. These considerations are
+essential for ensuring that the study is conducted responsibly, complies with legal norms, and anticipates the
+social implications of deploying such a system.
 
 \begin{itemize}
-  \item \textbf{Handling of Sensitive Content:} Nazi symbols are intrinsically linked to hate, violence, and
-  genocide. Datasets containing such imagery must be managed with the utmost care to prevent inadvertent exposure or
-  normalization of hateful content. Access to these datasets should be strictly controlled, and clear disclaimers
-  must accompany any dissemination or use.
+    \item \textbf{Foundational Ethical Frameworks:} This research is informed by established ethical guidelines such
+    as the IEEE Ethically Aligned Design~\parencite{ieee2021ethics} and the Belmont Report~\parencite{belmont1979},
+    the latter—originally developed for biomedical research—offers enduring principles like
+    respect for persons and beneficence that extend to socially impactful AI systems. These principles guide our
+    handling of sensitive data and system design choices.
 
-  \item \textbf{Purpose and Intent:} It is imperative to explicitly state that the objective of this research is to
-  support the identification and moderation of harmful content, thereby preventing the proliferation of hate
-  symbols. Transparency regarding the project’s aims is essential to preclude any misinterpretation or misuse that
-  could inadvertently promote such imagery.
+    \item \textbf{Handling of Sensitive Content:} Nazi symbols are strongly associated with hate, violence, and
+    genocide. Datasets containing such imagery must be handled with care to avoid trivializing or normalizing hateful
+    ideologies. Access to these datasets is strictly limited, and appropriate content warnings and disclaimers are used.
+    Data management follows established protocols for working with sensitive or controversial materials, in accordance
+    with research integrity standards outlined by the \ac{DFG}~\parencite{dfg2022}.
 
-  \item \textbf{Legal Compliance:} Given that many jurisdictions (notably Germany and Austria) impose legal
-  restrictions on the display, distribution, and use of Nazi symbols, compliance with all relevant laws and
-  regulations is mandatory throughout data collection, processing, and presentation phases.
+    \item \textbf{Purpose and Intent:} The goal of this research is to assist in identifying and moderating harmful
+    content, not to promote or propagate extremist ideologies. Transparency in the project's objectives helps
+    prevent misuse, aligning with principles of socially beneficial AI outlined by the \ac{IEEE} and
+    \ac{UNESCO}~\parencite{ieee2021ethics,unesco2021}.
 
-  \item \textbf{Data Sourcing and Annotation:} All data utilized must be sourced from publicly available and legally
-  authorized repositories. In instances where human annotation is required, measures should be implemented to
-  minimize annotators’ exposure to distressing content, including the provision of appropriate warnings and mental
-  health resources.
+    \item \textbf{Legal Compliance:} In countries such as Germany and Austria, strict laws (e.g., Section 86a of the
+    German Criminal Code) prohibit the display and distribution of Nazi symbols. This study complies with all
+    applicable regulations, ensuring that content is accessed solely for legitimate research purposes and not
+    redistributed~\parencite{bundesregierung2023}.
 
-  \item \textbf{Bias and Misclassification Risks:} Classification models may erroneously identify benign images as
-  containing Nazi symbols or fail to recognize altered or subtle instances. Such inaccuracies can result in false
-  accusations or failure to detect harmful content. Therefore, rigorous efforts to mitigate bias and enhance model
-  robustness—such as employing diverse and balanced training datasets—are essential.
+    \item \textbf{Data Sourcing and Annotation:} All datasets were collected from publicly available
+    repositories—primarily Kaggle and Roboflow—which permit academic and non-commercial use under their respective
+    licenses\footnote{Kaggle Terms of Service: \url{https://www.kaggle.com/terms}; Roboflow Terms:
+    \url{https://roboflow.com/terms}}. No restricted or proprietary content was used. All annotations were conducted
+    manually by the researcher. Content warnings were observed throughout the process to mitigate potential
+    psychological distress, as also described in ~\autoref{sec:data-construction}.
 
-  \item \textbf{Dual-Use Concerns:} The development of automated systems capable of detecting Nazi symbols may be
-  susceptible to misuse, including facilitating the creation of covert variants designed to evade detection or
-  enabling unethical surveillance. These dual-use risks must be acknowledged, with appropriate safeguards instituted
-  to limit deployment and distribution.
+    \item \textbf{Bias and Misclassification Risks:} Classification systems may mistakenly flag benign content or
+    overlook altered forms of hate symbols. Such errors could lead to unjust moderation or missed threats. To
+    address this, the study prioritized balanced training data, fairness-aware evaluation, and extensive model
+    validation in line with AI fairness principles~\parencite{mehrabi2021survey}.
 
-  \item \textbf{Privacy and Consent:} When datasets include identifiable individuals (for example, persons depicted
-  wearing such symbols), careful anonymization and respect for privacy rights are mandatory. Ethical clearance and
-  informed consent should be obtained where applicable to uphold data protection standards.
+    \item \textbf{Dual-Use Concerns:} While developed for moderation purposes, such a detection system could be
+    repurposed for malicious use, such as evading detection or enabling authoritarian surveillance. Recognizing this
+    dual-use risk~\parencite{brundage2018malicious}, the research limits model distribution and recommends
+    transparency, access control, and red-teaming before deployment.
 
-  \item \textbf{Transparency and Accountability:} The entirety of the research process—including dataset
-  composition, methodological decisions, and known model limitations—should be thoroughly documented and
-  communicated. This transparency encourages responsible use and provides guidance for future researchers to prevent
-  potential misuse of classification systems developed for sensitive content.
+    \item \textbf{Privacy and Consent:} If any images included identifiable individuals, anonymization procedures
+    were applied in accordance with \ac{GDPR} principles and ethical AI guidelines~\parencite{gdpr2016}. No \ac{PII}
+    was intentionally collected or retained.
+
+    \item \textbf{Transparency and Accountability:} All stages of the research—including data provenance,
+    preprocessing, model selection, and limitations—are documented and disclosed. This transparency aligns with
+    reproducible research norms and promotes accountability in the deployment of AI systems on sensitive
+    content~\parencite{Mitchell_2019}.
 \end{itemize}
+
+

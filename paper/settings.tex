@@ -35,6 +35,9 @@
 \usepackage{wrapfig,lipsum,booktabs}
 \usepackage{xcolor}
 \usepackage[para,online,flushleft]{threeparttable}
+\usepackage{url}
+
+\newcommand*{\fullref}[1]{\hyperref[{#1}]{\autoref*{#1}: \nameref*{#1}}} % One single link
 
 \makeatletter
 \def\TPT@doparanotes{\par

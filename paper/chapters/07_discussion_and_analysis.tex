@@ -8,7 +8,7 @@
 The results presented in ~\autoref{tab:binary-results} reveal a wide range of performances across different models.
 Notably, classical \ac{ML} classifiers leveraging OpenCLIP embeddings consistently ranked among the top
 performers. The best overall F1-score (0.939) was achieved by the \textbf{OpenCLIP + ~\ac{SVC}} model, which also
-demonstrated high precision (0.948) and recall (0.929). Similarly, the \textbf{OpenCLIP + Logistic Rergression}
+demonstrated high precision (0.948) and recall (0.929). Similarly, the \textbf{OpenCLIP + Logistic Regression}
 model achieved the highest ~\ac{AUC} score (1.000) and highest \ac{AP} (0.964), along with a strong recall of 0.882
 and an F1-score of 0.902, indicating a solid ability to detect Nazi symbols with relatively few false negatives.
 
@@ -17,9 +17,9 @@ F1-score of 0.901, the highest among all standalone neural models, while \ac{YOL
 a notably high recall of 0.932, highlighting its capacity to detect true positives effectively. \ac{ResNet} also
 performed well, with an F1-score of 0.867, slightly outperforming EfficientNet (0.767).
 
-nomalously, the \textbf{Moondream} model achieved an exceptionally high recall of 0.995 but suffered from very low
-precision (0.153), resulting in a modest F1-score of just 0.265. This suggests a strong tendency to overpredict the
-Nazi class, leading to a high number of false positives.Similarly, the \textbf{OpenCLIP zero-shot} model performed
+Anomalously, the \textbf{Moondream} model achieved an exceptionally high recall of 0.995 but suffered from very low
+precision (0.153), resulting in a low F1-score of just 0.265. This suggests a strong tendency to overpredict the
+Nazi class, leading to a high number of false positives. Similarly, the \textbf{OpenCLIP zero-shot} model performed
 poorly, with a low F1-score of 0.025, highlighting the limitations of zero-shot classification without additional
 fine-tuning or classifier integration.
 
@@ -91,10 +91,10 @@ Only models that support probabilistic outputs are included in this analysis. Cl
 
 \subsection{Binary Classification with Reduced Nazi Symbol Classes}
 
-To further examine model robustness and adaptability, we conducted a binary classification experiment restricted to
-a reduced subset of Nazi symbols (\textit{siegrune}, \textit{swastika}, and \textit{\ac{SS} skull}) against the full
-set of non-Nazi images. The goal was to evaluate model performance when the semantic diversity of the positive class
-is reduced.
+To further examine model robustness and adaptability, a binary classification experiment was conducted. This
+experiment was restricted to a reduced subset of Nazi symbols (\textit{siegrune}, \textit{swastika}, and
+\textit{\ac{SS} skull}) against the full set of non-Nazi images. The goal was to evaluate model performance when the
+semantic diversity of the positive class is reduced.
 
 Despite the narrower scope, overall trends remained consistent with the full binary task (as showed in
 ~\autoref{tab:binary-reduced-symbols-result}). Transformer-based
@@ -106,10 +106,10 @@ precision of \textbf{0.973}, recall of \textbf{0.900}, and F1-score of \textbf{0
 
 Interestingly, \ac{YOLO} underperformed in this setup (F1-score \textbf{0.661}) compared to its results on the full
 binary task, potentially due to its reliance on spatial object features that may be less effective when class
-variety is reduced. Conversely, models like Moondream and OpenCLIP hybrids maintained high performance, indicating
+variety is reduced. Conversely, models like \textbf{Moondream} and \textbf{OpenCLIP} hybrids maintained high performance, indicating
 that text-image aligned embeddings may still effectively capture distinguishing features in constrained settings.
 
-As this is a focused experiment with a reduced symbol set, we limit evaluation to the most informative and widely
+As this is a focused experiment with a reduced symbol set, the evaluation was limited to the most informative and widely
 supported metrics—accuracy, precision, recall, and F1-score. Metrics such as \ac{AUC} and \ac{AP} are omitted for
 simplicity and consistency, especially given that not all models provide calibrated probability outputs.
 
@@ -145,7 +145,7 @@ OpenCLIP’s semantic features. Similarly, \textbf{OpenCLIP + SGDClassifier} and
 \textbf{OpenCLIP + GradientBoostingClassifier} achieved solid F1-scores of 0.718 and 0.703, respectively.
 
 Conversely, ensemble-based models such as \textbf{RandomForest}, \textbf{Bagging}, and
-\textbf{DecisionTreeClassifier} performed poorly, with F1-scores around or below 0.2. These results suggest that
+\textbf{DecisionTreeClassifier} performed poorly, with F1-scores around or below 0.200. These results suggest that
 these models may not align well with the high-dimensional structure of OpenCLIP embeddings, potentially due to
 overfitting or limited ability to model fine-grained inter-class distinctions.
 
@@ -174,8 +174,8 @@ increased inter-class ambiguity and the limitations of traditional classifiers i
 across many classes.
 
 Interestingly, some ensemble models (e.g., GradientBoosting, VotingClassifier) showed reasonable binary
-classification performance (F1-scores around 0.84–0.91), but generally degraded in the multi-class case (F1-scores
-below 0.71), possibly due to overfitting or insufficient class-separation power.
+classification performance (F1-scores around 0.840–0.910), but generally degraded in the multi-class case (F1-scores
+below 0.710), possibly due to overfitting or insufficient class-separation power.
 
 The \textbf{Moondream} and \textbf{OpenCLIP zero-shot} models performed poorly in both tasks, with Moondream showing
 a pathological tendency to predict the positive class in binary classification (perfect recall but extremely low
@@ -193,39 +193,40 @@ diversity.
 The confusion matrices for the multi-class classification task reveal distinct patterns of model performance across
 classes, reflecting varying degrees of class separation and misclassification.
 
-\textbf{\ac{ResNet}} shows strong true positive rates for high-frequency classes such as
-\textit{Swastika} (808 correct predictions) and \textit{Siegrune} (247 correct), but also notable confusion between
-visually similar classes. For example, \textit{SS Skull} is frequently misclassified as
+\textbf{\ac{ResNet}} (see ~\autoref{fig:resnet-confusion-matrix-multiple}) shows strong true positive rates for
+high-frequency classes such as \textit{Swastika} (808 correct predictions) and \textit{Siegrune} (247 correct), but
+also notable confusion between visually similar classes. For example, \textit{SS Skull} is frequently misclassified as
 \textit{Siegrune} (36 instances), while \textit{Siegrune} mislabels \textit{SS Skull} less often (5 instances). This
 asymmetric confusion highlights the difficulty \ac{ResNet} faces in discriminating fine-grained symbol variations.
 Low-frequency classes like \textit{Nazi Salute} perform poorly, with very few correct predictions.
 
-\textbf{\ac{YOLO}} generally maintains competitive accuracy for dominant classes, correctly identifying 834
-\textit{Swastika} instances and 222 \textit{Siegrune} samples. Confusion between \textit{SS Skull} and
-\textit{Siegrune} remains substantial but somewhat more balanced compared to \ac{ResNet}, with 25 \textit{SS Skull}
-instances misclassified as \textit{Siegrune} and 19 misclassifications in the opposite direction. This indicates
-improved inter-class separation but ongoing challenges for these similar classes.
+\textbf{\ac{YOLO}} (see ~\autoref{fig:yolo-confusion-matrix-multiple}) generally maintains competitive accuracy for
+dominant classes, correctly identifying 834 \textit{Swastika} instances and 222 \textit{Siegrune} samples. Confusion
+between \textit{SS Skull} and \textit{Siegrune} remains substantial but somewhat more balanced compared to
+\ac{ResNet}, with 25 \textit{SS Skull} instances misclassified as \textit{Siegrune} and 19 misclassifications in the
+opposite direction. This indicates improved inter-class separation but ongoing challenges for these similar classes.
 
-\textbf{EfficientNet} exhibits a somewhat different confusion profile, with lower misclassification of
-\textit{SS Skull} as \textit{Siegrune} (15 instances), but higher misclassification of \textit{Siegrune} as
-\textit{SS Skull} (40 instances), showing an inverse asymmetry compared to \ac{ResNet}. The true positive count for
-\textit{Siegrune} is comparatively lower (174), suggesting less confident classification in this region of the
-feature space. Low-frequency classes continue to be problematic, with \textit{Nazi Salute} achieving only a single
-correct prediction.
+\textbf{EfficientNet} (see ~\autoref{fig:efficient-confusion-matrix-multiple}) exhibits a somewhat different confusion
+profile, with lower misclassification of \textit{SS Skull} as \textit{Siegrune} (15 instances), but higher
+misclassification of \textit{Siegrune} as \textit{SS Skull} (40 instances), showing an inverse asymmetry compared to
+\ac{ResNet}. The true positive count for \textit{Siegrune} is comparatively lower (174), suggesting less confident
+classification in this region of the feature space. Low-frequency classes continue to be problematic, with
+\textit{Nazi Salute} achieving only a single correct prediction.
 
-\textbf{\ac{ViT}} marginally improves performance for certain classes, such as \textit{SS Skull}
-and \textit{Hitler}, with 188 and 175 correct predictions respectively. Confusion between \textit{SS Skull} and
-\textit{Siegrune} remains, with 19 \textit{SS Skull} samples misclassified as \textit{Siegrune} and 32 in the
+\textbf{\ac{ViT}} (see ~\autoref{fig:vit-confusion-matrix-multiple}) marginally improves performance for certain classes, such as
+\textit{SS Skull} and \textit{Hitler}, with 188 and 175 correct predictions respectively. Confusion between
+\textit{SS Skull} and \textit{Siegrune} remains, with 19 \textit{SS Skull} samples misclassified as \textit{Siegrune} and 32 in the
 reverse direction, indicating persistent challenges in distinguishing subtle differences despite the transformer
 architecture’s strengths.
 
-\textbf{OpenCLIP Encoder combined with \ac{SVC}} achieves a balanced confusion pattern. It correctly identifies 232
-\textit{Siegrune} and 167 \textit{SS Skull} instances. The confusion between \textit{SS Skull} and \textit{Siegrune}
-is distributed moderately (25 and 17 misclassifications respectively), showing a more symmetric error pattern
-compared to other models. This suggests better inter-class separation in this challenging pair, although some
-misclassification persists. Additionally, the model excels at maintaining tight clusters around true labels for
-high-frequency classes such as \textit{Swastika} (823 correct) but struggles with low-frequency classes like
-\textit{Nazi Salute}, which has zero correct predictions.
+\textbf{OpenCLIP Encoder combined with \ac{SVC}} (see ~\autoref{fig:openclip-encoder-confusion-matrix-multiple})
+achieves a balanced confusion pattern. It correctly identifies 232 \textit{Siegrune} and 167 \textit{SS Skull}
+instances. The confusion between \textit{SS Skull} and \textit{Siegrune} is distributed moderately (25 and 17
+misclassifications respectively), showing a more symmetric error pattern compared to other models. This suggests
+better inter-class separation in this challenging pair, although some misclassification persists. Additionally, the
+model excels at maintaining tight clusters around true labels for high-frequency classes such as
+\textit{Swastika} (823 correct) but struggles with low-frequency classes like \textit{Nazi Salute}, which has zero
+correct predictions.
 
 Overall, all models face difficulties with fine-grained classes like \textit{SS Skull} and \textit{Siegrune}, but
 OpenCLIP+\ac{SVC} demonstrates a more balanced confusion profile. The results highlight the ongoing need to improve

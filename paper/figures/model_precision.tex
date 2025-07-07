@@ -2,7 +2,7 @@
 %! Date = 11.06.25
 
 % Preamble
-\begin{figure}[ht]
+\begin{figure}[!ht]
     \centering
     \begin{tikzpicture}
         \begin{axis}[
@@ -11,7 +11,7 @@
             width=\textwidth,
             height=8cm,
             enlarge x limits=0.4,
-            ylabel={Accuracy (\%)},
+            ylabel={Precision (\%)},
             symbolic x coords={Binary, Multi-class},
             xtick=data,
             ymin=0.0, ymax=110.0,

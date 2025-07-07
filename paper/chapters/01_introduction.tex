@@ -24,43 +24,58 @@ pressing need for automated detection tools to support content moderation and po
 
 \section{Problem Statement}
 
-The ability to automatically detect and classify Nazi symbols in images is critical for researchers studying the
-dynamics of extremism, as well as for platforms and authorities aiming to curb the spread of hate speech. However,
-commercially available image classification services that offer such functionality are often proprietary and
-prohibitively expensive. This presents a significant barrier for researchers and civil society actors operating
-under limited budgets.
-
-To address this gap, there is a need for an accessible, transparent, and effective image classification system
-tailored specifically for the detection of Nazi symbols. Such a system should be capable of both binary
-classification (detecting the presence or absence of Nazi imagery) and multi-class classification (identifying the
-specific symbol present). Furthermore, it must be lightweight and adaptable, with the ability to operate efficiently
-on modest hardware resources such as a single-GPU workstation.
+The automatic detection and classification of Nazi symbols in images is critical for researchers, journalists, civil
+society organizations, and online platforms working to monitor and mitigate the spread of extremist content. While
+commercial image classification services exist, they are often proprietary, lack transparency, and entail high usage
+costs—particularly for applications requiring large-scale image analysis or custom symbol detection. This presents a
+significant barrier not for governments per se, but for non-state actors and research groups who often operate under
+tight computational and financial constraints.
+Even when national institutions have greater resources, scalability and cost-efficiency remain key considerations.
+High-throughput image classification tasks, such as analyzing large volumes of online content or social media images
+in near real-time, can demand substantial compute time and infrastructure. In practice, this limits the feasibility
+of using closed, black-box services that are either too slow, too expensive to scale, or unsuitable for
+customization. Moreover, reliance on opaque systems may hinder accountability and reproducibility—both essential in
+research and regulatory contexts.
+To address these challenges, there is a need for an open, transparent, and efficient image classification system
+tailored specifically for Nazi symbol detection. Such a system should support both binary classification: detecting
+presence/absence of Nazi imagery, and multi-class classification: identifying specific symbols, while remaining
+lightweight and adaptable enough to run on accessible hardware like single-GPU workstations. The same requirements
+apply across adjacent domains, including online extremism tracking, digital forensics, and platform content
+moderation—making the solution broadly relevant beyond its immediate scope.
 
 \section{Objectives}
 
 This research aims to design, implement, and evaluate an efficient and robust image classification framework for the
-automatic detection and categorization of Nazi symbols. The specific objectives of the study are as follows:
+automatic detection and categorization of Nazi symbols in visual media. While the immediate focus is on Nazi
+iconography, the broader goal is to develop a generalizable and extensible approach that can be adapted to other
+categories of extremist or harmful visual symbols. This makes the framework more useful across different
+contexts—including civil society monitoring, journalism, and platform moderation—where flexibility and scalability
+are essential.
+
+The specific objectives of this study are as follows:
 
 \begin{itemize}
-  \item Construct a curated dataset of approximately 100,000 images, encompassing both Nazi-related and non-Nazi
-  imagery.
-  \item Annotate and structure the dataset to support both binary and multi-class classification tasks.
-  \item Investigate a diverse range of \ac{DL} and multimodal models—including \ac{CNN}s, \ac{ViT}, and
-  OpenCLIP embeddings—paired with classical \ac{ML} algorithms.
-  \item Evaluate model performance using standard classification metrics, and analyze the comparative strengths and
-  limitations of each approach.
-  \item Develop an \ac{API} service to enable model inference via HTTP requests,
-  thereby facilitating real-world deployment.
+\item Construct a curated dataset of approximately 100,000 images, encompassing both Nazi-related and non-Nazi
+imagery to support supervised training and evaluation.
+\item Annotate and structure the dataset to support both binary (presence/absence) and multi-class (specific symbol)
+classification tasks.
+\item Investigate a diverse range of \ac{DL} and multimodal models—including \ac{CNN}s, \ac{ViT}, and OpenCLIP
+embeddings—combined with classical \ac{ML} algorithms for downstream classification.
+\item Evaluate model performance using standard classification metrics (e.g., accuracy, precision, recall, F1-score,
+AUC), and analyze the comparative strengths and limitations of each approach.
+\item Develop a lightweight, modular \ac{API} service to enable efficient model inference via HTTP requests, thereby
+supporting real-world deployment and integration.
 \end{itemize}
 
-While this study is bounded by constraints in data coverage and computational resources, its overarching aim is to
-propose a generalizable methodology that can be scaled and adapted to broader categories of extremist symbols and
-larger datasets.
+While this study is constrained in terms of data coverage and computational resources, it proposes a scalable
+frameworkthat can be repurposed for other extremist symbol detection tasks by updating the dataset and retraining or
+fine-tuning the models. This generalizable design makes it especially suitable for actors operating in fast-changing
+threat landscapes or under limited infrastructure.
 
 \section{Scope and Limitations}
 
 The visual symbols associated with Nazi and neo-Nazi ideologies are numerous and varied, both historically and in
-contemporary usage. Given this diversity, it is infeasible to construct a comprehensive dataset that captures all
+contemporary usage. Given this diversity, it is challenging to construct a comprehensive dataset that captures all
 such symbols. Instead, this study focuses on a representative subset of the most visually distinctive and commonly
 encountered symbols. Specifically, the following classes are included: \textit{Black Sun}, \textit{Flash and Circle},
 \textit{Broken Sun Cross}, \textit{The Happy Merchant}, \textit{Hitler}, \textit{Nazi Salute},
@@ -74,12 +89,16 @@ The classification system is designed to support two core tasks:
 \begin{enumerate}
   \item \textbf{Binary Classification:} Determining whether a given image contains any Nazi-related symbol.
   \item \textbf{Multi-Class Classification:} Identifying which specific symbol (among 13 predefined categories) is
-  present in an image labeled as Nazi-related.
+  present in a given image found to have Nazi-related symbology.
 \end{enumerate}
 
-In addition to dataset limitations, the study is constrained by hardware availability. All experiments were
-conducted on a single GPU with 16 GB of memory, which limited the scale of hyperparameter tuning and model
-ensembling. Consequently, priority was given to computationally efficient architectures and training procedures.
+In addition to dataset limitations, there were also hardware constraints. All experiments were conducted on a single
+consumer-grade GPU (NVIDIA RTX 4060Ti) with 16 GB of video memory. This limited the ability to fine-tune large
+models or run memory-intensive experiments—particularly with transformer-based architectures (e.g., ViT) or
+multimodal embeddings (e.g., OpenCLIP). These models were used in this study, but only in lightweight or partially
+frozen configurations to stay within the available hardware limits. It also restricted the feasibility
+of training multiple models in parallel for ensembling. As a result, priority was given to computationally efficient
+architectures and lightweight training procedures that could fit within the available memory and runtime budget.
 
 Despite these constraints, this work seeks to demonstrate the feasibility of developing effective, accessible, and
 ethically responsible tools for the detection of extremist visual content. It is intended to support researchers,
@@ -91,29 +110,27 @@ online.
 This thesis is organized as follows:
 
 \begin{itemize}
-  \item \textbf{Chapter 2: Literature Review} – This chapter surveys existing research on Nazi symbol detection and
+  \item \textbf{\fullref{chapter:literature-review}} – Surveys existing research on Nazi symbol detection and
   classification, emphasizing methodological trends, key findings, and identifying research gaps addressed in this work.
 
-  \item \textbf{Chapter 3: Data and Model Development Methodology} – This chapter outlines the data collection
-  process, dataset composition, preprocessing techniques, and the classification algorithms employed. It also
-  describes the model training process, evaluation metrics, and justifies the chosen methodologies.
+  \item \textbf{\fullref{chapter:methodology}} – Describes the data collection
+  process, dataset composition, preprocessing techniques, and the used classification algorithms. It also
+  outlines the model training process, evaluation metrics, and justifies the chosen methodologies.
 
-  \item \textbf{Chapter 4: Ethical Considerations} – We explore the ethical implications of working with sensitive
-  content, including data privacy, the potential for misuse, and the broader responsibilities associated with
+  \item \textbf{\fullref{chapter:ethical-considerations}} – Discusses the ethical implications of working with sensitive
+  content, including concerns around data privacy, potential misuse, and broader responsibilities associated with
   automated hate symbol detection.
 
-  \item \textbf{Chapter 5: Results} – This chapter presents the outcomes of our experiments, providing both
-  quantitative and qualitative analyses of model performance on binary and multi-class classification tasks.
+  \item \textbf{\fullref{chapter:results}} – Presents the outcomes of the experiments, including both
+  quantitative and qualitative analyses of model performance for binary and multi-class classification tasks.
 
-  \item \textbf{Chapter 6: Discussion and Analysis} – We interpret the results, analyze their implications in light
-  of the research objectives, compare our findings with prior work, and highlight the system's limitations and areas
-  for improvement.
+  \item \textbf{\fullref{chapter:discussion-and-analysis}} – Interprets the results in relation to the
+  research objectives, compares findings to prior work, and discusses system limitations and potential improvements.
 
-  \item \textbf{Chapter 7: Model Deployment and \ac{API} Service} – This chapter describes the deployment strategy
+  \item \textbf{\fullref{chapter:model-deployment-and-api-service}} – Describes the deployment strategy
   for the best-performing models, including the architecture of the \ac{API} service, the \ac{CI/CD} pipeline, and
   details of the available endpoints.
 
-  \item \textbf{Chapter 8: Conclusion and Future Work} – The final chapter summarizes the contributions of this
-  thesis, reflects on key insights gained, and outlines directions for future research in the field of Nazi symbol
-  classification.
+  \item \textbf{\fullref{chapter:conclusion-and-future-work}} – Summarizes the thesis contributions, reflects on key
+  insights gained, and outlines directions for future research in the field of Nazi symbol classification.
 \end{itemize}
