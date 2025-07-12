@@ -3,19 +3,27 @@
 
 \chapter{Discussion and Analysis}\label{chapter:discussion-and-analysis}
 
-\section{Binary Classification}
+This chapter reflects critically on the performance of the evaluated models, connecting the empirical results to the
+research objectives outlined in Chapter~\ref{chapter:introduction}. The primary aim of this thesis was to develop
+and compare image classification models capable of accurately recognizing and categorizing Nazi symbols from varied
+visual inputs. Through detailed analysis of both binary and multi-class classification results, this chapter
+interprets key trends, identifies strengths and limitations of different model families, and discusses the practical
+and ethical implications of deploying such systems.
+
+\section{Analysis of Binary Classification Performance}
 
 The results presented in ~\autoref{tab:binary-results} reveal a wide range of performances across different models.
 Notably, classical \ac{ML} classifiers leveraging OpenCLIP embeddings consistently ranked among the top
 performers. The best overall F1-score (0.939) was achieved by the \textbf{OpenCLIP + ~\ac{SVC}} model, which also
 demonstrated high precision (0.948) and recall (0.929). Similarly, the \textbf{OpenCLIP + Logistic Regression}
 model achieved the highest ~\ac{AUC} score (1.000) and highest \ac{AP} (0.964), along with a strong recall of 0.882
-and an F1-score of 0.902, indicating a solid ability to detect Nazi symbols with relatively few false negatives.
+and an F1-score of 0.902, indicating a solid ability to correctly classify Nazi symbols while minimizing false
+negatives.
 
 Among \ac{DL} models, both \textbf{\ac{ViT}} and \textbf{\ac{YOLO}} performed competitively. \ac{ViT} achieved an
 F1-score of 0.901, the highest among all standalone neural models, while \ac{YOLO} achieved an F1-score of 0.857 with
-a notably high recall of 0.932, highlighting its capacity to detect true positives effectively. \ac{ResNet} also
-performed well, with an F1-score of 0.867, slightly outperforming EfficientNet (0.767).
+a notably high recall of 0.932, highlighting its capacity to correctly classify positive symbol instances.
+\ac{ResNet} also performed well, with an F1-score of 0.867, slightly outperforming EfficientNet (0.767).
 
 Anomalously, the \textbf{Moondream} model achieved an exceptionally high recall of 0.995 but suffered from very low
 precision (0.153), resulting in a low F1-score of just 0.265. This suggests a strong tendency to overpredict the
@@ -42,7 +50,7 @@ goal is to distinguish between \textit{Nazi} and \textit{Non-Nazi} images.
 
 The OpenCLIP encoder combined with \ac{SVC} achieves the best overall balance, producing the
 highest number of true positives (194) and true negatives (14,802), alongside the lowest false positives (11) and
-false negatives (11). This indicates a strong capability to correctly detect Nazi symbols while minimizing
+false negatives (11). This indicates a strong capability to correctly classify Nazi symbols while minimizing
 misclassifications.
 
 \ac{YOLO} shows excellent sensitivity, with the second lowest false negative count (14), meaning it rarely misses Nazi
@@ -59,7 +67,7 @@ that it misses more Nazi cases compared to the other models, which might limit i
 
 Overall, these confusion matrices confirm that the OpenCLIP + \ac{SVC} approach is the most effective for binary
 classification in this context, offering a strong balance between precision and recall essential for sensitive
-symbol detection.
+symbol classification.
 
 \subsection{Binary Classification \ac{ROC} and \ac{PR} Curve Analysis}
 
@@ -117,7 +125,7 @@ This experiment highlights that reducing the complexity of the positive class do
 uniformly for all models. While it benefits embedding-based methods and transformers, object detection models like
 \ac{YOLO} may be affected due to loss of visual diversity.
 
-\section{Multi-Class Classification}
+\section{Analysis of Multi-Class Classification Performance}
 
 ~\autoref{tab:multi-class-results} summarizes the performance of all evaluated models on the multi-class
 classification task. The \textbf{\ac{YOLO}} model achieved the best performance across all macro-averaged metrics,
@@ -232,3 +240,146 @@ Overall, all models face difficulties with fine-grained classes like \textit{SS 
 OpenCLIP+\ac{SVC} demonstrates a more balanced confusion profile. The results highlight the ongoing need to improve
 discrimination for visually similar symbols, especially for classes with limited training data.
 
+\section{Analysis of Underperforming Models}
+
+While several models demonstrated strong classification performance, it is equally important to investigate those
+that underperformed to understand their limitations and potential failure modes.
+
+The \textbf{Moondream} model consistently exhibited pathological behavior, particularly in the binary classification
+setting. Its extremely high recall (0.995) was accompanied by very low precision (0.153), leading to an overall
+F1-score of just 0.265. This indicates that Moondream predicted nearly every image as a Nazi symbol, resulting in
+excessive false positives. This failure mode may stem from its generative nature or misalignment between the model’s
+text-conditioned outputs and the visual symbol classification task. Its weak performance in multi-class
+classification (F1-score: 0.355) further confirms its unsuitability for tasks requiring high visual specificity
+without fine-tuning.
+
+Similarly, the \textbf{OpenCLIP zero-shot} model underperformed in both binary and multi-class tasks. In the binary
+task, it produced an F1-score of just 0.025, suggesting that its generic semantic alignment is insufficient for
+accurate Nazi symbol classification without supervised adaptation. In the multi-class task, OpenCLIP zero-shot achieved
+only 0.265 F1-score and an accuracy of 0.274, further highlighting its limitations in recognizing fine-grained,
+domain-specific symbol categories. These results emphasize the need for careful domain adaptation when deploying
+foundation models for specialized tasks.
+
+Some \textbf{classical ensemble models}, such as \textbf{OpenCLIP + RandomForestClassifier}, also performed
+unexpectedly poorly despite high precision (0.983) in binary classification. The extremely low recall (0.097)
+resulted in a poor F1-score (0.177), indicating an overly conservative classification threshold. In multi-class
+classification, these models (RandomForest, Bagging, Decision Tree) also failed to produce competitive results (
+F1-scores below 0.200), likely due to their limited capacity to model complex, high-dimensional OpenCLIP features or
+handle subtle inter-class differences without overfitting.
+
+Overall, these underperformances highlight the importance of model-task alignment. Generative or zero-shot models
+may offer generality, but without fine-tuning, they can fail catastrophically on specific classification tasks.
+Likewise, conventional tree-based models may struggle to effectively utilize dense, semantic embeddings like those
+from OpenCLIP, especially in tasks with fine-grained categories.
+
+These failures provide a contrast to the following high-performing approaches, which better align with the
+classification objectives.
+
+\section{Analysis of High-Performing Models}
+
+Across both binary and multi-class classification tasks, several models demonstrated exceptional performance,
+providing insight into the characteristics of effective architectures for Nazi symbol recognition.
+
+The highest-performing binary classification model was \textbf{OpenCLIP + \ac{SVC}}, which achieved an F1-score of
+0.939, precision of 0.948, and recall of 0.929. This model’s strength lies in its ability to exploit OpenCLIP’s
+semantically-rich embeddings using a powerful kernel-based decision boundary. Its confusion matrix confirms minimal
+false positives and negatives, demonstrating high reliability in correctly identifying both the presence and absence
+of Nazi symbols. Likewise, \textbf{OpenCLIP + Logistic Regression} achieved the best AUC (1.000) and AP (0.964),
+showing strong probabilistic calibration and balanced performance across decision thresholds.
+
+In the multi-class classification task, \textbf{\ac{YOLO}} emerged as the top-performing model (F1-score: 0.833),
+outperforming all others in terms of macro-averaged accuracy and recall. YOLO’s object detection backbone and
+ability to preserve high-resolution spatial details proved highly effective in distinguishing subtle visual features
+across symbol classes. Its relatively balanced confusion matrix also shows good per-class discrimination,
+particularly on high-frequency categories like \textit{Swastika} and \textit{Siegrune}.
+
+\textbf{\ac{ResNet}} and \textbf{\ac{ViT}} consistently performed well in both tasks. \ac{ResNet}’s deep
+convolutional structure allowed it to learn robust visual features, resulting in an F1-score of 0.867 (binary) and
+0.810 (multi-class). \ac{ViT} leveraged self-attention to capture semantic relationships, achieving an F1-score of
+0.901 (binary) and 0.790 (multi-class). Their success across tasks demonstrates the generalizability of end-to-end
+\ac{DL} models when properly trained with domain-specific labeled data.
+
+In embedding-based approaches, \textbf{OpenCLIP + KNeighborsClassifier} also stood out. It delivered strong binary
+performance (F1-score: 0.915) and competitive multi-class results (F1-score: 0.775), suggesting that distance-based
+methods are particularly effective when operating on semantically meaningful representations.
+
+These findings confirm that both end-to-end deep models and hybrid embedding-based approaches can be highly
+effective when appropriately matched to the task. Kernel- and attention-based architectures, along with models that
+retain spatial resolution or exploit global semantics, perform especially well on complex symbol classification
+challenges.
+
+Beyond individual model metrics, broader themes emerge across tasks and models, offering insight into effective
+strategies for symbol classification.
+
+\section{Key Insights and Thematic Patterns}
+\label{subsec:key-insights}
+
+Across both binary and multi-class classification tasks, several key insights emerged:
+
+\begin{itemize}
+    \item Vision-language embeddings from OpenCLIP, when combined with traditional machine learning classifiers,
+    consistently delivered strong performance in both binary and multi-class tasks. These hybrid models showed
+    robustness to visual variations and generalized well to stylized or contextually embedded symbols —
+    outperforming solo deep learning models in many cases. However, solo OpenCLIP or Moondream models performed
+    poorly, suggesting that raw multi-modal outputs are not directly effective for this task without a downstream
+    classifier.
+    \item The \ac{ViT} achieved consistently strong performance across both tasks. Its global
+    attention mechanism allowed it to model subtle differences between symbols and perform well even in visually
+    cluttered or stylized inputs, outperforming CNNs in several scenarios.
+    \item YOLO, though traditionally designed for object detection, was repurposed and evaluated as a classifier
+    in this research. It achieved moderate performance in both binary and multi-class classification tasks. Its
+    performance on the reduced binary classification dataset was reasonable, though it did not match the
+    top-performing models like \ac{ViT} or OpenCLIP with classical ML classifiers. Its relatively
+    lightweight architecture and real-time inference potential, however, suggest it could still be useful in
+    deployment scenarios where speed is critical and classification accuracy is acceptable.
+    \item Classic CNNs like ResNet delivered strong baseline performance, particularly for clean and
+    high-resolution inputs, but struggled with rarer symbols and visually noisy data. Similarly, EfficientNet was
+    efficient but less effective for symbols with subtle intra-class variation (e.g., SS bolts vs. Wolfsangel).
+    \item A key theme was the challenge of generalizing to real-world and historical contexts — including grainy
+    images, scans, and stylized iconography. Models trained on curated datasets showed limitations here, suggesting
+    a need for domain adaptation or contrastive pretraining to improve transferability.
+    \item Finally, class imbalance significantly impacted performance, especially in the multi-class task. Rare
+    symbols suffered from low recall and inconsistent predictions, highlighting the importance of balanced sampling,
+    targeted augmentation, or few-shot learning approaches in future work.
+\end{itemize}
+
+Together, these insights highlight the trade-offs between model complexity, interpretability, and task
+suitability—informing how future systems can balance accuracy with practicality and ethical deployment needs.
+
+\section{Implications for Real-World Deployment}
+\label{subsec:deployment-implications}
+
+The findings suggest that hybrid approaches combining deep feature extraction with classical \ac{ML}
+classifiers offer the most promise for deployment in real-world systems tasked with binary classification of Nazi
+symbols in images. In particular, OpenCLIP combined with \ac{SVC} consistently achieve the highest F1-score in the
+binary classification task. indicating strong performance in balancing precision and recall for accurately
+classifying rare and sensitive Nazi symbols. These models also offer a good balance of performance, model
+transparency, and compute efficiency—important factors for safety-critical applications such as content moderation
+or archivalscreening.
+
+However, real-world deployment would require addressing several practical issues. These include handling ambiguous
+or degraded imagery, unseen symbol variants, and high false-positive costs in sensitive legal or moderation
+contexts. The results suggest that a human-in-the-loop system may be appropriate—one where automated classification
+is followed by expert verification for uncertain cases.
+
+Moreover, compliance and interpretability matter: using simpler classifiers on top of OpenCLIP embeddings offers a
+degree of explainability that deep end-to-end models may lack, aiding trust and regulatory acceptance.
+
+These considerations directly reflect the initial research goals of building practical, safe, and transparent
+classifiers for real-world symbol classification applications.
+
+\section{Limitations and Risks}
+\label{subsec:limitations}
+
+While the system showed encouraging results, several limitations remain. Most notably, performance on minority
+classes was inconsistent, with models tending to overfit to frequent, visually dominant symbols. This raises
+fairness and completeness concerns in applications that require comprehensive classification of all symbol types.
+
+Another risk lies in dataset bias: most training data was synthetically curated or sourced from known repositories,
+which may not capture the full spectrum of symbol usage in obscure or modern reinterpretations. This could lead to
+symbols being misclassified or overlooked in real-world use.
+
+Finally, the model does not currently account for contextual cues—e.g., the difference between educational versus
+propagandistic usage. While this was beyond the scope of the project, it remains a critical consideration for
+responsible deployment. Over-reliance on image classification alone, without contextual understanding, could lead to
+false accusations or misinterpretations.

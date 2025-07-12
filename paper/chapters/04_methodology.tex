@@ -142,6 +142,15 @@ The following list is a concise description of each symbol class included in the
 
 \subsection{Task-Oriented Dataset Structuring}
 
+To simulate open-set conditions and account for class imbalance, the dataset was structured with deliberate design
+choices. Several Nazi-related categories with limited samples were grouped into a new composite class labeled
+\textit{neo-Nazi}, allowing the model to generalize over symbol variants while mitigating data sparsity.
+Additionally, for the binary classification task, \textit{non-Nazi} images were randomly split into training,
+validation, and test sets. As a result, many \textit{non-Nazi} samples in the validation and test sets had no visual or
+semantic overlap with training examples. This setup approximates real-world open-set scenarios, where models must
+detect unfamiliar or previously unseen content.
+
+
 The dataset was structured to serve two complementary classification tasks as follows:
 
 \begin{itemize}

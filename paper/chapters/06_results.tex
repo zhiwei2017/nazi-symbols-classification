@@ -27,7 +27,20 @@ the most effective architectures.
 For binary classification, \ac{ViT}, \ac{YOLO}, and OpenCLIP-based models paired with classical
 classifiers—particularly \ac{SVC} and KNeighborsClassifier—demonstrated superior performance. Specifically, \ac{ViT} and
 OpenCLIP + \ac{SVC} achieved the highest F1-scores of 0.901 and 0.939, respectively. Conversely, Moondream and the
-base OpenCLIP encoder exhibited comparatively lower effectiveness.
+base OpenCLIP model exhibited comparatively lower effectiveness.
+
+Notably, \textbf{Moondream} significantly underperformed across all metrics. This may stem from its design:
+Moondream is a vision-language model optimized for captioning and dialogue, not classification. Its decoding
+component may censor or obfuscate symbol-related content due to alignment with safety mechanisms. Furthermore, its
+visual encoder likely lacks the granularity required to differentiate subtle differences in Nazi iconography.
+
+Similarly, the \textbf{OpenCLIP model alone} showed limited classification capability. As it is trained for
+contrastive retrieval tasks, embeddings extracted without a downstream classifier may not separate classes cleanly.
+However, when paired with classical classifiers such as \textbf{SVC} or \textbf{KNN}, performance improved
+substantially—highlighting the strength of OpenCLIP as a feature extractor.
+
+Potential reasons behind the varying performance of different models, including these observations, are further
+examined in the ~\autoref{chapter:discussion-and-analysis} \nameref{chapter:discussion-and-analysis}.
 
 \input{figures/model_f1_score}
 \input{figures/model_accuracy}
@@ -86,6 +99,15 @@ indicating the models' performance when focusing on a smaller, more visually dis
 
 \input{data/binary_reduced_symbols_results}
 
+As expected, reducing the class set to visually distinct symbols improved performance across most models. This
+demonstrates the impact of inter-class visual similarity on model accuracy. With fewer symbols and more training
+samples per class, models could learn cleaner decision boundaries and avoid confusion between ambiguous or
+similar-looking symbols.
+
+Implications of improved results on the reduced symbol set, and their relevance to dataset complexity and model
+robustness, are explored in more depth in the Discussion chapter.
+
+
 \section{Multi-Class Classification Results}
 
 \subsection{Tabular Results}
@@ -137,3 +159,14 @@ for improvement.
 \input{figures/resnet_confusion_matrix_multiclass}
 \input{figures/vit_confusion_matrix_multiclass}
 \input{figures/openclip_encoder_confusion_matrix_multiclass}
+
+Across multi-class results, \textbf{YOLO} stands out as the top performer. Its architecture enables spatial
+attention and object localization, making it well-suited to distinguish between overlapping or co-located symbols.
+In contrast, \textbf{ViT} and \textbf{ResNet} rely on whole-image representations and struggle more with occlusion
+or background noise.
+
+Moondream and vanilla OpenCLIP again performed poorly, reinforcing that general-purpose vision-language models are
+not optimal for fine-grained symbol classification—especially without prompt engineering or task-specific tuning.
+
+Detailed analysis and interpretation of multi-class classification challenges and model behaviors are deferred to
+the Discussion chapter.
