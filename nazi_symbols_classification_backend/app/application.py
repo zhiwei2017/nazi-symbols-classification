@@ -43,7 +43,7 @@ def create_application() -> FastAPI:
     # Set all CORS enabled origins
     if settings.CORS_ORIGINS:
         application.add_middleware(
-            CORSMiddleware,
+            CORSMiddleware,  # type: ignore
             allow_origins=[str(origin) for origin in
                            settings.CORS_ORIGINS],
             allow_origin_regex=settings.CORS_ORIGIN_REGEX,
@@ -61,5 +61,5 @@ def create_application() -> FastAPI:
         logging.getLogger(default_logger).propagate = False
 
     # add defined middleware functions
-    application.add_middleware(BaseHTTPMiddleware, dispatch=log_time)
+    application.add_middleware(BaseHTTPMiddleware, dispatch=log_time)  # type: ignore
     return application

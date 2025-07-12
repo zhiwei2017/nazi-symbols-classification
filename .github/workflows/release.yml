@@ -5,10 +5,14 @@ name: Publish Package to Pypi
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
 on:
-  # Trigger the workflow on push for release branches vXX.XX.XX
+  # Trigger the workflow on push for release branches XX.XX.XX
   push:
     tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - '[0-9]+.[0-9]+.[0-9]+'
+
+env:
+  DOCKER_REGISTRY: "docker.io"
+  DOCKER_IMAGE_NAME: "chasingcars/nazi-symbols-classification-backend"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -19,22 +23,47 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v5
+    - uses: actions/checkout@v3
+    - name: Docker meta
+      id: meta
+      uses: docker/metadata-action@v4
       with:
-        python-version: '3.10'
-    - name: Install Poetry
-      uses: snok/install-poetry@v1
+        # list of Docker images to use as base name for tags
+        images: ${{ env.DOCKER_IMAGE_NAME }}
+        # generate Docker tags based on the following events/attributes
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
+          type=semver,pattern={{major}}.{{minor}}.{{patch}}
+          type=sha
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v3
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    - uses: actions-ecosystem/action-regex-match@v2
+      id: regex-match
       with:
-        virtualenvs-create: true
-        virtualenvs-in-project: true
-        installer-parallel: true
-    - name: Load cached venv
-      id: cached-poetry-dependencies
-      uses: actions/cache@v4
+        text: ${{ github.ref_name }}
+        regex: '^[0-9]+.[0-9]+.[0-9]+$'
+    - name: Login to Docker Registry
+      uses: docker/login-action@v3
+      if: ${{ steps.regex-match.outputs.match != '' }}
       with:
-        path: .venv
-        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
-    - name: Build and publish package
-      run: make publish
+        registry: ${{ env.DOCKER_REGISTRY }}
+        username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+        password: ${{ secrets.DOCKER_REGISTRY_TOKEN }}
+    - name: Build docker image
+      uses: docker/build-push-action@v6
+      with:
+        context: .
+        platforms: linux/amd64,linux/arm64
+        file: ./docker/Dockerfile
+        push: ${{ steps.regex-match.outputs.match != '' }}
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        build-args: |
+          MODE="$MODE"
+      env:
+        MODE: ${{ steps.regex-match.outputs.match != '' && 'PROD' ||  'Test'  }}

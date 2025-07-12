@@ -224,7 +224,7 @@ async def predict_multiclass(images: List[UploadFile]) -> Any:
                                                      0.1)
     results = []
     for classification_result in classification_results:
-        nazi_symbols = [d['label'] for d in classification_result['second_layer_result']]
+        nazi_symbols = [d['label'] for d in classification_result['second_layer_result']]  # type: ignore
         details = classification_result['second_layer_result']
         result = dict(nazi_symbols=nazi_symbols,
                       details=details)

@@ -4,7 +4,7 @@ import pandas as pd
 
 from loguru import logger
 from roboflow import Roboflow
-from typing import Sequence, Dict
+from typing import Sequence, Dict, List
 
 
 def download_data_from_roboflow(api_key: str,
@@ -25,8 +25,8 @@ def download_data_from_roboflow(api_key: str,
     dataset_path = f"{dataset_parent_path}/{dataset_name}"
     rf = Roboflow(api_key=api_key)
     project = rf.workspace("zhiwei").project(dataset_name)
-    version = project.version(version)
-    version.download("folder", dataset_path)
+    project_version = project.version(version)
+    project_version.download("folder", dataset_path)
 
 
 def reorganise_images(path: str = "./datasets/nazi-symbols-classification",
@@ -119,7 +119,7 @@ def get_image_paths(path: str = "./datasets/nazi-symbols-classification",
     Returns:
         Sequence[str]: A list of image paths found in the specified directory and its sub-folders.
     """
-    image_paths = []
+    image_paths: List[str] = []
     if sub_folders:
         for sub_folder_name in sub_folders:
             sub_folder_path = os.path.join(path, sub_folder_name)
@@ -146,9 +146,9 @@ def load_labels_df(dataset_path: str,
     logger.info(f"Number of images in {sub_dataset_name} is {len(image_paths)}")
     training_image_paths = [image.removeprefix(f"os.path.join(dataset_path, sub_dataset_name)/") for image in image_paths]
     if binary:
-        training_labels = [int('non-nazi' not in image) for image in training_image_paths]
+        training_labels: List[int] = [int('non-nazi' not in image) for image in training_image_paths]
         labels = pd.DataFrame(dict(path=training_image_paths, contained_nazi=training_labels))
     else:
-        training_labels = [os.path.basename(os.path.dirname(image)) for image in training_image_paths]
+        training_labels: List[str] = [os.path.basename(os.path.dirname(image)) for image in training_image_paths]  # type: ignore
         labels = pd.DataFrame(dict(path=training_image_paths, nazi_cls=training_labels))
     return labels

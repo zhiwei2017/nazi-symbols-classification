@@ -5,7 +5,7 @@ from fastapi import APIRouter, UploadFile, HTTPException
 
 
 def save_images_to_folder(images: List[UploadFile],
-                          data_folder: str) -> Tuple[List[str], List[str]]:
+                          data_folder: str) -> Tuple[List[str], List[str | None]]:
     """Save uploaded images to a specified folder.
 
     Args:
