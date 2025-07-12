@@ -56,14 +56,14 @@ How to Use
 ++++++++++
 
 nazi-symbols-classification
----------------------------
+```````````````````````````
 
 To use nazi-symbols-classification in a project::
 
     import nazi_symbols_classification
 
 nazi_symbols_classification_backend
------------------------------------
+```````````````````````````````````
 
 To run the `nazi_symbols_classification_backend` locally with docker compose::
 
@@ -75,13 +75,13 @@ You can pull it with::
 
     docker push chasingcars/nazi-symbols-classification-backend:latest
 
-Send Image to classify
-----------------------
+Send Image to predict
+`````````````````````
 
 Assuming that the `nazi_symbols_classification_backend` is running at `http://localhost:8080` and the
 paths of images to be sent are `["dummy_folder/image_1.jpg", "dummy_folder/image_2.png"]`.
 
-To send images to the endpoint `http://localhost:8080/api/v1/classify`, you can do it with python::
+To send images to the endpoint `http://localhost:8080/api/v1/predict`, you can do it with python::
 
     import requests
 
@@ -105,16 +105,34 @@ To send images to the endpoint `http://localhost:8080/api/v1/classify`, you can 
         return result
 
     classify_document(["dummy_folder/image_1.jpg", "dummy_folder/image_2.png"],
-                       "http://localhost:8080/api/v1/classify")
+                       "http://localhost:8080/api/v1/predict")
 
 or with curl::
 
     curl -X 'POST' \
-      'http://localhost:8080/api/v1/classify' \
+      'http://localhost:8080/api/v1/predict' \
       -H 'accept: application/json' \
       -H 'Content-Type: multipart/form-data' \
       -F 'images=@dummy_folder/image_1.jpg;type=image/jpeg'
       -F 'images=@dummy_folder/image_2.png;type=image/png'
+
+How to run notebooks
+++++++++++++++++++++
+
+To run the notebooks, you need to have `nb` group dependencies installed. You can install them with::
+
+    $ poetry install --with nb
+
+You can start Jupyter Notebook with the following command::
+
+    $ jupyter notebook
+
+
+After that, you can run the notebooks in the `notebooks` folder using Jupyter Notebook or JupyterLab. For
+details on how to use the notebooks and what they contain, please refer to the
+`README.md <https://github.com/zhiwei2017/nazi-symbols-classification/tree/develop/notebooks/README.md>`_
+in `notebooks` folder.
+
 
 Maintainers
 -----------

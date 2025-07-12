@@ -9,15 +9,11 @@ x-backend-common:
       PYTHON_VERSION: ${PYTHON_VERSION:-3.10}
       API_PORT: 8080
       MODE: "DEFAULT"
-  image: nazi-symbols-classification-backend:${DOCKER_IMAGE_TAG:-latest}
+  image: chasingcars/nazi-symbols-classification-backend:${DOCKER_IMAGE_TAG:-latest}
   environment:
     PYTHONPATH: /home/nazi_symbols_classification_backend
 
 services:
-#  test_nazi_symbols_classification_backend:
-#    <<: *backend-common
-#    entrypoint: >
-#      sh -c "poetry install --only test && poetry run pytest"
   nazi_symbols_classification_backend:
     <<: *backend-common
     ports:

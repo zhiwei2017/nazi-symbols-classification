@@ -29,9 +29,7 @@ FROM base-with-dependencies
 
 # install the project and download models from huggingface
 COPY . ./
-RUN poetry install && \
-    curl -L https://huggingface.co/zhiwei2017/nazi-symbols-multi-class-classification/blob/main/yolo11s/yolo11s-cls.pt --output nazi_symbols_classification_backend/data/second-layer.pt &&  \
-    curl -L https://huggingface.co/zhiwei2017/nazi-symbols-binary-classification/blob/main/svc/svc.pt --output nazi_symbols_classification_backend/data/first-layer.pt
+RUN poetry install --with scripts && poetry run download_models -f model_info.yaml
 
 EXPOSE ${API_PORT}
 

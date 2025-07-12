@@ -1,0 +1,8 @@
+first_layer_model:
+  url: https://huggingface.co/zhiwei2017/nazi-symbols-binary-classification/blob/main/svc/svc.pt
+  type: SVC
+  local_path: nazi_symbols_classification_backend/data/first-layer.pt
+second_layer_model:
+  url: https://huggingface.co/zhiwei2017/nazi-symbols-multi-class-classification/blob/main/yolo11s/yolo11s-cls.pt
+  type: YOLO
+  local_path: nazi_symbols_classification_backend/data/second-layer.pt
