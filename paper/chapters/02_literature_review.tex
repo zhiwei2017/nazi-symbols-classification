@@ -28,8 +28,8 @@ thesis—from model selection and training regimes to dataset structuring and ev
 \section{Visual Symbol and Logo Recognition}
 
 Foundational research in logo and symbol recognition has profoundly influenced methods for visual hate symbol
-detection. Iandola et al.\parencite{iandola2015deeplogo} demonstrated the effectiveness of convolutional neural
-networks (\ac{CNN}s) in recognizing logos within natural scenes—an analogous challenge to detecting Nazi symbols
+detection. Iandola et al.\parencite{iandola2015deeplogo} demonstrated the effectiveness of \ac{CNN}s in
+recognizing logos within natural scenes—an analogous challenge to detecting Nazi symbols
 embedded in visually complex and cluttered environments such as posters, graffiti, or digital memes. Their work
 highlights the critical role of convolutional architectures in capturing localized visual patterns essential for
 precise symbol identification. Addressing scalability and intra-class variability, Wang et al.
@@ -62,10 +62,11 @@ curated hate symbol dataset annotated with domain-specific labels. This transfer
 to retain broad visual recognition capabilities while adapting to the challenges of Nazi symbol classification,
 including limited data and high intra-class variation. While Tang et al.
 ~\parencite{tang2017multipleinstancedetectionnetwork} focus on learning symbol localization from coarse image-level
-labels via saliency maps, the present approach incorporates high-quality textual prompts and OpenCLIP embeddings to
-direct classification toward semantically relevant image regions. This reduces reliance on pixel-precise annotations
-without sacrificing discriminative power, aligning with the efficiency goals of weak supervision and avoiding the
-need for costly bounding box labels.
+labels via saliency maps,  the present approach leverages OpenCLIP’s vision-language alignment by comparing image
+embeddings with carefully designed textual prompts (e.g., “a swastika sign in the image”) to enable zero-shot
+classification based on semantic similarity. This reduces reliance on pixel-precise annotations
+while maintaining strong discriminative performance, aligning with the efficiency goals of weak supervision and
+avoiding the need for costly bounding box labels.
 
 \section{Hate Content Detection in Social Media and Memes}
 
@@ -75,16 +76,17 @@ for detecting offensive Amharic-language memes by combining \ac{BiLSTM} and dens
 effectiveness of jointly modeling textual and visual features. While their work is language-specific, it
 demonstrates a broader principle highly relevant to this research: Nazi symbols in contemporary media often appear
 alongside provocative slogans or textual overlays, necessitating models that can parse both image and text. In
-alignment with this, the present work integrates OpenCLIP-based vision-language embeddings, which allow the
-classifier to attend to semantically rich regions informed by textual prompts—an essential design choice for parsing
-symbolic content within complex meme compositions.
+alignment with this, the present work leverages OpenCLIP’s vision-language capabilities to perform image
+classification based on semantic similarity to textual prompts. This design choice enables symbolic content within
+complex meme compositions to be recognized without requiring localized annotations or object-level supervision.
 
 Similarly, Das Bhattacharjee et al.~\parencite{dasbhattacharjee2019365} employed a context-aware active learning
-framework to detect malicious online content, emphasizing the importance of contextual information. This is directly
-relevant to the current study, where hate symbols may appear in highly ambiguous visual settings—either stylized or
-partially obscured. To mirror these real-world complexities, the evaluation strategy in this study includes
-scenarios where Nazi-related imagery is embedded in diverse, often noisy backgrounds, challenging the model’s
-ability to generalize beyond sanitized training samples.
+framework to detect malicious online content, highlighting the importance of contextual cues. This is directly
+relevant to the current study, where hate symbols often appear in ambiguous visual contexts—such as being stylized,
+partially obscured, or embedded in complex imagery. To reflect these real-world challenges, the evaluation strategy
+incorporates open-set conditions by including \textit{non-Nazi} test images that are visually dissimilar to the
+training data, as well as a \textit{neo-Nazi} class formed from rare symbols. This setup tests the model's ability
+to generalize beyond controlled training environments.
 
 Furthermore, Scrivens et al.~\parencite{scrivens2021dangerous} analyzed how violent right-wing extremist groups use
 images to signal affiliation or ideology, often relying on covert symbolism. Their sociological findings reinforce
@@ -150,7 +152,7 @@ categories based on similarity in feature space. While RNs are not directly impl
 distance-based matching informs the use of classic machine learning models (e.g., k-NN, SVM) operating on
 CLIP-derived embeddings. This design choice enables the system to generalize beyond the training
 distribution—capturing subtle visual relationships and supporting recognition of stylized or obscured symbols not
-encountered during fine-tuning.
+seen during training.
 
 Together, these zero- and few-shot learning frameworks provide essential scaffolding for symbol recognition in
 settings where labeled data are scarce, guiding the architecture and training strategies used in this research to
@@ -173,7 +175,8 @@ inform the system’s development, especially given the risks associated with fa
 or cultural symbols misclassified as hate-related) or unintended surveillance use. In response, the research
 includes deliberate measures to reduce harm: symbol definitions are carefully grounded in recognized legal and
 sociological classifications, performance metrics are stratified to monitor class-wise precision and recall, and
-model interpretability is supported via prompt-based architectures and semantic embeddings.
+semantic alignment through prompt-based classification supports limited interpretability by linking predictions to
+human-readable concepts.
 
 Together, these ethical frameworks shape not only how the dataset is constructed and documented, but also how the
 classifier is evaluated, interpreted, and contextualized. This commitment to transparency and responsible design

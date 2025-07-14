@@ -226,7 +226,7 @@ dependencies and capture global contextual information. \ac{ViT} has demonstrate
 exceeding that of conventional \acp{CNN}, particularly when trained on large datasets.
 
 This study employs the pretrained \texttt{vit\_base\_patch16\_224} model to evaluate the effectiveness of
-transformer-based architectures in discerning complex semantic patterns embedded in visual symbols.
+transformer-based architectures in classifying visual symbols that exhibit complex semantic patterns.
 
 \subsection{OpenCLIP}
 OpenCLIP is an open-source reimplementation of \ac{CLIP}, a multimodal vision-language model trained on extensive
@@ -394,7 +394,9 @@ classification, respectively.
 
 \paragraph{OpenCLIP-based models} leveraged OpenCLIP as a fixed feature extractor to obtain embeddings from resized
 input images ($224 \times 224$). Subsequently, classical \ac{ML} classifiers such as \ac{LR}, \ac{SVC},
-and KNeighborsClassifier were trained on these embeddings using CPU resources. Zero-shot classification approaches
+and KNeighborsClassifier were trained on these embeddings using CPU resources.
+
+Zero-shot classification approaches
 with OpenCLIP and Moondream circumvented dataset-specific training entirely; classification was performed by
 computing cosine similarity between image and text embeddings, enabling direct inference without fine-tuning.
 

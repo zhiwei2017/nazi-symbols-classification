@@ -1,0 +1,90 @@
+%! Author = zhiweizhang
+%! Date = 10.06.25
+
+\chapter{Conclusion and Future Work}\label{chapter:conclusion-and-future-work}
+
+\section{Conclusion}
+
+This thesis presented a comprehensive study on classifying Nazi symbols in images, exploring a wide range of
+architectures—including \ac{CNN}s (ResNet and EfficientNet), transformer-based
+models (\ac{ViT}), classification-specific versions of \ac{YOLO}, and multimodal approaches leveraging OpenCLIP
+embeddings. In addition to end-to-end deep learning pipelines, hybrid approaches that combined OpenCLIP features
+with classical \ac{ML} classifiers were also evaluated.
+
+Two classification settings were explored: binary classification (distinguishing Nazi from non-Nazi symbols) and
+multi-class classification across 13 Nazi-related symbol categories.
+
+In the binary task, hybrid models—particularly OpenCLIP paired with classical classifiers such as \ac{SVC},
+\ac{LR}, KNeighborsClassifier, and SGDClassifier—consistently delivered high performance, achieving F1-scores
+above 0.89 and, in some cases, perfect \ac{ROC} \ac{AUC} scores (e.g., \ac{LR} with \ac{AUC} = 1.00). Transformer-based
+\ac{ViT} and classification-oriented \ac{YOLO} also demonstrated strong results, balancing accuracy, precision,
+and recall. These findings affirm the value of both pre-trained visual-semantic embeddings and end-to-end deep
+feature extractors for sensitive symbol classification.
+
+Nonetheless, some hybrid configurations—such as OpenCLIP combined with Decision Tree or Bagging Classifiers—underperformed,
+especially in \ac{PR} metrics, signaling limited robustness under class imbalance. Similarly, EfficientNet
+achieved high \ac{AUC} (0.993) but lower \ac{AP} (0.780), making it less suitable for applications
+requiring fine-grained discrimination.
+
+In the multi-class setting, \ac{YOLO} emerged as the top performer, achieving the highest accuracy, precision, and
+F1-score. \ac{ViT} also performed strongly, confirming the effectiveness of global attention mechanisms for nuanced
+symbol differentiation. While OpenCLIP performed poorly in zero-shot mode, its performance improved significantly
+when combined with supervised classifiers—though still behind end-to-end models. These results highlight the
+importance of downstream supervision when applying foundation models to fine-grained classification tasks.
+
+In summary, this work demonstrates that both deep learning and hybrid approaches can be effective for the
+classification of Nazi symbols. The choice of model should be guided by task constraints, desired performance
+metrics, and deployment requirements. Success ultimately depends on a balance between representational power,
+classifier robustness, and sensitivity to class imbalance and symbol diversity—critical considerations for building
+practical and ethically responsible systems.
+
+
+\section{Future Work}
+
+Building on the encouraging results of this study, several key directions for future research emerge:
+
+\paragraph{Dataset Expansion and Balancing:}
+
+Increasing the diversity and quantity of labeled
+images—particularly for rare or visually ambiguous Nazi symbols—could significantly improve performance in the
+multi-class setting. Incorporating hard negatives (e.g., geometric symbols or cultural motifs that resemble Nazi
+iconography) would also enhance binary classifier robustness against false positives.
+
+\paragraph{Fine-Tuning Vision Backbones and Multimodal Retraining:}
+While OpenCLIP embeddings paired with
+classical classifiers showed strong performance, they were limited in zero-shot generalization. Task-specific
+fine-tuning of the OpenCLIP vision encoder—or end-to-end multimodal retraining with labeled Nazi symbol data—may
+lead to better feature separability and improved recall across all classes.
+
+\paragraph{Precision-Focused Learning Objectives:}
+As shown in the results, high \ac{AUC} did not always
+translate into high real-world precision. Future work could experiment with cost-sensitive loss functions,
+confidence calibration, or threshold tuning to explicitly optimize for precision-recall trade-offs—especially
+important in applications with legal or reputational risks.
+
+\paragraph{Explainability and Human Oversight:}
+Integration of explainable AI (XAI) tools such as
+\ac{Grad-CAM}~\parencite{Selvaraju_2019} or \ac{SHAP}~\parencite{SHAP2025} would improve transparency and
+accountability. Providing visual or textual explanations for predictions could support expert review and
+increase user trust—especially in archival or forensic applications.
+
+\paragraph{Contextual and Multimodal Classification:}
+Some misclassifications were driven by lack of context.
+Incorporating auxiliary metadata (e.g., captions, filenames, web text) and exploring multimodal fusion models
+could improve classification of ambiguous or reused symbols, and help distinguish educational versus
+propagandistic usage.
+
+\paragraph{Real-Time Deployment and System Scalability:}
+Future engineering work should extend the current
+containerized \ac{API} toward production-ready deployment. Key goals include low-latency inference,
+cross-platform scalability, and compliance with privacy regulations (e.g., GDPR), making the system usable in
+content moderation or institutional archiving workflows.
+
+\paragraph{Human-in-the-Loop Feedback and Adaptation:}
+Building mechanisms for expert feedback and iterative
+improvement would support continuous learning. This is especially valuable in evolving symbol ecosystems where
+new variants or context-specific uses emerge over time.
+
+
+In summary, future efforts should aim to enhance the system’s precision, transparency, and adaptability to sensitive real-world environments. By combining improved data practices, targeted fine-tuning, explainability, and user input, the classifier can evolve into a more trustworthy and context-aware tool for ethical Nazi symbol recognition and moderation.
+

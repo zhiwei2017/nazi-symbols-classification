@@ -70,12 +70,12 @@ Nazi-related and non-Nazi imagery to support supervised training, validation, an
 \item \textbf{Annotation Strategy:} Structure and annotate the dataset to support both binary (presence/absence of
 Nazi symbols) and multi-class (identification of specific symbol classes) classification tasks.
 
-\item \textbf{Model Benchmarking:} Implement and evaluate a diverse set of models for visual classification,
-including\ac{CNN}s (e.g., ResNet, EfficientNet), transformer-based architectures (e.g., \ac{ViT}),
-and multimodal or zero-shot models (e.g., OpenCLIP, Moondream). Additionally, incorporate object
-detection-based approaches using \ac{YOLO} to assess region-specific classification performance. Explore both
-end-to-end training and hybrid pipelines that combine pretrained visual embeddings with classical machine learning
-classifiers.
+\item \textbf{Model Benchmarking:} Implement and evaluate a diverse range of models for Nazi symbol classification,
+including \ac{CNN}s (e.g., \ac{ResNet}, EfficientNet), transformer-based models (e.g., \ac{ViT}),
+and zero-shot vision-language models (e.g., OpenCLIP, Moondream). Repurpose \ac{YOLO} as a classification model to
+leverage its real-time architecture. Explore hybrid approaches by combining OpenCLIP embeddings with classical
+machine learning classifiers (e.g., \ac{SVC}, logistic regression, KNN) to benchmark performance across model
+families and representation strategies.
 
 \item \textbf{Performance Evaluation:} Assess model performance using standard classification metrics (e.g.,
 accuracy, precision, recall, F1-score, and \ac{AUC}), and conduct comparative analyses to identify strengths and
@@ -86,9 +86,11 @@ inference via HTTP requests, facilitating integration into practical research an
 is optimized for deployment on resource-constrained environments, such as single-GPU workstations.
 \end{itemize}
 
-Despite constraints in data coverage and hardware capacity, the resulting system is designed to be scalable,
-modular, and adaptable—capable of supporting future extensions to new symbol categories or broader content
-moderation objectives through retraining or fine-tuning.
+Despite constraints in data coverage and computational resources, the proposed system—grounded in the above
+objectives—is designed to be modular, scalable, and adaptable. Its architecture allows for future extension to new
+symbol categories or broader visual moderation tasks through retraining, fine-tuning, or integration of new
+classifiers. This positions the framework as a practical and extensible foundation for real-world applications
+beyond the immediate use case of Nazi symbol classification.
 
 \section{Scope and Limitations}
 
@@ -124,7 +126,6 @@ or fine-tuning models, the framework can be extended to other extremist symbol c
 contexts. The emphasis on transparency, efficiency, and accessibility makes the approach particularly suitable for
 researchers, journalists, and civil society organizations operating with limited infrastructure.
 
-
 \section{Thesis Structure}
 
 This thesis is organized as follows:
@@ -133,19 +134,22 @@ This thesis is organized as follows:
 \item \textbf{\fullref{chapter:literature-review}} – Surveys existing research on Nazi symbol detection and
 classification, emphasizing methodological trends, key findings, and identifying research gaps addressed in this work.
 
-\item \textbf{\fullref{chapter:methodology}} – Describes the data collection process, dataset composition,
-preprocessing techniques, and the used classification algorithms. It also outlines the model training process,
-evaluation metrics, and justifies the chosen methodologies.
-
 \item \textbf{\fullref{chapter:ethical-considerations}} – Discusses the ethical implications of working with
 sensitive content, including concerns around data privacy, potential misuse, and broader responsibilities associated
 with automated hate symbol detection.
 
-\item \textbf{\fullref{chapter:results}} – Presents the outcomes of the experiments, including both quantitative and
-qualitative analyses of model performance for binary and multi-class classification tasks.
+\item \textbf{\fullref{chapter:methodology}} – Describes the data collection process, dataset composition,
+preprocessing techniques, and the used classification algorithms. It also outlines the model training process,
+evaluation metrics, and justifies the chosen methodologies.
 
-\item \textbf{\fullref{chapter:discussion-and-analysis}} – Interprets the results in relation to the research
-objectives, compares findings to prior work, and discusses system limitations and potential improvements.
+\item \textbf{\fullref{chapter:results}} – Presents the experimental outcomes for binary and multi-class
+classification tasks, focusing on quantitative performance metrics (e.g., accuracy, precision, recall, \ac{AUC}).
+Detailed interpretation and comparative analysis are deferred to \autofullref{chapter:discussion-and-analysis}.
+
+\item \textbf{\fullref{chapter:discussion-and-analysis}} – Provides structured analysis and interpretation of
+experimental results in relation to the research objectives. This includes performance comparisons across model
+families, task-specific insights, discussion of high- and under-performing models, and reflections on
+system limitations, deployment considerations, and future improvements.
 
 \item \textbf{\fullref{chapter:model-deployment-and-api-service}} – Describes the deployment strategy for the
 best-performing models, including the architecture of the \ac{API} service, the \ac{CI/CD} pipeline, and details of

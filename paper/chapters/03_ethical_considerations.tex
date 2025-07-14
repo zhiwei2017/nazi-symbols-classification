@@ -3,7 +3,7 @@
 
 \chapter{Ethical Considerations}\label{chapter:ethical-considerations}
 
-The development of machine learning systems for the classification of Nazi symbols entails a range of ethical
+The development of \ac{ML} systems for the classification of Nazi symbols entails a range of ethical
 challenges due to the sensitive, harmful, and potentially illegal nature of the target content. These concerns
 reflect broader societal expectations for responsible AI, as articulated in international frameworks such as \ac{UNESCO}’s
 \textit{Recommendation on the Ethics of Artificial Intelligence}~\parencite{unesco2021}. This chapter
@@ -41,17 +41,17 @@ social implications of deploying such a system.
     licenses\footnote{Kaggle Terms of Service: \url{https://www.kaggle.com/terms}; Roboflow Terms:
     \url{https://roboflow.com/terms}}. No restricted or proprietary content was used. All annotations were conducted
     manually by the researcher. Content warnings were observed throughout the process to mitigate potential
-    psychological distress, as also described in ~\autoref{sec:data-construction}.
+    psychological distress, as also described in ~\autofullref{sec:data-construction} from ~\autofullref{chapter:methodology}.
 
     \item \textbf{Bias and Misclassification Risks:} Classification systems may mistakenly flag benign content or
     overlook altered forms of hate symbols. Such errors could lead to unjust moderation or missed threats. To
     address this, the study prioritized balanced training data, fairness-aware evaluation, and extensive model
     validation in line with AI fairness principles~\parencite{mehrabi2021survey}.
 
-    \item \textbf{Dual-Use Concerns:} While developed for moderation purposes, such a detection system could be
-    repurposed for malicious use, such as evading detection or enabling authoritarian surveillance. Recognizing this
-    dual-use risk~\parencite{brundage2018malicious}, the research limits model distribution and recommends
-    transparency, access control, and red-teaming before deployment.
+    \item \textbf{Dual-Use Concerns:} While developed for moderation purposes, such a classification system could be
+    repurposed for malicious use, such as evading content filters or enabling authoritarian surveillance.
+    Recognizing this dual-use risk~\parencite{brundage2018malicious}, the research limits model distribution and
+    recommends transparency, access control, and red-teaming before deployment.
 
     \item \textbf{Privacy and Consent:} If any images included identifiable individuals, anonymization procedures
     were applied in accordance with \ac{GDPR} principles and ethical AI guidelines~\parencite{gdpr2016}. No \ac{PII}
@@ -63,4 +63,8 @@ social implications of deploying such a system.
     content~\parencite{Mitchell_2019}.
 \end{itemize}
 
-
+\noindent
+In sum, these ethical frameworks are not peripheral to the study but foundational to its design and execution. They
+inform not only how data is sourced, labeled, and secured, but also how models are evaluated, interpreted, and
+constrained in their use. With these considerations in place, the following chapter details the methodological
+pipeline through which the classification system is developed and validated.

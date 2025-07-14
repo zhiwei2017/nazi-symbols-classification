@@ -21,7 +21,7 @@ OpenCLIP combined with \ac{SVC}.
 
 ~\autoref{fig:model-accuracy}, \autoref{fig:model-precision}, \autoref{fig:model-recall}, and
 \autoref{fig:model-f1-score} depict the performance metrics, with the y-axis of each figure representing a metric of
-the binary classification results. These visualizations highlight trade-offs among models and assist in identifying
+the classification results. These visualizations highlight trade-offs among models and assist in identifying
 the most effective architectures.
 
 For binary classification, \ac{ViT}, \ac{YOLO}, and OpenCLIP-based models paired with classical
@@ -29,18 +29,24 @@ classifiers—particularly \ac{SVC} and KNeighborsClassifier—demonstrated supe
 OpenCLIP + \ac{SVC} achieved the highest F1-scores of 0.901 and 0.939, respectively. Conversely, Moondream and the
 base OpenCLIP model exhibited comparatively lower effectiveness.
 
-Notably, \textbf{Moondream} significantly underperformed across all metrics. This may stem from its design:
-Moondream is a vision-language model optimized for captioning and dialogue, not classification. Its decoding
-component may censor or obfuscate symbol-related content due to alignment with safety mechanisms. Furthermore, its
-visual encoder likely lacks the granularity required to differentiate subtle differences in Nazi iconography.
+Notably, \textbf{Moondream} significantly underperformed across all metrics. This likely stems from its
+architectural and training objectives: Moondream is a vision-language model optimized for tasks such as caption
+generation and dialogue, rather than image classification. Its decoding component, aligned with safety mechanisms,
+may intentionally suppress or censor content related to hate symbols—including omitting, paraphrasing, or
+generalizing textual outputs when prompted about Nazi iconography. Such behavior undermines reliability in
+downstream classification tasks where semantic precision is essential. Furthermore, its visual encoder may lack the
+granularity necessary to distinguish between visually similar yet semantically distinct symbols—such as swastikas
+versus unrelated geometric designs.
 
-Similarly, the \textbf{OpenCLIP model alone} showed limited classification capability. As it is trained for
-contrastive retrieval tasks, embeddings extracted without a downstream classifier may not separate classes cleanly.
-However, when paired with classical classifiers such as \textbf{SVC} or \textbf{KNN}, performance improved
-substantially—highlighting the strength of OpenCLIP as a feature extractor.
+Similarly, the \textbf{OpenCLIP model alone} showed limited classification capability. As OpenCLIP is trained
+primarily for contrastive image-text retrieval, its raw embeddings—when used without fine-tuning or a dedicated
+classifier—may not form well-separated decision boundaries between symbol classes. However, when paired with
+classical classifiers such as \textbf{SVC} or \textbf{KNN}, performance improved substantially. This suggests that
+while OpenCLIP embeddings capture semantically meaningful image features, they require further downstream
+supervision to align with fine-grained classification objectives.
 
 Potential reasons behind the varying performance of different models, including these observations, are further
-examined in the ~\autoref{chapter:discussion-and-analysis} \nameref{chapter:discussion-and-analysis}.
+examined in the ~\autofullref{chapter:discussion-and-analysis}.
 
 \input{figures/model_f1_score}
 \input{figures/model_accuracy}
@@ -50,14 +56,28 @@ examined in the ~\autoref{chapter:discussion-and-analysis} \nameref{chapter:disc
 
 \subsection{Confusion Matrices}
 
-Confusion matrices for the binary classification task are presented in ~\autoref{fig:confusion-matrix-binary}. Each
-matrix corresponds to a model trained to distinguish images as either \textbf{Non-Nazi} or \textbf{Nazi}.
+Confusion matrices for the binary classification task are shown in~\autoref{fig:confusion-matrix-binary}. Each
+matrix represents a model trained to distinguish images as either \textbf{Nazi} or \textbf{Non-Nazi}.
 
-The evaluated models include \ac{ResNet}, \ac{YOLO}, EfficientNet, \ac{ViT}, and OpenCLIP encoder combined with \ac{SVC}.
+The evaluated models include \ac{YOLO}, EfficientNet, \ac{ResNet}, \ac{ViT}, and an OpenCLIP encoder paired with a
+support vector classifier (SVC). These matrices visualize each model's prediction distribution by presenting true
+positives, true negatives, false positives, and false negatives.
 
-These matrices provide detailed insight into each model’s classification capabilities, where a high count of true
-positives and true negatives indicates accurate classification, while false positives and false negatives reveal
-specific challenges such as visual similarity or low symbol clarity.
+In general, most models achieved strong diagonal dominance, indicating successful classification of both Nazi and
+non-Nazi symbols. Notably:
+
+\begin{itemize}
+\item \textbf{YOLO} and \textbf{EfficientNet} achieved relatively balanced true positive and true negative counts,
+reflecting consistent performance across both classes.
+\item \textbf{ResNet} and \textbf{ViT} also performed reliably, with lower false positive rates, suggesting a
+cautious approach that reduces mislabeling benign symbols as Nazi-related.
+\item The \textbf{OpenCLIP+SVC} configuration showed improved class separation compared to raw OpenCLIP outputs,
+confirming the importance of combining feature extractors with downstream classifiers.
+\end{itemize}
+
+However, misclassifications still occurred—particularly false negatives, where Nazi symbols were not detected. These
+errors highlight the difficulty of classifying visually degraded, ambiguous, or stylistically subtle symbols, which
+will be analyzed in depth in ~\autofullref{chapter:discussion-and-analysis}.
 
 \input{figures/confusion_matrix_binary}
 
@@ -66,13 +86,21 @@ specific challenges such as visual similarity or low symbol clarity.
 To further characterize model performance under class imbalance, \ac{ROC} and \ac{PR} curves were plotted for the
 binary classification task.
 
-~\autoref{fig:roc-curve} illustrates the \ac{ROC} curves, demonstrating the trade-off between true positive rate
-and false positive rate across different thresholds. The \ac{AUC} values reported in ~\autoref{tab:binary-results}
-correspond with the visual trends observed.
+~\autoref{fig:roc-curve} illustrates the \ac{ROC} curves, demonstrating the trade-off between true positive rate and
+false positive rate across different thresholds. The \ac{AUC} values reported in ~\autoref{tab:binary-results}
+correspond with the visual trends observed. Most models exhibit near-perfect AUC scores ($\geq$0.998), indicating strong
+overall separability between Nazi and Non-Nazi classes.
 
-~\autoref{fig:pr-curve} presents the \ac{PR} curves, which are particularly informative when evaluating
-classifiers under imbalanced conditions. The area under the \ac{PR} curve (average precision) complements the
-\ac{AUC-ROC}, emphasizing each model's ability to retrieve relevant positive samples effectively.
+~\autoref{fig:pr-curve} presents the \ac{PR} curves, which are particularly informative when evaluating classifiers
+under imbalanced conditions. The area under the \ac{PR} curve (\ac{AP}) complements the \ac{AUC-ROC},
+emphasizing each model's ability to retrieve relevant positive samples effectively. Models such as OpenCLIP +
+Logistic Regression (\ac{AP} = 0.964), \ac{ViT} (\ac{AP} = 0.962), and OpenCLIP + SVC (unreported \ac{AP} but high F1)
+demonstrate particularly strong precision-recall trade-offs. In contrast, models like EfficientNet and
+DecisionTreeClassifier show notably lower AP scores (0.780 and 0.625 respectively), reflecting limitations in
+correctly retrieving positive instances under imbalance.
+
+These curves and scores provide a nuanced view of classification confidence and retrieval quality beyond accuracy,
+particularly important in safety-critical applications where false positives or false negatives may carry different risks.
 
 \begin{figure}[ht]
   \centering
@@ -91,8 +119,8 @@ classifiers under imbalanced conditions. The area under the \ac{PR} curve (avera
 \subsection{Reduced-Symbol Set Experiment}
 
 To further evaluate model robustness, an additional experiment was conducted using a reduced set of Nazi symbols
-from the original dataset. This subset included the three most visually distinct symbols: the SS Skull, Siegrune,
-and Swastika.
+from the original dataset. This subset included the three most visually distinct symbols: the \textit{SS Skull},
+\textit{Siegrune}, and \textit{Swastika}.
 
 The results of this reduced-symbol experiment are presented in ~\autoref{tab:binary-reduced-symbols-result},
 indicating the models' performance when focusing on a smaller, more visually distinct set of classes.
@@ -105,7 +133,7 @@ samples per class, models could learn cleaner decision boundaries and avoid conf
 similar-looking symbols.
 
 Implications of improved results on the reduced symbol set, and their relevance to dataset complexity and model
-robustness, are explored in more depth in the Discussion chapter.
+robustness, are explored in more depth in the ~\autofullref{chapter:discussion-and-analysis}.
 
 
 \section{Multi-Class Classification Results}
@@ -119,8 +147,8 @@ macro-averaged accuracy, precision, recall, and F1-score for each model.
 
 \subsection{Visual Comparison}
 
-~\autoref{fig:model-accuracy}, \autoref{fig:model-precision}, \autoref{fig:model-recall}, and
-\autoref{fig:model-f1-score} also include the multi-class classification results, presented on the right side of
+~\autoref{fig:model-f1-score} \autoref{fig:model-accuracy}, \autoref{fig:model-precision}, and
+\autoref{fig:model-recall} also include the multi-class classification results, presented on the right side of
 each plot. These visualizations allow for direct comparison of model effectiveness across multiple symbol classes.
 
 In this setting, \ac{YOLO} consistently outperformed other models across all evaluation metrics, followed closely by
@@ -169,4 +197,4 @@ Moondream and vanilla OpenCLIP again performed poorly, reinforcing that general-
 not optimal for fine-grained symbol classification—especially without prompt engineering or task-specific tuning.
 
 Detailed analysis and interpretation of multi-class classification challenges and model behaviors are deferred to
-the Discussion chapter.
+the ~\autofullref{chapter:discussion-and-analysis}.

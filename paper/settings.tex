@@ -38,6 +38,7 @@
 \usepackage{url}
 
 \newcommand*{\fullref}[1]{\hyperref[{#1}]{\autoref*{#1}: \nameref*{#1}}} % One single link
+\newcommand*{\autofullref}[1]{\hyperref[{#1}]{\autoref*{#1} (\nameref*{#1})}} % One single link
 
 \makeatletter
 \def\TPT@doparanotes{\par
