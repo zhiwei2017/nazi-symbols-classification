@@ -31,11 +31,11 @@ class OpenCLIPTransformerSVC:
         self.device = device
         self.model = joblib.load(svc_model_path)
 
-
     def encode_image(self, image):
         """Encodes an image into a feature vector using OpenCLIP."""
         with torch.no_grad(), torch.autocast(self.device):
             image = self.preprocess(image).unsqueeze(0)
+            image = image.to(self.device)
             image_features = self.openclip_model.encode_image(image)
             image_features /= image_features.norm(dim=-1, keepdim=True)
             return image_features.cpu().float().numpy()
@@ -92,13 +92,38 @@ def init_state_for_classification():
         state["first_layer_model"] = OpenCLIPTransformerSVC(
             svc_model_path=os.path.join(data_folder, "first-layer.pt"),
             openclip_model_name="ViT-B-32",
-            device="cpu" if torch.cuda.is_available() else "cpu"
+            device="cuda" if torch.cuda.is_available() else "cpu"
         )
     elif setting.FIRST_LAYER_MODEL == "YOLO":
         state["first_layer_model"] = YOLO(os.path.join(data_folder, "first-layer.pt"))
     else:
         raise ValueError(f"Unsupported first layer model: {setting.FIRST_LAYER_MODEL}")
     state["second_layer_model"] = YOLO(os.path.join(data_folder, "second-layer.pt"))
+    if torch.cuda.is_available():
+        state["second_layer_model"] = state["second_layer_model"].to("cuda")
+
+
+def preprocess_images(image_paths: List[str]) -> None:
+    """Preprocesses a list of images using the global image preprocessing pipeline.
+
+    This function modifies the images in place by applying a series of preprocessing steps
+    defined in the global `state["image_preprocessing_pipeline"]`. The preprocessing steps
+    typically include resizing, converting to grayscale, and adjusting contrast.
+
+    Args:
+        image_paths (List[str]): A list of paths to the images to preprocess.
+
+    Raises:
+        KeyError: If the global `state` dictionary does not contain the required preprocessing pipeline.
+        FileNotFoundError: If any of the image files are not found at the specified paths.
+
+    Example:
+        >>> preprocess_images(["path/to/image1.jpg", "path/to/image2.jpg"])
+        >>> # The images at the specified paths are now preprocessed.
+    """
+    if "image_preprocessing_pipeline" not in state:
+        raise KeyError("Image preprocessing pipeline is not initialized in the global state.")
+    state["image_preprocessing_pipeline"].run(image_paths)
 
 
 def get_first_layer_result(images):
@@ -190,15 +215,12 @@ def get_classification_result(image_paths: List[str],
             }
         ]
     """
-    state["image_preprocessing_pipeline"].run(image_paths)
-    images = [cv2.imread(image_path) for image_path in image_paths]
-
     # get first layer prediction result
-    results = get_first_layer_result(images)
+    results = get_first_layer_result(image_paths)
 
     # Identify images requiring second-layer classification
     images_for_second_layer = []
-    for i, image in enumerate(images):
+    for i, image in enumerate(image_paths):
         if results[i]["first_layer_result"]["label"] == "nazi-symbol":  # type: ignore
             images_for_second_layer.append(image)
 

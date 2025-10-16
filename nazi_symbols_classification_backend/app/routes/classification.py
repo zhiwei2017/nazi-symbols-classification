@@ -6,7 +6,8 @@ from ..schemas.classification import (
     PredictResponse, PredictBinaryResponse, PredictMulticlassResponse
 )
 from ..services.classification import (
-    get_classification_result, get_first_layer_result, get_second_layer_result
+    preprocess_images, get_classification_result, get_first_layer_result,
+    get_second_layer_result
 )
 from ..utils.image_storage import save_images_to_folder
 
@@ -73,6 +74,7 @@ async def predict(images: List[UploadFile]) -> Any:
                    f"[{', '.join(failed_images)}].")  # type: ignore
         return HTTPException(status_code=501, detail=message)
 
+    preprocess_images(image_paths)
     classification_results = get_classification_result(image_paths, 0.1)
     results = []
     for classification_result in classification_results:
@@ -148,6 +150,7 @@ async def predict_binary(images: List[UploadFile]) -> Any:
                    f"[{', '.join(failed_images)}].")  # type: ignore
         return HTTPException(status_code=501, detail=message)
 
+    preprocess_images(image_paths)
     classification_results = get_first_layer_result(image_paths)
     results = []
     for classification_result in classification_results:
@@ -216,6 +219,7 @@ async def predict_multiclass(images: List[UploadFile]) -> Any:
                    f"[{', '.join(failed_images)}].")  # type: ignore
         return HTTPException(status_code=501, detail=message)
 
+    preprocess_images(image_paths)
     classification_results = [dict(first_layer_result=dict(label="nazi-symbol", prob=1.0),
                                    second_layer_result=list())for i in range(len(images))]
 
