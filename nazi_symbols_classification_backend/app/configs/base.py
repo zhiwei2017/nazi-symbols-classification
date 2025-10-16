@@ -3,11 +3,11 @@
 # mypy: ignore-errors
 import ast
 import secrets
-from typing import List, Union, Dict
+from typing import List, Union, Dict, Literal
 from pydantic import BaseModel, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from ..utils.logging import StandardFormatter, ColorFormatter
-from ..constants import ModelType
+from ..constants import ModelType, AvailableEndpoints
 
 
 class LoggingConfig(BaseModel):
@@ -127,3 +127,4 @@ class Settings(BaseSettings):
         'swastika': "Swastika",
         'wolfsangel': "Wolfsangel"
     }
+    AVAILABLE_ENDPOINTS: AvailableEndpoints = AvailableEndpoints.ALL

@@ -10,13 +10,19 @@ from ..services.classification import (
     get_second_layer_result
 )
 from ..utils.image_storage import save_images_to_folder
+from ..configs import get_settings
+from ..constants import AvailableEndpoints
 
+settings = get_settings()
 classification_router = APIRouter()
+binary_classification_router = APIRouter()
+multiclass_classification_router = APIRouter()
+combined_classification_router = APIRouter()
 data_folder = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
                            "data")
 
 
-@classification_router.post("/predict", response_model=PredictResponse)
+@combined_classification_router.post("/predict", response_model=PredictResponse)
 async def predict(images: List[UploadFile]) -> Any:
     """Handles the classification of uploaded images, identifying specific symbols using a multi-layer model.
 
@@ -92,7 +98,7 @@ async def predict(images: List[UploadFile]) -> Any:
     return PredictResponse(results=results)  # type: ignore
 
 
-@classification_router.post("/predict-binary", response_model=PredictBinaryResponse)
+@binary_classification_router.post("/predict-binary", response_model=PredictBinaryResponse)
 async def predict_binary(images: List[UploadFile]) -> Any:
     """Handles the classification of uploaded images, identifying specific symbols using a multi-layer model.
 
@@ -161,7 +167,7 @@ async def predict_binary(images: List[UploadFile]) -> Any:
     return PredictBinaryResponse(results=results)  # type: ignore
 
 
-@classification_router.post("/predict-multiclass", response_model=PredictMulticlassResponse)
+@multiclass_classification_router.post("/predict-multiclass", response_model=PredictMulticlassResponse)
 async def predict_multiclass(images: List[UploadFile]) -> Any:
     """Handles the classification of uploaded images, identifying specific symbols using a multi-layer model.
 
@@ -234,3 +240,14 @@ async def predict_multiclass(images: List[UploadFile]) -> Any:
                       details=details)
         results.append(result)
     return PredictMulticlassResponse(results=results)  # type: ignore
+
+
+if settings.AVAILABLE_ENDPOINTS in {AvailableEndpoints.BINARY,
+                                    AvailableEndpoints.ALL}:
+    classification_router.include_router(binary_classification_router)
+if settings.AVAILABLE_ENDPOINTS in {AvailableEndpoints.MULTICLASS,
+                                    AvailableEndpoints.ALL}:
+    classification_router.include_router(multiclass_classification_router)
+if settings.AVAILABLE_ENDPOINTS in {AvailableEndpoints.COMBINED,
+                                    AvailableEndpoints.ALL}:
+    classification_router.include_router(combined_classification_router)

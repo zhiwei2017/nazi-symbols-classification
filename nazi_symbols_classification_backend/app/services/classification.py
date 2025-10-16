@@ -14,6 +14,7 @@ from ultralytics import YOLO
 from typing import List, Dict, Any
 from ..globals import state
 from ..configs import get_settings
+from ..constants import AvailableEndpoints
 
 setting = get_settings()
 data_folder = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
@@ -88,19 +89,25 @@ def init_state_for_classification():
         ("grayscale", grayscale, None),
         ("auto_adjust_contrast", auto_adjust_contrast, None),
     ])
-    if setting.FIRST_LAYER_MODEL == "SVC":
-        state["first_layer_model"] = OpenCLIPTransformerSVC(
-            svc_model_path=os.path.join(data_folder, "first-layer.pt"),
-            openclip_model_name="ViT-B-32",
-            device="cuda" if torch.cuda.is_available() else "cpu"
-        )
-    elif setting.FIRST_LAYER_MODEL == "YOLO":
-        state["first_layer_model"] = YOLO(os.path.join(data_folder, "first-layer.pt"))
-    else:
-        raise ValueError(f"Unsupported first layer model: {setting.FIRST_LAYER_MODEL}")
-    state["second_layer_model"] = YOLO(os.path.join(data_folder, "second-layer.pt"))
-    if torch.cuda.is_available():
-        state["second_layer_model"] = state["second_layer_model"].to("cuda")
+    if (setting.AVAILABLE_ENDPOINTS in {AvailableEndpoints.BINARY,
+                                        AvailableEndpoints.COMBINED,
+                                        AvailableEndpoints.ALL}):
+        if setting.FIRST_LAYER_MODEL == "SVC":
+            state["first_layer_model"] = OpenCLIPTransformerSVC(
+                svc_model_path=os.path.join(data_folder, "first-layer.pt"),
+                openclip_model_name="ViT-B-32",
+                device="cuda" if torch.cuda.is_available() else "cpu"
+            )
+        elif setting.FIRST_LAYER_MODEL == "YOLO":
+            state["first_layer_model"] = YOLO(os.path.join(data_folder, "first-layer.pt"))
+        else:
+            raise ValueError(f"Unsupported first layer model: {setting.FIRST_LAYER_MODEL}")
+    if (setting.AVAILABLE_ENDPOINTS in {AvailableEndpoints.MULTICLASS,
+                                        AvailableEndpoints.COMBINED,
+                                        AvailableEndpoints.ALL}):
+        state["second_layer_model"] = YOLO(os.path.join(data_folder, "second-layer.pt"))
+        if torch.cuda.is_available():
+            state["second_layer_model"] = state["second_layer_model"].to("cuda")
 
 
 def preprocess_images(image_paths: List[str]) -> None:
