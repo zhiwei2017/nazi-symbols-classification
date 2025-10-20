@@ -21,7 +21,7 @@ class LoggingConfig(BaseModel):
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(case_sensitive=True)
 
-    PROJECT_NAME: str = 'Nazi Symbolc Classification Backend'
+    PROJECT_NAME: str = 'Nazi Symbols Classification Backend'
     PROJECT_SLUG: str = 'nazi_symbols_classification_backend'
 
     DEBUG: bool = True

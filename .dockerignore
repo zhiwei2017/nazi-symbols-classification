@@ -1,11 +1,15 @@
 docs
+paper
 tests
 notebooks
 docker
 docker-compose.yml
-Dockerfile
+Dockerfile*
 CONTRIBUTING.rst
+LICENSE
+Makefile
 .github
 .coverage
 .gitignore
 venv
+.*
