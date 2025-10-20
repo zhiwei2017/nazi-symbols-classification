@@ -1,6 +1,6 @@
 import os
 from typing import Any, List
-from fastapi import APIRouter, UploadFile, HTTPException
+from fastapi import APIRouter, UploadFile, HTTPException, File
 
 from ..schemas.classification import (
     PredictResponse, PredictBinaryResponse, PredictMulticlassResponse
@@ -23,7 +23,7 @@ data_folder = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__fil
 
 
 @combined_classification_router.post("/predict", response_model=PredictResponse)
-async def predict(images: List[UploadFile]) -> Any:
+async def predict(images: List[UploadFile] = File(..., description="Images for combined classification")) -> Any:
     """Handles the classification of uploaded images, identifying specific symbols using a multi-layer model.
 
     This endpoint accepts multiple image files, saves them to a temporary directory, and processes
@@ -78,7 +78,7 @@ async def predict(images: List[UploadFile]) -> Any:
     if failed_images:
         message = (f"There was an error uploading the image{(len(failed_images) > 1) * 's'} "
                    f"[{', '.join(failed_images)}].")  # type: ignore
-        return HTTPException(status_code=501, detail=message)
+        raise HTTPException(status_code=501, detail=message)
 
     preprocess_images(image_paths)
     classification_results = get_classification_result(image_paths, 0.1)
@@ -99,7 +99,7 @@ async def predict(images: List[UploadFile]) -> Any:
 
 
 @binary_classification_router.post("/predict-binary", response_model=PredictBinaryResponse)
-async def predict_binary(images: List[UploadFile]) -> Any:
+async def predict_binary(images: List[UploadFile] = File(..., description="Images for binary classification")) -> Any:
     """Handles the classification of uploaded images, identifying specific symbols using a multi-layer model.
 
     This endpoint accepts multiple image files, saves them to a temporary directory, and processes
@@ -154,7 +154,7 @@ async def predict_binary(images: List[UploadFile]) -> Any:
     if failed_images:
         message = (f"There was an error uploading the image{(len(failed_images) > 1) * 's'} "
                    f"[{', '.join(failed_images)}].")  # type: ignore
-        return HTTPException(status_code=501, detail=message)
+        raise HTTPException(status_code=501, detail=message)
 
     preprocess_images(image_paths)
     classification_results = get_first_layer_result(image_paths)
@@ -168,7 +168,7 @@ async def predict_binary(images: List[UploadFile]) -> Any:
 
 
 @multiclass_classification_router.post("/predict-multiclass", response_model=PredictMulticlassResponse)
-async def predict_multiclass(images: List[UploadFile]) -> Any:
+async def predict_multiclass(images: List[UploadFile] = File(..., description="Images for multi-class classification")) -> Any:
     """Handles the classification of uploaded images, identifying specific symbols using a multi-layer model.
 
     This endpoint accepts multiple image files, saves them to a temporary directory, and processes
@@ -223,7 +223,7 @@ async def predict_multiclass(images: List[UploadFile]) -> Any:
     if failed_images:
         message = (f"There was an error uploading the image{(len(failed_images) > 1) * 's'} "
                    f"[{', '.join(failed_images)}].")  # type: ignore
-        return HTTPException(status_code=501, detail=message)
+        raise HTTPException(status_code=501, detail=message)
 
     preprocess_images(image_paths)
     classification_results = [dict(first_layer_result=dict(label="nazi-symbol", prob=1.0),
